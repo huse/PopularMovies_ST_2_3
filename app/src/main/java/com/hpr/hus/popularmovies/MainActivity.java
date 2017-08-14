@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     //private final String LOG_TAG = MainActivity.class.getSimpleName();
 
-
+    private TextView mErrorMessageDisplay;
 
 
 
@@ -40,12 +41,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.v("hhhh", "MainActivity");
+        Log.v("hhhh", "MainActivity_onCreate");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         rvList = (RecyclerView) findViewById(R.id.recyclerview_movies_list);
-
+        mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
        rvList.setLayoutManager(layoutManager);
@@ -55,20 +56,21 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         //Log.v("hhhh-savedInstanceState", savedInstanceState.toString());
         if (savedInstanceState == null) {
-
+            Log.v("hhhh", "MainActivity_onCreate_savedInstanceState == null");
+            //here should be edited
             getMoviesFromTMDb(getSortMethod());
         } else {
 
             Parcelable[] parcelable = savedInstanceState.
                     getParcelableArray(getString(R.string.parcel_movie));
-
+            Log.v("hhhh", "MainActivity_onCreate_parcelable");
             if (parcelable != null) {
                 int numMovieObjects = parcelable.length;
                 MovieSelected[] movies = new MovieSelected[numMovieObjects];
                 for (int i = 0; i < numMovieObjects; i++) {
                     movies[i] = (MovieSelected) parcelable[i];
                 }
-
+                Log.v("hhhh", "MainActivity_onCreate_rvList.setAdapter");
                 rvList.setAdapter(new MovieAdapter( this,movies));
             }
         }
@@ -101,26 +103,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         return true;
     }
 
-/*    @Override
-    protected void onSaveInstanceState(Bundle outState) {
 
-
-
-        int numMovieObjects = 10;
-        if (numMovieObjects > 0) {
-
-            MovieSelected[] movies = new MovieSelected[numMovieObjects];
-            for (int i = 0; i < numMovieObjects; i++) {
-
-               // movies[i] = (MovieSelected) rvList.getItemAtPosition(i);
-            }
-
-
-            outState.putParcelableArray(getString(R.string.parcel_movie), movies);
-        }
-
-        super.onSaveInstanceState(outState);
-    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -162,11 +145,17 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         if (isNetworkAvailable()) {
             Log.v("gggg","NetworkAvailable");
             String apiKey = getString(R.string.key_themoviedb);
-
+            mErrorMessageDisplay.setVisibility(View.INVISIBLE);
+            rvList.setVisibility(View.VISIBLE);
             TaskInterfaceCompleted taskCompleted = new TaskInterfaceCompleted() {
                 @Override
                 public void onFetchMoviesTaskCompleted(MovieSelected[] movies) {
-                    Log.v("gggg2",movies.toString());
+                    String movieName="";
+                    for (MovieSelected ms : movies){
+                        movieName = movieName + " _ " + ms.getOriginalTitle();
+                    }
+
+                    Log.v("gggg2",movieName);
                     rvList.setAdapter(new MovieAdapter(movies,getApplicationContext()));
                 }
             };

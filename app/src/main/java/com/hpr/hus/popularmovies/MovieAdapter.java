@@ -34,9 +34,39 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
         mContext = context;
         mMovies = movies;
 
-        Log.v("hhhh", "MovieAdapter");
+        Log.v("hhhh", "MovieAdapter222");
     }
 
+    @Override
+    public MovieAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        // This method is not running in creation of the class.
+        Log.v("hhhh", "MovieAdapter- onCreateViewHolder");
+        Context context = parent.getContext();
+        int layoutIdForListItem = R.layout.movielistitem;
+        LayoutInflater inflater = LayoutInflater.from(context);
+        boolean shouldAttachToParentImmediately = false;
+        Log.v("tttttttt","viewType:  " + viewType);
+
+        View view = inflater.inflate(layoutIdForListItem, parent, shouldAttachToParentImmediately);
+        ImageView imageView;
+
+        // Will be null if it's not recycled. Will initialize ImageView if new.
+        //  if (convertView == null) {
+        imageView = new ImageView(context);
+        imageView.setAdjustViewBounds(true);
+        Log.v("ttt33","view:  " + imageView.toString());
+        // } else {
+        //     imageView = (ImageView) convertView;
+        //  }
+
+        Picasso.with(mContext)
+                .load(mMovies[viewType].getPosterPath())
+                .resize(mContext.getResources().getInteger(R.integer.tmdb_poster_w185_width),
+                        mContext.getResources().getInteger(R.integer.tmdb_poster_w185_height))
+                .into(imageView);
+
+        return new MovieAdapterViewHolder(imageView);
+    }
 
     @Override
     public long getItemId(int position) {
@@ -46,19 +76,9 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
  @Override
  public void onBindViewHolder(MovieAdapterViewHolder holder, int position) {
      String movieForThisSelection = movieData[position];
-     holder.mWeatherTextView.setText(movieForThisSelection);
+     holder.mMovieTextView.setText(movieForThisSelection);
  }
 
-    @Override
-    public MovieAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
-        int layoutIdForListItem = R.layout.movielistitem;
-        LayoutInflater inflater = LayoutInflater.from(context);
-        boolean shouldAttachToParentImmediately = false;
-
-        View view = inflater.inflate(layoutIdForListItem, parent, shouldAttachToParentImmediately);
-        return new MovieAdapterViewHolder(view);
-    }
 
 
 
@@ -67,15 +87,11 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
 
     }
     public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public final TextView mWeatherTextView;
-
-
-
-
+        public final TextView mMovieTextView;
 
         public MovieAdapterViewHolder(View view) {
             super(view);
-            mWeatherTextView = (TextView) view.findViewById(R.id.tv_movie_data);
+            mMovieTextView = (TextView) view.findViewById(R.id.tv_movie_data);
             view.setOnClickListener(this);
         }
 
@@ -87,10 +103,12 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            String weatherForDay = movieData[adapterPosition];
-            movieClickHandler.onClick(weatherForDay);
+            String selectedMovie = movieData[adapterPosition];
+            movieClickHandler.onClick(selectedMovie);
         }
     }
+
+
     public int getItemCount() {/////////
         if (null == movieData) return 0;
         return movieData.length;
