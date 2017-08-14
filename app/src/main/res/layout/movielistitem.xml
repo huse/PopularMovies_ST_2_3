@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:padding="16dp"/>
 
-    <!--This View serves as a visual divider between list items-->
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

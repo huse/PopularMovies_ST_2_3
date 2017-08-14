@@ -1,34 +1,53 @@
 package com.hpr.hus.popularmovies;
 
 /**
- * Created by hk640d on 8/1/2017.
+ * Created by hk640d on 8/2/2017.
  */
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
+import com.squareup.picasso.Picasso;
+
+
+class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
     private String[] movieData;
-    public MovieAdapter(MovieAdapterOnClickHandler clickHandler) {
+    private  Context mContext;
+    private final MovieSelected[] mMovies;
+    private  MovieAdapterOnClickHandler movieClickHandler;
+
+    public MovieAdapter(MovieAdapterOnClickHandler clickHandler, MovieSelected[] movies) {
+        //mContext = context;
+        mMovies = movies;
         movieClickHandler = clickHandler;
-    }
-
-    private final MovieAdapterOnClickHandler movieClickHandler;
-
-    public interface MovieAdapterOnClickHandler {
-        void onClick(String movieSelected);
+        Log.v("hhhh", "MovieAdapter");
 
     }
+    public MovieAdapter(MovieSelected[] movies, Context context) {
+        mContext = context;
+        mMovies = movies;
+
+        Log.v("hhhh", "MovieAdapter");
+    }
+
 
     @Override
-    public void onBindViewHolder(MovieAdapterViewHolder holder, int position) {
-        String movieForThisSelection = movieData[position];
-        holder.mWeatherTextView.setText(movieForThisSelection);
+    public long getItemId(int position) {
+        return 0;
     }
+
+ @Override
+ public void onBindViewHolder(MovieAdapterViewHolder holder, int position) {
+     String movieForThisSelection = movieData[position];
+     holder.mWeatherTextView.setText(movieForThisSelection);
+ }
 
     @Override
     public MovieAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -41,36 +60,39 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         return new MovieAdapterViewHolder(view);
     }
 
+
+
+    public interface MovieAdapterOnClickHandler {
+        void onClick(String movieSelected);
+
+    }
     public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-    public final TextView mWeatherTextView;
+        public final TextView mWeatherTextView;
 
 
 
 
 
-    public MovieAdapterViewHolder(View view) {
-        super(view);
-        mWeatherTextView = (TextView) view.findViewById(R.id.tv_movie_data);
-        view.setOnClickListener(this);
+        public MovieAdapterViewHolder(View view) {
+            super(view);
+            mWeatherTextView = (TextView) view.findViewById(R.id.tv_movie_data);
+            view.setOnClickListener(this);
+        }
+
+        /**
+         * This gets called by the child views during a click.
+         *
+         * @param v The View that was clicked
+         */
+        @Override
+        public void onClick(View v) {
+            int adapterPosition = getAdapterPosition();
+            String weatherForDay = movieData[adapterPosition];
+            movieClickHandler.onClick(weatherForDay);
+        }
     }
-
-    /**
-     * This gets called by the child views during a click.
-     *
-     * @param v The View that was clicked
-     */
-    @Override
-    public void onClick(View v) {
-        int adapterPosition = getAdapterPosition();
-        String weatherForDay = movieData[adapterPosition];
-        movieClickHandler.onClick(weatherForDay);
-    }
-}
-
-
-    public int getItemCount() {
+    public int getItemCount() {/////////
         if (null == movieData) return 0;
         return movieData.length;
     }
-
 }
