@@ -77,6 +77,18 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
  public void onBindViewHolder(MovieAdapterViewHolder holder, int position) {
      String movieForThisSelection = movieData[position];
      holder.mMovieTextView.setText(movieForThisSelection);
+     ImageView imageView;
+
+
+     imageView = new ImageView(mContext);
+     imageView.setAdjustViewBounds(true);
+     Log.v("ttt33","view:  " + imageView.toString());
+
+     Picasso.with(mContext)
+             .load(mMovies[position].getPosterPath())
+             .resize(mContext.getResources().getInteger(R.integer.tmdb_poster_w185_width),
+                     mContext.getResources().getInteger(R.integer.tmdb_poster_w185_height))
+             .into(imageView);
  }
 
 
@@ -95,11 +107,6 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
             view.setOnClickListener(this);
         }
 
-        /**
-         * This gets called by the child views during a click.
-         *
-         * @param v The View that was clicked
-         */
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();

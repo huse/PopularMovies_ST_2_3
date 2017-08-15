@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         if (savedInstanceState == null) {
             Log.v("hhhh", "MainActivity_onCreate_savedInstanceState == null");
             //here should be edited
+            //ToDo edit this line
             getMoviesFromTMDb(getSortMethod());
         } else {
 
