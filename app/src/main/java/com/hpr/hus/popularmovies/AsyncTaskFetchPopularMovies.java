@@ -32,7 +32,7 @@ class AsyncTaskFetchPopularMovies extends AsyncTask<String, Void, MovieSelected[
 
     public AsyncTaskFetchPopularMovies(TaskInterfaceCompleted listener, String apiKey) {
         super();
-        Log.v("hhhh", "AsyncTaskFetchPopularMovies");
+        Log.v("hhhh3", "AsyncTaskFetchPopularMovies");
         mListener = listener;
         mApiKey = apiKey;
     }

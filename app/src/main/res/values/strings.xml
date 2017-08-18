@@ -24,7 +24,7 @@
 
     <!-- Preference items -->
     <string name="pref_sort_method_key">SORT_METHOD</string>
-    <string name="pref_sort_vote_avg_desc_key">SORT_VOTE_AVERAGE_DESC</string>
+    <string name="pref_sort_top_rated_desc_key">SORT_TOP_RATED_DESC</string>
     <string name="pref_sort_pop_desc_key">SORT_POPULARITY_DESC</string>
 
 

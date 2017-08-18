@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
 
-        mMenu.add(Menu.NONE, R.string.pref_sort_vote_avg_desc_key, Menu.NONE, null)
+        mMenu.add(Menu.NONE, R.string.pref_sort_top_rated_desc_key, Menu.NONE, null)
                 .setVisible(false)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 getMoviesFromTMDb(getSortMethod());
                 Log.v("kkkkkk","pref_sort_pop_desc_key");
                 return true;
-            case R.string.pref_sort_vote_avg_desc_key:
+            case R.string.pref_sort_top_rated_desc_key:
                 updateSharedPrefs(getString(R.string.tmdb_sort_vote_avg_desc));
                 updateMenu();
                 getMoviesFromTMDb(getSortMethod());
@@ -227,10 +227,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         if (sortMethod.equals(getString(R.string.tmdb_sort_pop_desc))) {
             Log.v("hhhh2","tmdb_sort_pop_desc");
             mMenu.findItem(R.string.pref_sort_pop_desc_key).setVisible(false);
-            mMenu.findItem(R.string.pref_sort_vote_avg_desc_key).setVisible(true);
+            mMenu.findItem(R.string.pref_sort_top_rated_desc_key).setVisible(true);
         } else {
             Log.v("hhhh2","pref_sort_vote_avg_desc_key");
-            mMenu.findItem(R.string.pref_sort_vote_avg_desc_key).setVisible(false);
+            mMenu.findItem(R.string.pref_sort_top_rated_desc_key).setVisible(false);
             mMenu.findItem(R.string.pref_sort_pop_desc_key).setVisible(true);
         }
     }
