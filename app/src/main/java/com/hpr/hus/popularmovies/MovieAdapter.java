@@ -19,76 +19,71 @@ import com.squareup.picasso.Picasso;
 
 class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
     private String[] movieData;
-    private  Context mContext;
-    private final MovieSelected[] mMovies;
-    private  MovieAdapterOnClickHandler movieClickHandler;
+    private  Context context;
+    private final MovieSelected[] movies;
+   // private  MovieAdapterOnClickHandler movieClickHandler;
 
-    public MovieAdapter(MovieAdapterOnClickHandler clickHandler, MovieSelected[] movies) {
-        //mContext = context;
-        mMovies = movies;
-        movieClickHandler = clickHandler;
-        Log.v("hhhh", "MovieAdapter");
-
-    }
     public MovieAdapter(MovieSelected[] movies, Context context) {
-        mContext = context;
-        mMovies = movies;
+        this.context = context;
+        Log.v("hhhh4_context", context.getClass().toString());
+        this.movies = movies;
+        String movieName="";
+        for (MovieSelected ms : movies){
+            movieName = movieName + " _ " + ms.getOriginalTitle();
+        }
+        Log.v("hhhh4",movieName);
+     //   MovieAdapterOnClickHandler clickHandler,
+        //  movieClickHandler = clickHandler;
+        Log.v("hhhh4", "MovieAdapter");
 
-        Log.v("hhhh", "MovieAdapter222");
     }
+    /*public MovieAdapter(MovieSelected[] movies, Context context) {
+        this.context = context;
+        this.movies = movies;
+
+        Log.v("hhhh4", "MovieAdapter222");
+    }*/
 
     @Override
-    public MovieAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MovieAdapter.MovieAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // This method is not running in creation of the class.
-        Log.v("hhhh", "MovieAdapter- onCreateViewHolder");
+        Log.v("hhhh4", "MovieAdapter- onCreateViewHolder");
         Context context = parent.getContext();
         int layoutIdForListItem = R.layout.movielistitem;
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
-        Log.v("tttttttt","viewType:  " + viewType);
+        Log.v("hhhh4","viewType:  " + viewType);
 
         View view = inflater.inflate(layoutIdForListItem, parent, shouldAttachToParentImmediately);
-        ImageView imageView;
 
-        // Will be null if it's not recycled. Will initialize ImageView if new.
-        //  if (convertView == null) {
-        imageView = new ImageView(context);
-        imageView.setAdjustViewBounds(true);
-        Log.v("ttt33","view:  " + imageView.toString());
-        // } else {
-        //     imageView = (ImageView) convertView;
-        //  }
 
-        Picasso.with(mContext)
-                .load(mMovies[viewType].getPosterPath())
-                .resize(mContext.getResources().getInteger(R.integer.tmdb_poster_w185_width),
-                        mContext.getResources().getInteger(R.integer.tmdb_poster_w185_height))
-                .into(imageView);
-
-        return new MovieAdapterViewHolder(imageView);
+        return new MovieAdapterViewHolder(view);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+
+        Log.v("hhhh4","getItemId position  " + position );return 0;
     }
 
  @Override
  public void onBindViewHolder(MovieAdapterViewHolder holder, int position) {
      String movieForThisSelection = movieData[position];
+     Log.v("hhhh4","onBindViewHolder_movieForThisSelection:  " + movieForThisSelection );
      holder.mMovieTextView.setText(movieForThisSelection);
      ImageView imageView;
 
 
-     imageView = new ImageView(mContext);
+     imageView = new ImageView(context);
      imageView.setAdjustViewBounds(true);
-     Log.v("ttt33","view:  " + imageView.toString());
-
-     Picasso.with(mContext)
-             .load(mMovies[position].getPosterPath())
-             .resize(mContext.getResources().getInteger(R.integer.tmdb_poster_w185_width),
-                     mContext.getResources().getInteger(R.integer.tmdb_poster_w185_height))
-             .into(imageView);
+     Log.v("hhhh4","view:  " + imageView.toString());
+//todo  put onCreateViewHolder
+     //onCreateViewHolder(imageView, position);
+     Picasso.with(context)
+             .load(movies[position].getPosterPath())
+/*             .resize(mContext.getResources().getInteger(R.integer.tmdb_poster_w185_width),
+                     mContext.getResources().getInteger(R.integer.tmdb_poster_w185_height))*/
+             .into(holder.movieImageView);
  }
 
 
@@ -100,10 +95,13 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
     }
     public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final TextView mMovieTextView;
+        private ImageView movieImageView;
 
         public MovieAdapterViewHolder(View view) {
             super(view);
+            Log.v("hhhh4","MovieAdapterViewHolder class");
             mMovieTextView = (TextView) view.findViewById(R.id.tv_movie_data);
+            movieImageView = (ImageView)view.findViewById(R.id.imageview_image_poster);
             view.setOnClickListener(this);
         }
 
@@ -111,7 +109,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
             String selectedMovie = movieData[adapterPosition];
-            movieClickHandler.onClick(selectedMovie);
+           // movieClickHandler.onClick(selectedMovie);
         }
     }
 

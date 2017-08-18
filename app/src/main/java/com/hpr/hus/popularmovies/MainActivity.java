@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Context;
@@ -30,10 +31,10 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
 
     private RecyclerView rvList;
-
+    MovieAdapter movieAdapter;
     //private final String LOG_TAG = MainActivity.class.getSimpleName();
 
-    private TextView mErrorMessageDisplay;
+    //private TextView mErrorMessageDisplay;
 
 
 
@@ -45,11 +46,39 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        reserveInitialingViews(savedInstanceState);
         rvList = (RecyclerView) findViewById(R.id.recyclerview_movies_list);
-        mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
+        //empty initial RecyclerView
+        MovieSelected[] movies = new MovieSelected[0];
+        rvList.setAdapter(new MovieAdapter(movies,getApplicationContext()));
+    }
+    private void initialingViews(Parcelable[] parcelable){
+    /*LinearLayoutManager layoutManager
+            = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);*/
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        rvList.setLayoutManager(layoutManager);
+        rvList = (RecyclerView) findViewById(R.id.recyclerview_movies_list);
+        rvList.setHasFixedSize(true);
+        rvList.setVisibility(View.VISIBLE);
+        Log.v("hhhh", "MainActivity_onCreate_rvList.setAdapter");
+        setContentView(R.layout.activity_main);
+
+        Log.v("hhhh", "MainActivity_onCreate_parcelable");
+//            if (parcelable != null) {
+        int numMovieObjects = parcelable.length;
+        MovieSelected[] movies = new MovieSelected[numMovieObjects];
+        for (int i = 0; i < numMovieObjects; i++) {
+            movies[i] = (MovieSelected) parcelable[i];
+        }
+        rvList.setAdapter(new MovieAdapter(movies,getApplicationContext()));
+
+    }
+    private void reserveInitialingViews(@Nullable Bundle savedInstanceState){
+        rvList = (RecyclerView) findViewById(R.id.recyclerview_movies_list);
+        // mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-       rvList.setLayoutManager(layoutManager);
+        rvList.setLayoutManager(layoutManager);
         rvList.setHasFixedSize(true);
 
         rvList.setVisibility(View.VISIBLE);
@@ -72,12 +101,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                     movies[i] = (MovieSelected) parcelable[i];
                 }
                 Log.v("hhhh", "MainActivity_onCreate_rvList.setAdapter");
-                rvList.setAdapter(new MovieAdapter( this,movies));
+
+                rvList.setAdapter(new MovieAdapter(movies,getApplicationContext()));
             }
         }
 
-    }
 
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, mMenu);
@@ -144,10 +174,18 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     private void getMoviesFromTMDb(String sortMethod) {
         if (isNetworkAvailable()) {
-            Log.v("gggg","NetworkAvailable");
+            Log.v("hhhh2","NetworkAvailable");
             String apiKey = getString(R.string.key_themoviedb);
-            mErrorMessageDisplay.setVisibility(View.INVISIBLE);
+           // mErrorMessageDisplay.setVisibility(View.INVISIBLE);
+
+            // mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
+            /*LinearLayoutManager layoutManager
+                    = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);*/
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+            rvList.setLayoutManager(layoutManager);
+            rvList.setHasFixedSize(true);
             rvList.setVisibility(View.VISIBLE);
+
             TaskInterfaceCompleted taskCompleted = new TaskInterfaceCompleted() {
                 @Override
                 public void onFetchMoviesTaskCompleted(MovieSelected[] movies) {
@@ -155,9 +193,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                     for (MovieSelected ms : movies){
                         movieName = movieName + " _ " + ms.getOriginalTitle();
                     }
+                    Log.v("hhhh2_this", this.getClass().toString());
+                    Log.v("hhhh2_getApplic", getApplicationContext().getClass().toString());
+                    movieAdapter = new MovieAdapter(movies,getApplicationContext());
 
-                    Log.v("gggg2",movieName);
-                    rvList.setAdapter(new MovieAdapter(movies,getApplicationContext()));
+                    rvList.setAdapter(movieAdapter);
+                    Log.v("hhhh2",movieName);
                 }
             };
 
@@ -184,9 +225,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         String sortMethod = getSortMethod();
 
         if (sortMethod.equals(getString(R.string.tmdb_sort_pop_desc))) {
+            Log.v("hhhh2","tmdb_sort_pop_desc");
             mMenu.findItem(R.string.pref_sort_pop_desc_key).setVisible(false);
             mMenu.findItem(R.string.pref_sort_vote_avg_desc_key).setVisible(true);
         } else {
+            Log.v("hhhh2","pref_sort_vote_avg_desc_key");
             mMenu.findItem(R.string.pref_sort_vote_avg_desc_key).setVisible(false);
             mMenu.findItem(R.string.pref_sort_pop_desc_key).setVisible(true);
         }
@@ -200,7 +243,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 getString(R.string.tmdb_sort_pop_desc));
 
 
-        Log.e("getSortMethod", result);
+        Log.v("getSortMethod", result);
         return result;
     }
 
