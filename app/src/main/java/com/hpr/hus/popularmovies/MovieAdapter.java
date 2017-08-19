@@ -54,8 +54,8 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
         boolean shouldAttachToParentImmediately = false;
         Log.v("hhhh4","viewType:  " + viewType);
 
-        View view = inflater.inflate(layoutIdForListItem, parent, shouldAttachToParentImmediately);
-
+       // View view = inflater.inflate(layoutIdForListItem, parent, shouldAttachToParentImmediately);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_detail, parent, false);
 
         return new MovieAdapterViewHolder(view);
     }
@@ -70,7 +70,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
  public void onBindViewHolder(MovieAdapterViewHolder holder, int position) {
      String movieForThisSelection = movies[position].getOriginalTitle();
      Log.v("hhhh4","onBindViewHolder_movieForThisSelection:  " + movieForThisSelection );
-     holder.mMovieTextView.setText(movieForThisSelection);
+   //  holder.mMovieTextView.setText(movieForThisSelection);
      ImageView imageView;
 
 
@@ -97,13 +97,13 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
 
     }
     public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public final TextView mMovieTextView;
+        TextView mMovieTextView = new TextView(context);
         ImageView movieImageView = new ImageView(context);
 
         public MovieAdapterViewHolder(View view) {
             super(view);
             Log.v("hhhh411","MovieAdapterViewHolder class");
-            mMovieTextView = (TextView) view.findViewById(R.id.tv_movie_data);
+            mMovieTextView = view.findViewById(R.id.tv_movie_data);
             movieImageView = view.findViewById(R.id.imageview_image_poster);
             Log.v("hhhh4111",":  " + movieImageView.toString());
             view.setOnClickListener(this);
