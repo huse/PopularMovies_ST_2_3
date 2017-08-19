@@ -18,7 +18,7 @@ import com.squareup.picasso.Picasso;
 
 
 class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
-    private String[] movieData;
+   // private String[] movieData;
     private  Context context;
     private final MovieSelected[] movies;
    // private  MovieAdapterOnClickHandler movieClickHandler;
@@ -68,7 +68,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
 
  @Override
  public void onBindViewHolder(MovieAdapterViewHolder holder, int position) {
-     String movieForThisSelection = movieData[position];
+     String movieForThisSelection = movies[position].getOriginalTitle();
      Log.v("hhhh4","onBindViewHolder_movieForThisSelection:  " + movieForThisSelection );
      holder.mMovieTextView.setText(movieForThisSelection);
      ImageView imageView;
@@ -79,11 +79,14 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
      Log.v("hhhh4","view:  " + imageView.toString());
 //todo  put onCreateViewHolder
      //onCreateViewHolder(imageView, position);
-     Picasso.with(context)
-             .load(movies[position].getPosterPath())
-/*             .resize(mContext.getResources().getInteger(R.integer.tmdb_poster_w185_width),
-                     mContext.getResources().getInteger(R.integer.tmdb_poster_w185_height))*/
-             .into(holder.movieImageView);
+     Log.v("hhhh4_Picasso",":  " + context.toString());
+     Log.v("hhhh4_Picasso",":  " + movies.toString());
+     Log.v("hhhh4_Picasso",":  " + position);
+     Log.v("hhhh4_Picasso",":  " + context.getResources().getInteger(R.integer.tmdb_poster_w185_width));
+     Log.v("hhhh4_Picasso",":  " + (context.getResources().getInteger(R.integer.tmdb_poster_w185_height)));
+     Log.v("hhhh4_Picasso",":  " + holder.movieImageView.toString());
+     Log.v("hhhh4_Picasso",":  " + context.toString());
+     Picasso.with(context).load(movies[position].getPosterPath()).resize(context.getResources().getInteger(R.integer.tmdb_poster_w185_width),context.getResources().getInteger(R.integer.tmdb_poster_w185_height)).into(holder.movieImageView);
  }
 
 
@@ -95,27 +98,28 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
     }
     public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final TextView mMovieTextView;
-        private ImageView movieImageView;
+        ImageView movieImageView = new ImageView(context);
 
         public MovieAdapterViewHolder(View view) {
             super(view);
-            Log.v("hhhh4","MovieAdapterViewHolder class");
+            Log.v("hhhh411","MovieAdapterViewHolder class");
             mMovieTextView = (TextView) view.findViewById(R.id.tv_movie_data);
-            movieImageView = (ImageView)view.findViewById(R.id.imageview_image_poster);
+            movieImageView = view.findViewById(R.id.imageview_image_poster);
+            Log.v("hhhh4111",":  " + movieImageView.toString());
             view.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            String selectedMovie = movieData[adapterPosition];
+            String selectedMovie = movies[adapterPosition].getOriginalTitle();
            // movieClickHandler.onClick(selectedMovie);
         }
     }
 
 
     public int getItemCount() {/////////
-        if (null == movieData) return 0;
-        return movieData.length;
+        if (null == movies) return 2;
+        return movies.length;
     }
 }

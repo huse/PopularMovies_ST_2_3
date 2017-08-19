@@ -26,9 +26,10 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.hpr.hus.popularmovies.MovieAdapter.MovieAdapterOnClickHandler;
 
 
-public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
+public class MainActivity extends AppCompatActivity implements MovieAdapterOnClickHandler {
 
     private RecyclerView rvList;
     MovieAdapter movieAdapter;

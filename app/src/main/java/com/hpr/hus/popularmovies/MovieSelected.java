@@ -18,7 +18,7 @@ public class MovieSelected implements Parcelable {
     private String mReleaseDate;
 
     public MovieSelected() {
-        Log.v("hhhh", "MovieSelected");
+        Log.v("hhhh5", "MovieSelected");
     }
 
     public void setOriginalTitle(String originalTitle) {
