@@ -70,14 +70,15 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
  public void onBindViewHolder(MovieAdapterViewHolder holder, int position) {
      String movieForThisSelection = movies[position].getOriginalTitle();
      Log.v("hhhh4","onBindViewHolder_movieForThisSelection:  " + movieForThisSelection );
-   //  holder.mMovieTextView.setText(movieForThisSelection);
+   // todo textview need to be fixed:
+     // holder.mMovieTextView.setText(movieForThisSelection);
      ImageView imageView;
 
 
      imageView = new ImageView(context);
      imageView.setAdjustViewBounds(true);
      Log.v("hhhh4","view:  " + imageView.toString());
-//todo  put onCreateViewHolder
+
      //onCreateViewHolder(imageView, position);
      Log.v("hhhh4_Picasso",":  " + context.toString());
      Log.v("hhhh4_Picasso",":  " + movies.toString());
