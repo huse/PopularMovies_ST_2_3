@@ -21,9 +21,9 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
    // private String[] movieData;
     private  Context context;
     private final MovieSelected[] movies;
-   // private  MovieAdapterOnClickHandler movieClickHandler;
+    private  MovieAdapterOnClickHandler movieClickHandler;
 
-    public MovieAdapter(MovieSelected[] movies, Context context) {
+    public MovieAdapter(MovieSelected[] movies, Context context,MovieAdapterOnClickHandler clickHandler) {
         this.context = context;
         Log.v("hhhh4_context", context.getClass().toString());
         this.movies = movies;
@@ -32,8 +32,8 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
             movieName = movieName + " _ " + ms.getOriginalTitle();
         }
         Log.v("hhhh4",movieName);
-     //   MovieAdapterOnClickHandler clickHandler,
-        //  movieClickHandler = clickHandler;
+      // MovieAdapterOnClickHandler clickHandler,
+          movieClickHandler = clickHandler;
         Log.v("hhhh4", "MovieAdapter");
 
     }
@@ -55,7 +55,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
         Log.v("hhhh4","viewType:  " + viewType);
 
        // View view = inflater.inflate(layoutIdForListItem, parent, shouldAttachToParentImmediately);
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_detail, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_main, parent, false);
 
         return new MovieAdapterViewHolder(view);
     }
@@ -105,7 +105,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
             super(view);
             Log.v("hhhh411","MovieAdapterViewHolder class");
             mMovieTextView = view.findViewById(R.id.tv_movie_data);
-            movieImageView = view.findViewById(R.id.imageview_image_poster);
+            movieImageView = view.findViewById(R.id.imageview_image_poster_main );
             Log.v("hhhh4111",":  " + movieImageView.toString());
             view.setOnClickListener(this);
         }
@@ -114,7 +114,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
             String selectedMovie = movies[adapterPosition].getOriginalTitle();
-           // movieClickHandler.onClick(selectedMovie);
+            movieClickHandler.onClick(selectedMovie);
         }
     }
 

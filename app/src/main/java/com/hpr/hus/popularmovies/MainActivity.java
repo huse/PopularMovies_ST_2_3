@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
     //private final String LOG_TAG = MainActivity.class.getSimpleName();
 
     //private TextView mErrorMessageDisplay;
-
+    MovieAdapterOnClickHandler clickHandler;
 
 
     private Menu mMenu;
@@ -51,7 +51,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         rvList = (RecyclerView) findViewById(R.id.recyclerview_movies_list);
         //empty initial RecyclerView
         MovieSelected[] movies = new MovieSelected[0];
-        rvList.setAdapter(new MovieAdapter(movies,getApplicationContext()));
+        clickHandler = this;
+        rvList.setAdapter(new MovieAdapter(movies,getApplicationContext(),this));
     }
     private void initialingViews(Parcelable[] parcelable){
     /*LinearLayoutManager layoutManager
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         rvList.setLayoutManager(layoutManager);
         rvList = (RecyclerView) findViewById(R.id.recyclerview_movies_list);
-        rvList.setHasFixedSize(true);
+       // rvList.setHasFixedSize(true);
         rvList.setVisibility(View.VISIBLE);
         Log.v("hhhh", "MainActivity_onCreate_rvList.setAdapter");
         setContentView(R.layout.activity_main);
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         for (int i = 0; i < numMovieObjects; i++) {
             movies[i] = (MovieSelected) parcelable[i];
         }
-        rvList.setAdapter(new MovieAdapter(movies,getApplicationContext()));
+       // rvList.setAdapter(new MovieAdapter(movies,getApplicationContext()));
 
     }
     private void reserveInitialingViews(@Nullable Bundle savedInstanceState){
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvList.setLayoutManager(layoutManager);
-        rvList.setHasFixedSize(true);
+       // rvList.setHasFixedSize(true);
 
         rvList.setVisibility(View.VISIBLE);
 
@@ -103,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
                 }
                 Log.v("hhhh", "MainActivity_onCreate_rvList.setAdapter");
 
-                rvList.setAdapter(new MovieAdapter(movies,getApplicationContext()));
+               // rvList.setAdapter(new MovieAdapter(movies,getApplicationContext()));
             }
         }
 
@@ -196,7 +197,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
                     }
                     Log.v("hhhh2_this", this.getClass().toString());
                     Log.v("hhhh2_getApplic", getApplicationContext().getClass().toString());
-                    movieAdapter = new MovieAdapter(movies,getApplicationContext());
+
+                    movieAdapter = new MovieAdapter(movies,getApplicationContext(),clickHandler);
 
                     rvList.setAdapter(movieAdapter);
                     Log.v("hhhh2",movieName);
