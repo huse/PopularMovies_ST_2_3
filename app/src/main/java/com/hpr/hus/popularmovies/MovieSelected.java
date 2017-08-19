@@ -10,7 +10,7 @@ import android.util.Log;
 
 
 public class MovieSelected implements Parcelable {
-    private static final String DATE_FORMAT = "yyyy-MM-dd";
+    private static final String DATE_FORMAT = "MM-dd-yyyy";
     private String mOriginalTitle;
     private String mPosterPath;
     private String mOverview;
@@ -18,6 +18,9 @@ public class MovieSelected implements Parcelable {
     private String mReleaseDate;
 
     public MovieSelected() {
+
+
+
         Log.v("hhhh5", "MovieSelected");
     }
 

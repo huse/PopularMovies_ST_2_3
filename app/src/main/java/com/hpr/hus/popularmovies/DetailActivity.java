@@ -35,7 +35,7 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        Log.v("hhhh", "DetailActivity-onCreate");
+        Log.v("hhhh6", "DetailActivity-onCreate");
        // movieDisplay = (TextView) findViewById(R.id.tv_display_movie);
         originalTitleTV = (TextView) findViewById(R.id.textview_original_title);
         overViewTV = (TextView) findViewById(R.id.textview_overview);
@@ -44,39 +44,50 @@ public class DetailActivity extends AppCompatActivity {
         imagePosterIV = (ImageView) findViewById(R.id.imageview_image_poster);
 
         Intent intentThatStartedThisActivity = getIntent();
-        MovieSelected movie = intentThatStartedThisActivity.getParcelableExtra(getString(R.string.parcel_movie));
+        Log.v("hhhh6", "intentThatStartedThisActivity    "+intentThatStartedThisActivity.toString());
 
-        originalTitleTV.setText(movie.getOriginalTitle());
+/// TODO: 8/19/2017 fix  movie null bug
+        MovieSelected movie;
+        if (intentThatStartedThisActivity != null) {
+            if (intentThatStartedThisActivity.hasExtra(Intent.EXTRA_TEXT)) {
+                movie = intentThatStartedThisActivity.getExtras().getParcelable("PARCEL_MOVIE");
+                Log.v("hhhh6", "movie   check point");
+                //Checking to see if the movie is null:
+                Log.v("hhhh6", "movie   " + movie.toString());
 
-        Picasso.with(this)
-                .load(movie.getPosterPath())
-                .resize(getResources().getInteger(R.integer.tmdb_poster_w185_width),
-                        getResources().getInteger(R.integer.tmdb_poster_w185_height))
-                .into(imagePosterIV);
+              //  originalTitleTV.setText(movie.getOriginalTitle());
 
-        String overView = movie.getOverview();
-        if (overView == null) {
-            overViewTV.setTypeface(null, Typeface.ITALIC);
-            overView = getResources().getString(R.string.no_summary_found);
-        }
-        overViewTV.setText(overView);
-        rateAverageTV.setText(movie.getDetailedVoteAverage());
+             /*   Picasso.with(this)
+                        .load(movie.getPosterPath())
+                        .resize(getResources().getInteger(R.integer.tmdb_poster_w185_width),
+                                getResources().getInteger(R.integer.tmdb_poster_w185_height))
+                        .into(imagePosterIV);
 
-        // First get the release date from the object - to be used if something goes wrong with
-        // getting localized release date (catch).
-        String releaseDate = movie.getReleaseDate();
-        if(releaseDate != null) {
-            try {
-                releaseDate = DateAdding.getLocalizedDate(this,
-                        releaseDate, movie.getDateFormat());
-            } catch (ParseException e) {
-                Log.e(LOG_TAG, "Error with parsing movie release date", e);
+                String overView = movie.getOverview();
+*/
+              /*  if (overView == null) {
+                    overViewTV.setTypeface(null, Typeface.ITALIC);
+                    overView = getResources().getString(R.string.no_summary_found);
+                }
+                overViewTV.setText(overView);
+                rateAverageTV.setText(movie.getDetailedVoteAverage());
+*/
+                // First get the release date from the object - to be used if something goes wrong with
+                // getting localized release date (catch).
+             /*   String releaseDate = movie.getReleaseDate();
+                if (releaseDate != null) {
+                    try {
+                        releaseDate = DateAdding.getLocalizedDate(this,
+                                releaseDate, movie.getDateFormat());
+                    } catch (ParseException e) {
+                        Log.e(LOG_TAG, "Error with parsing movie release date", e);
+                    }
+                } else {
+                    releaseTimeTV.setTypeface(null, Typeface.ITALIC);
+                    releaseDate = getResources().getString(R.string.no_release_date_found);
+                }*/
+               // releaseTimeTV.setText(releaseDate);
             }
-        } else {
-            releaseTimeTV.setTypeface(null, Typeface.ITALIC);
-            releaseDate = getResources().getString(R.string.no_release_date_found);
         }
-        releaseTimeTV.setText(releaseDate);
-
     }
 }

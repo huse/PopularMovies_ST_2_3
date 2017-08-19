@@ -258,13 +258,16 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         editor.apply();
     }
     @Override
-    public void onClick(String weatherForDay) {
-        Context context = this;
-        Class destinationClass = DetailActivity.class;
-        Intent intentToStartDetailActivity = new Intent(context, destinationClass);
-        // COMPLETED (1) Pass the weather to the DetailActivity
-        intentToStartDetailActivity.putExtra(Intent.EXTRA_TEXT, weatherForDay);
-        startActivity(intentToStartDetailActivity);
+    public void onClick(MovieSelected movie) {
+
+        Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
+        intent.putExtra(getResources().getString(R.string.parcel_movie), movie);
+
+        startActivity(intent);
+
+
+
+
     }
 
 }
