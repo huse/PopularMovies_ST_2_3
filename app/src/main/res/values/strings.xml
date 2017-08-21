@@ -3,10 +3,10 @@
     <string name="error_message">An error happened please check connection</string>
 
     <!-- Some strings used for example layout during design -->
-    <string name="example_original_title">Spider Man</string>
-    <string name="example_release_date">07–07–2017</string>
-    <string name="example_vote_average">9.9/10</string>
-    <string name="example_overview">Spider Man returned with his young ante</string>
+    <string name="original_title">Spider Man</string>
+    <string name="release_date">07–07–2017</string>
+    <string name="vote_average">9.9/10</string>
+    <string name="overview">Spider Man returned with his young ante</string>
 
 
 

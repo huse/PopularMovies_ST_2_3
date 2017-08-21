@@ -26,7 +26,7 @@ class AsyncTaskFetchPopularMovies extends AsyncTask<String, Void, MovieSelected[
 
     private final String LOG_TAG = AsyncTaskFetchPopularMovies.class.getSimpleName();
 
-    private final String mApiKey;
+    private final String apiKey;
 
     private final TaskInterfaceCompleted mListener;
 
@@ -34,7 +34,7 @@ class AsyncTaskFetchPopularMovies extends AsyncTask<String, Void, MovieSelected[
         super();
         Log.v("hhhh3", "AsyncTaskFetchPopularMovies");
         mListener = listener;
-        mApiKey = apiKey;
+        this.apiKey = apiKey;
     }
 
     @Override
@@ -139,7 +139,7 @@ class AsyncTaskFetchPopularMovies extends AsyncTask<String, Void, MovieSelected[
 
         Uri builtUri = Uri.parse(TMDB_BASE_URL).buildUpon()
                 .appendQueryParameter(SORT_BY_PARAM, parameters[0])
-                .appendQueryParameter(API_KEY_PARAM, mApiKey)
+                .appendQueryParameter(API_KEY_PARAM, apiKey)
                 .build();
 
         return new URL(builtUri.toString());

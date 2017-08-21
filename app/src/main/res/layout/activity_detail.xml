@@ -32,10 +32,7 @@
             android:layout_gravity="center"
             android:layout_weight="2"
             android:orientation="vertical"
-            android:paddingEnd="2dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="2dp"
-            android:paddingStart="5dp">
+            android:padding="5dp">
 
             <TextView
                 android:id="@+id/textview_release_date_title"
@@ -70,7 +67,7 @@
                 android:paddingLeft="30dp"
                 android:paddingRight="2dp"
                 android:paddingEnd="2dp"
-                android:textSize="@dimen/abc_text_size_large_material" />
+                android:textSize="20dp" />
         </LinearLayout>
 
     </LinearLayout>
@@ -90,7 +87,7 @@
             android:paddingTop="10dp"
 
             android:paddingLeft="10dp"
-            android:text="@string/example_original_title"
+            android:text="@string/original_title"
             android:textSize="@dimen/abc_text_size_headline_material" />
 
         <ScrollView
@@ -103,7 +100,7 @@
                 android:layout_height="wrap_content"
 
                 android:paddingLeft="10dp"
-                android:text="@string/example_overview" />
+                android:text="@string/overview" />
 
         </ScrollView>
     </LinearLayout>
