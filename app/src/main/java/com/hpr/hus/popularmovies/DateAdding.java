@@ -15,12 +15,22 @@ import java.util.Date;
 class DateAdding {
 
 
-    private static Date getFormattedDate(String date, String format) throws ParseException {
+    public static Date getFormattedDate(String date, String format) throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
-        Log.v("hhhh", "DateAdding");
-        return simpleDateFormat.parse(date);
-    }
 
+        Log.v("hhhh8", "DateAdding:    " + date);
+        Date returnDate = simpleDateFormat.parse(date);
+        Log.v("hhhh8", "DateAdding:    " + returnDate);
+        return returnDate;
+    }
+   /* public static Date getFormattedDate(Date date, String format) throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
+
+        Log.v("hhhh8", "DateAdding:    " + date);
+        Date returnDate = simpleDateFormat.parse(date);
+        Log.v("hhhh8", "DateAdding:    " + returnDate);
+        return returnDate;
+    }*/
 
     public static String getLocalizedDate(Context context, String date, String format)
             throws ParseException {

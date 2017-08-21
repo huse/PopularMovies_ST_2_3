@@ -265,9 +265,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
 
         startActivity(intent);
 
-
-
-
     }
 
 }
