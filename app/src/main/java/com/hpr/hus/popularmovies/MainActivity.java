@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.content.Context;
 import android.content.Intent;
 
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         setContentView(R.layout.activity_main);
         reserveInitialingViews(savedInstanceState);
         rvList = (RecyclerView) findViewById(R.id.recyclerview_movies_list);
+
+        rvList.setLayoutManager(new GridLayoutManager(this, 2));
         //empty initial RecyclerView
         MovieSelected[] movies = new MovieSelected[0];
         clickHandler = this;
