@@ -16,6 +16,9 @@ import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class DetailActivity extends AppCompatActivity {
 
     private static final String SHARE_HASHTAG = " #PopularMoviesApp";
@@ -30,6 +33,7 @@ public class DetailActivity extends AppCompatActivity {
     TextView rateAverageTV;
     TextView releaseTimeTV;
     ImageView imagePosterIV;
+   // @BindView(R.id.textview_original_title) TextView originalTitleTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,9 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         Log.v("hhhh6", "DetailActivity-onCreate");
        // movieDisplay = (TextView) findViewById(R.id.tv_display_movie);
+
+        //Exercising butterKnife:
+
         originalTitleTV = (TextView) findViewById(R.id.textview_original_title);
         overViewTV = (TextView) findViewById(R.id.textview_overview);
         rateAverageTV = (TextView) findViewById(R.id.textview_rate_average);
@@ -45,6 +52,7 @@ public class DetailActivity extends AppCompatActivity {
 
         Intent intentThatStartedThisActivity = getIntent();
         Log.v("hhhh6", "intentThatStartedThisActivity    "+intentThatStartedThisActivity.toString());
+       // ButterKnife.bind(this);
 
 /// TODO: 8/19/2017 fix  movie null bug //done
         MovieSelected movie;
