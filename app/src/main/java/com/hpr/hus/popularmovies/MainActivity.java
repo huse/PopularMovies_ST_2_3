@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         reserveInitialingViews(savedInstanceState);
         rvList = (RecyclerView) findViewById(R.id.recyclerview_movies_list);
 
-        rvList.setLayoutManager(new GridLayoutManager(this, 2));
+      //  rvList.setLayoutManager(new GridLayoutManager(this, 2));
         //empty initial RecyclerView
         MovieSelected[] movies = new MovieSelected[0];
         clickHandler = this;
@@ -115,24 +115,34 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, mMenu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
 
 
         mMenu = menu;
 
 
-        mMenu.add(Menu.NONE,
+        /*mMenu.add(Menu.NONE,
                 R.string.pref_sort_pop_desc_key,
                 Menu.NONE,
                 null)
-                .setVisible(false)
+                .setVisible(true)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
 
         mMenu.add(Menu.NONE, R.string.pref_sort_top_rated_desc_key, Menu.NONE, null)
-                .setVisible(false)
+                .setVisible(true)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);*/
+
+        mMenu.add(Menu.NONE,
+                R.id.sort_popularity,
+                Menu.NONE,
+                null)
+                .setVisible(true)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
+        mMenu.add(Menu.NONE, R.id.sort_top_rate, Menu.NONE, null)
+                .setVisible(true)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
         updateMenu();
 
@@ -144,13 +154,27 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.string.pref_sort_pop_desc_key:
+           /* case R.string.pref_sort_pop_desc_key:
                 updateSharedPrefs(getString(R.string.tmdb_sort_pop_desc));
                 updateMenu();
                 getMoviesFromTMDb(getSortMethod());
                 Log.v("kkkkkk","pref_sort_pop_desc_key");
                 return true;
             case R.string.pref_sort_top_rated_desc_key:
+                updateSharedPrefs(getString(R.string.tmdb_sort_vote_avg_desc));
+                updateMenu();
+                getMoviesFromTMDb(getSortMethod());
+                Log.v("kkkkkk","pref_sort_vote_avg_desc_key");
+                return true;*/
+            case R.id.sort_popularity:
+                updateSharedPrefs(getString(R.string.tmdb_sort_pop_desc));
+                updateMenu();
+                getMoviesFromTMDb(getSortMethod());
+                Log.v("kkkkkk","pref_sort_pop_desc_key");
+                mMenu.findItem(R.id.sort_popularity).setVisible(false);
+                mMenu.findItem(R.id.sort_top_rate).setVisible(true);
+                return true;
+            case R.id.sort_top_rate:
                 updateSharedPrefs(getString(R.string.tmdb_sort_vote_avg_desc));
                 updateMenu();
                 getMoviesFromTMDb(getSortMethod());
@@ -186,8 +210,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
             // mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
             /*LinearLayoutManager layoutManager
                     = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);*/
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-            rvList.setLayoutManager(layoutManager);
+            //RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+            rvList.setLayoutManager(new GridLayoutManager(this, 2));
+            //rvList.setLayoutManager(layoutManager);
             rvList.setHasFixedSize(true);
             rvList.setVisibility(View.VISIBLE);
 
@@ -232,12 +257,17 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
 
         if (sortMethod.equals(getString(R.string.tmdb_sort_pop_desc))) {
             Log.v("hhhh2","tmdb_sort_pop_desc");
-            mMenu.findItem(R.string.pref_sort_pop_desc_key).setVisible(false);
-            mMenu.findItem(R.string.pref_sort_top_rated_desc_key).setVisible(true);
+            //mMenu.findItem(R.string.pref_sort_pop_desc_key).setVisible(false);
+            //mMenu.findItem(R.string.pref_sort_top_rated_desc_key).setVisible(true);
+            mMenu.findItem(R.id.sort_popularity).setVisible(false);
+            mMenu.findItem(R.id.sort_top_rate).setVisible(true);
+
         } else {
             Log.v("hhhh2","pref_sort_vote_avg_desc_key");
-            mMenu.findItem(R.string.pref_sort_top_rated_desc_key).setVisible(false);
-            mMenu.findItem(R.string.pref_sort_pop_desc_key).setVisible(true);
+           // mMenu.findItem(R.string.pref_sort_top_rated_desc_key).setVisible(false);
+           // mMenu.findItem(R.string.pref_sort_pop_desc_key).setVisible(true);
+            mMenu.findItem(R.id.sort_popularity).setVisible(true);
+            mMenu.findItem(R.id.sort_top_rate).setVisible(false);
         }
     }
 
