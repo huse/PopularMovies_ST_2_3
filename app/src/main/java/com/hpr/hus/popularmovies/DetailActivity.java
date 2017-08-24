@@ -46,7 +46,7 @@ public class DetailActivity extends AppCompatActivity {
         Log.v("hhhh6", "intentThatStartedThisActivity    "+intentThatStartedThisActivity.toString());
         ButterKnife.bind(this);
 
-/// TODO: 8/19/2017 fix  movie null bug //done
+
         MovieSelected movie;
         if (intentThatStartedThisActivity != null) {
 

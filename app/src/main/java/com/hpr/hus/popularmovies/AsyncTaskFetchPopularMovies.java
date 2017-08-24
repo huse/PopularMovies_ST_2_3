@@ -141,7 +141,7 @@ class AsyncTaskFetchPopularMovies extends AsyncTask<String, Void, MovieSelected[
                 .appendQueryParameter(SORT_BY_PARAM, parameters[0])
                 .appendQueryParameter(API_KEY_PARAM, apiKey)
                 .build();
-
+        Log.v("hhhh3", builtUri.toString());
         return new URL(builtUri.toString());
     }
 
