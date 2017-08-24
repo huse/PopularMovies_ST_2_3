@@ -28,31 +28,23 @@ public class DetailActivity extends AppCompatActivity {
 
     private TextView movieDisplay;
 
-    TextView originalTitleTV;
-    TextView overViewTV;
-    TextView rateAverageTV;
-    TextView releaseTimeTV;
-    ImageView imagePosterIV;
-   // @BindView(R.id.textview_original_title) TextView originalTitleTV;
+
+    @BindView(R.id.textview_original_title) TextView originalTitleTV;
+    @BindView(R.id.textview_overview) TextView overViewTV;
+    @BindView(R.id.textview_rate_average) TextView rateAverageTV;
+    @BindView(R.id.textview_release_time) TextView releaseTimeTV;
+    @BindView(R.id.imageview_image_poster) ImageView imagePosterIV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         Log.v("hhhh6", "DetailActivity-onCreate");
-       // movieDisplay = (TextView) findViewById(R.id.tv_display_movie);
 
-        //Exercising butterKnife:
-
-        originalTitleTV = (TextView) findViewById(R.id.textview_original_title);
-        overViewTV = (TextView) findViewById(R.id.textview_overview);
-        rateAverageTV = (TextView) findViewById(R.id.textview_rate_average);
-        releaseTimeTV = (TextView) findViewById(R.id.textview_release_time);
-        imagePosterIV = (ImageView) findViewById(R.id.imageview_image_poster);
 
         Intent intentThatStartedThisActivity = getIntent();
         Log.v("hhhh6", "intentThatStartedThisActivity    "+intentThatStartedThisActivity.toString());
-       // ButterKnife.bind(this);
+        ButterKnife.bind(this);
 
 /// TODO: 8/19/2017 fix  movie null bug //done
         MovieSelected movie;
