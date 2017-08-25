@@ -36,10 +36,10 @@
     <!-- Title naming the activity Movie Details -->
     <string name="title_activity_movie_details">Movie Details</string>
     <!-- Themoviedb sort strings for url -->
-    <string name="key_themoviedb">9d26959734af937d3c5cc0893debc5e2</string>
-    <!-- tmdb sort 'popularity.desc' -->
+    <string name="key_themoviedb">9d26959734af937d3c5cc0893debc5e277</string>
+    <!-- tmdb sort 'popular' -->
     <string name="tmdb_sort_pop_desc">popular</string>
-    <!-- tmdb sort 'vote_average.desc' -->
+    <!-- tmdb sort 'top_rated' -->
     <string name="tmdb_sort_vote_avg_desc">top_rated</string>
     <string name="description_movie_poster">Contains poster of movie</string>
 

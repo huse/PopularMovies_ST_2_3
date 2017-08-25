@@ -18,7 +18,6 @@ import com.squareup.picasso.Picasso;
 
 
 class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
-   // private String[] movieData;
     private  Context context;
     private final MovieSelected[] movies;
     private  MovieAdapterOnClickHandler movieClickHandler;
@@ -32,29 +31,17 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
             movieName = movieName + " _ " + ms.getOriginalTitle();
         }
         Log.v("hhhh4",movieName);
-      // MovieAdapterOnClickHandler clickHandler,
           movieClickHandler = clickHandler;
         Log.v("hhhh4", "MovieAdapter");
 
     }
-    /*public MovieAdapter(MovieSelected[] movies, Context context) {
-        this.context = context;
-        this.movies = movies;
 
-        Log.v("hhhh4", "MovieAdapter222");
-    }*/
 
     @Override
     public MovieAdapter.MovieAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // This method is not running in creation of the class.
         Log.v("hhhh4", "MovieAdapter- onCreateViewHolder");
-        Context context = parent.getContext();
-        int layoutIdForListItem = R.layout.movielistitem;
-        LayoutInflater inflater = LayoutInflater.from(context);
-        boolean shouldAttachToParentImmediately = false;
         Log.v("hhhh4","viewType:  " + viewType);
 
-       // View view = inflater.inflate(layoutIdForListItem, parent, shouldAttachToParentImmediately);
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_main, parent, false);
 
         return new MovieAdapterViewHolder(view);
@@ -70,8 +57,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
  public void onBindViewHolder(MovieAdapterViewHolder holder, int position) {
      String movieForThisSelection = movies[position].getOriginalTitle();
      Log.v("hhhh4","onBindViewHolder_movieForThisSelection:  " + movieForThisSelection );
-   // todo textview need to be fixed:
-     // holder.mMovieTextView.setText(movieForThisSelection);
+
      ImageView imageView;
 
 
@@ -79,7 +65,6 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
      imageView.setAdjustViewBounds(true);
      Log.v("hhhh4","view:  " + imageView.toString());
 
-     //onCreateViewHolder(imageView, position);
      Log.v("hhhh4_Picasso",":  " + context.toString());
      Log.v("hhhh4_Picasso",":  " + movies.toString());
      Log.v("hhhh4_Picasso",":  " + position);
@@ -119,7 +104,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
     }
 
 
-    public int getItemCount() {/////////
+    public int getItemCount() {
         if (null == movies) return 2;
         return movies.length;
     }

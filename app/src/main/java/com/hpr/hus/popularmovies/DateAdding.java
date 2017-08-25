@@ -23,14 +23,6 @@ class DateAdding {
         Log.v("hhhh8", "DateAdding:    " + returnDate);
         return returnDate;
     }
-   /* public static Date getFormattedDate(Date date, String format) throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
-
-        Log.v("hhhh8", "DateAdding:    " + date);
-        Date returnDate = simpleDateFormat.parse(date);
-        Log.v("hhhh8", "DateAdding:    " + returnDate);
-        return returnDate;
-    }*/
 
     public static String getLocalizedDate(Context context, String date, String format)
             throws ParseException {

@@ -21,12 +21,8 @@ import butterknife.ButterKnife;
 
 public class DetailActivity extends AppCompatActivity {
 
-    private static final String SHARE_HASHTAG = " #PopularMoviesApp";
 
-    private String sMovie;
-    private final String LOG_TAG = DetailActivity.class.getSimpleName();
 
-    private TextView movieDisplay;
 
 
     @BindView(R.id.textview_original_title) TextView originalTitleTV;
@@ -72,23 +68,10 @@ public class DetailActivity extends AppCompatActivity {
                 overViewTV.setText(overView);
                 rateAverageTV.setText(movie.getDetailedVoteAverage());
 
-                // First get the release date from the object - to be used if something goes wrong with
-                // getting localized release date (catch).
+
                 String releaseDate = movie.getReleaseDate();
 
-             /*   if (releaseDate != null) {
-                    try {
-                        releaseDate = DateAdding.getLocalizedDate(this,
-                                releaseDate, movie.getDateFormat());
-                       // releaseDate = DateAdding.releaseDate);
-                    } catch (ParseException e) {
-                        Log.e(LOG_TAG, "Error with parsing movie release date", e);
-                    }
-                } else {
-                    releaseTimeTV.setTypeface(null, Typeface.ITALIC);
-                    releaseDate = getResources().getString(R.string.no_release_date_found);
-                }*/
-                releaseTimeTV.setText(releaseDate);
+                 releaseTimeTV.setText(releaseDate);
             }
     }
 }

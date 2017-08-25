@@ -21,12 +21,10 @@ import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.hpr.hus.popularmovies.MovieAdapter.MovieAdapterOnClickHandler;
 
@@ -35,9 +33,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
 
     private RecyclerView rvList;
     MovieAdapter movieAdapter;
-    //private final String LOG_TAG = MainActivity.class.getSimpleName();
 
-    //private TextView mErrorMessageDisplay;
     MovieAdapterOnClickHandler clickHandler;
 
 
@@ -52,48 +48,26 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         reserveInitialingViews(savedInstanceState);
         rvList = (RecyclerView) findViewById(R.id.recyclerview_movies_list);
 
-      //  rvList.setLayoutManager(new GridLayoutManager(this, 2));
-        //empty initial RecyclerView
+
         MovieSelected[] movies = new MovieSelected[0];
         clickHandler = this;
         rvList.setAdapter(new MovieAdapter(movies,getApplicationContext(),this));
     }
-    private void initialingViews(Parcelable[] parcelable){
-    /*LinearLayoutManager layoutManager
-            = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);*/
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        rvList.setLayoutManager(layoutManager);
-        rvList = (RecyclerView) findViewById(R.id.recyclerview_movies_list);
-       // rvList.setHasFixedSize(true);
-        rvList.setVisibility(View.VISIBLE);
-        Log.v("hhhh", "MainActivity_onCreate_rvList.setAdapter");
-        setContentView(R.layout.activity_main);
 
-        Log.v("hhhh", "MainActivity_onCreate_parcelable");
-//            if (parcelable != null) {
-        int numMovieObjects = parcelable.length;
-        MovieSelected[] movies = new MovieSelected[numMovieObjects];
-        for (int i = 0; i < numMovieObjects; i++) {
-            movies[i] = (MovieSelected) parcelable[i];
-        }
-       // rvList.setAdapter(new MovieAdapter(movies,getApplicationContext()));
-
-    }
     private void reserveInitialingViews(@Nullable Bundle savedInstanceState){
         rvList = (RecyclerView) findViewById(R.id.recyclerview_movies_list);
-        // mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
+
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvList.setLayoutManager(layoutManager);
-       // rvList.setHasFixedSize(true);
+
 
         rvList.setVisibility(View.VISIBLE);
 
-        //Log.v("hhhh-savedInstanceState", savedInstanceState.toString());
+
         if (savedInstanceState == null) {
             Log.v("hhhh", "MainActivity_onCreate_savedInstanceState == null");
-            //here should be edited
-            //ToDo edit this line
+
             getMoviesFromTMDb(getSortMethod());
         } else {
 
@@ -108,7 +82,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
                 }
                 Log.v("hhhh", "MainActivity_onCreate_rvList.setAdapter");
 
-               // rvList.setAdapter(new MovieAdapter(movies,getApplicationContext()));
             }
         }
 
@@ -122,18 +95,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         mMenu = menu;
 
 
-        /*mMenu.add(Menu.NONE,
-                R.string.pref_sort_pop_desc_key,
-                Menu.NONE,
-                null)
-                .setVisible(true)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-
-
-        mMenu.add(Menu.NONE, R.string.pref_sort_top_rated_desc_key, Menu.NONE, null)
-                .setVisible(true)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);*/
-
         mMenu.add(Menu.NONE,
                 R.id.sort_popularity,
                 Menu.NONE,
@@ -142,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
         mMenu.add(Menu.NONE, R.id.sort_top_rate, Menu.NONE, null)
-                .setVisible(true)
+                .setVisible(false)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
         updateMenu();
@@ -155,31 +116,24 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-           /* case R.string.pref_sort_pop_desc_key:
-                updateSharedPrefs(getString(R.string.tmdb_sort_pop_desc));
-                updateMenu();
-                getMoviesFromTMDb(getSortMethod());
-                Log.v("kkkkkk","pref_sort_pop_desc_key");
-                return true;
-            case R.string.pref_sort_top_rated_desc_key:
-                updateSharedPrefs(getString(R.string.tmdb_sort_vote_avg_desc));
-                updateMenu();
-                getMoviesFromTMDb(getSortMethod());
-                Log.v("kkkkkk","pref_sort_vote_avg_desc_key");
-                return true;*/
+
             case R.id.sort_popularity:
                 updateSharedPrefs(getString(R.string.tmdb_sort_pop_desc));
-                updateMenu();
+
                 getMoviesFromTMDb(getSortMethod());
                 Log.v("kkkkkk","pref_sort_pop_desc_key");
                 mMenu.findItem(R.id.sort_popularity).setVisible(false);
                 mMenu.findItem(R.id.sort_top_rate).setVisible(true);
+                updateMenu();
                 return true;
             case R.id.sort_top_rate:
                 updateSharedPrefs(getString(R.string.tmdb_sort_vote_avg_desc));
-                updateMenu();
+
                 getMoviesFromTMDb(getSortMethod());
+                mMenu.findItem(R.id.sort_popularity).setVisible(true);
+                mMenu.findItem(R.id.sort_top_rate).setVisible(false);
                 Log.v("kkkkkk","pref_sort_vote_avg_desc_key");
+                updateMenu();
                 return true;
             default:
         }
@@ -206,14 +160,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         if (isNetworkAvailable()) {
             Log.v("hhhh2","NetworkAvailable");
             String apiKey = getString(R.string.key_themoviedb);
-           // mErrorMessageDisplay.setVisibility(View.INVISIBLE);
 
-            // mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
-            /*LinearLayoutManager layoutManager
-                    = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);*/
-            //RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
             rvList.setLayoutManager(new GridLayoutManager(this, numberOfColumns()));
-            //rvList.setLayoutManager(layoutManager);
+
             rvList.setHasFixedSize(true);
             rvList.setVisibility(View.VISIBLE);
 
@@ -258,15 +207,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
 
         if (sortMethod.equals(getString(R.string.tmdb_sort_pop_desc))) {
             Log.v("hhhh2","tmdb_sort_pop_desc");
-            //mMenu.findItem(R.string.pref_sort_pop_desc_key).setVisible(false);
-            //mMenu.findItem(R.string.pref_sort_top_rated_desc_key).setVisible(true);
+
             mMenu.findItem(R.id.sort_popularity).setVisible(false);
             mMenu.findItem(R.id.sort_top_rate).setVisible(true);
 
         } else {
             Log.v("hhhh2","pref_sort_vote_avg_desc_key");
-           // mMenu.findItem(R.string.pref_sort_top_rated_desc_key).setVisible(false);
-           // mMenu.findItem(R.string.pref_sort_pop_desc_key).setVisible(true);
+
             mMenu.findItem(R.id.sort_popularity).setVisible(true);
             mMenu.findItem(R.id.sort_top_rate).setVisible(false);
         }
@@ -303,7 +250,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
     private int numberOfColumns() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        // You can change this divider to adjust the size of the poster
+        //change this divider to adjust the size of the poster
         int widthDivider = 400;
         int width = displayMetrics.widthPixels;
         int nColumns = width / widthDivider;

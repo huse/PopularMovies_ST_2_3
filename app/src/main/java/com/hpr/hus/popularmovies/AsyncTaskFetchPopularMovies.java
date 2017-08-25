@@ -35,6 +35,7 @@ class AsyncTaskFetchPopularMovies extends AsyncTask<String, Void, MovieSelected[
         Log.v("hhhh3", "AsyncTaskFetchPopularMovies");
         mListener = listener;
         this.apiKey = apiKey;
+
     }
 
     @Override
@@ -57,43 +58,45 @@ class AsyncTaskFetchPopularMovies extends AsyncTask<String, Void, MovieSelected[
 
             InputStream inputStream = urlConnection.getInputStream();
             StringBuilder builder = new StringBuilder();
-
+            Log.v("hhh3", "StringBuilder");
             if (inputStream == null) {
                 return null;
             }
             reader = new BufferedReader(new InputStreamReader(inputStream));
-
+            Log.v("hhh3", "BufferedReader");
             String line;
             while ((line = reader.readLine()) != null) {
 
                 builder.append(line).append("\n");
+                Log.v("hhh3", "append");
             }
 
             if (builder.length() == 0) {
-
+                Log.v("hhh3", "returning null 2");
                 return null;
             }
 
             moviesJsonStr = builder.toString();
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Error ", e);
+            Log.e("hhh3", "Error ", e);
             return null;
         } finally {
 
             if (urlConnection != null) {
                 urlConnection.disconnect();
+                Log.v("hhh3", "disconected");
             }
             if (reader != null) {
                 try {
                     reader.close();
                 } catch (final IOException e) {
-                    Log.e(LOG_TAG, "Error closing stream", e);
+                    Log.e("hhh3", "Error closing stream", e);
                 }
             }
         }
 
         try {
-
+            Log.e("hhh3", getMoviesDataFromJson(moviesJsonStr).toString());
             return getMoviesDataFromJson(moviesJsonStr);
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
@@ -137,15 +140,12 @@ class AsyncTaskFetchPopularMovies extends AsyncTask<String, Void, MovieSelected[
     }
 
     private URL getApiUrl(String[] parameters) throws MalformedURLException {
-        //final String TMDB_BASE_URL = "https://api.themoviedb.org/3/discover/movie?";
-        final String TMDB_BASE_URL = "https://api.themoviedb.org/3/movie/";
-        final String SORT_BY_PARAM = "sort_by";
-        final String Question_Mark_PARAM = "?";
+        //http://api.themoviedb.org/3/movie/popular?api_key=[YOUR_API_KEY]
+        final String TMDB_BASE_URL = "http://api.themoviedb.org/3/movie/"+ parameters[0]+"?";
         final String API_KEY_PARAM = "api_key";
 
         Uri builtUri = Uri.parse(TMDB_BASE_URL).buildUpon()
-                .appendQueryParameter(SORT_BY_PARAM, parameters[0])
-                .appendPath(Question_Mark_PARAM)
+
                 .appendQueryParameter(API_KEY_PARAM, apiKey)
                 .build();
         Log.v("hhhh3", builtUri.toString());
