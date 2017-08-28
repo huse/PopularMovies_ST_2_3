@@ -36,7 +36,7 @@
     <!-- Title naming the activity Movie Details -->
     <string name="title_activity_movie_details">Movie Details</string>
     <!-- Themoviedb sort strings for url -->
-    <string name="key_themoviedb">9d26959734af937d3c5cc0893debc5e277</string>
+    <string name="key_themoviedb">9d26959734af937d3c5cc0893debc5e2</string>
     <!-- tmdb sort 'popular' -->
     <string name="tmdb_sort_pop_desc">popular</string>
     <!-- tmdb sort 'top_rated' -->
