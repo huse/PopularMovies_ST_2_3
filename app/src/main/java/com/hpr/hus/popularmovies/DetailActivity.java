@@ -44,7 +44,7 @@ public class DetailActivity extends AppCompatActivity {
 
 
         MovieSelected movie;
-        if (intentThatStartedThisActivity != null) {
+        if (intentThatStartedThisActivity != null   && !getIntent().getBooleanExtra("isNewItem", false)) {
 
                 movie = intentThatStartedThisActivity.getExtras().getParcelable("PARCEL_MOVIE");
                 Log.v("hhhh6", "movie   check point");

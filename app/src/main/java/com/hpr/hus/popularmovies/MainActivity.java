@@ -170,16 +170,18 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
                 @Override
                 public void onFetchMoviesTaskCompleted(MovieSelected[] movies) {
                     String movieName="";
-                    for (MovieSelected ms : movies){
-                        movieName = movieName + " _ " + ms.getOriginalTitle();
+                    if (movies!=null && movies.length!=0) {
+                        for (MovieSelected ms : movies) {
+                            movieName = movieName + " _ " + ms.getOriginalTitle();
+                        }
+                        Log.v("hhhh2_this", this.getClass().toString());
+                        Log.v("hhhh2_getApplic", getApplicationContext().getClass().toString());
+
+                        movieAdapter = new MovieAdapter(movies, getApplicationContext(), clickHandler);
+
+                        rvList.setAdapter(movieAdapter);
+                        Log.v("hhhh2", movieName);
                     }
-                    Log.v("hhhh2_this", this.getClass().toString());
-                    Log.v("hhhh2_getApplic", getApplicationContext().getClass().toString());
-
-                    movieAdapter = new MovieAdapter(movies,getApplicationContext(),clickHandler);
-
-                    rvList.setAdapter(movieAdapter);
-                    Log.v("hhhh2",movieName);
                 }
             };
 
