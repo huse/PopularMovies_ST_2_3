@@ -27,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 import com.hpr.hus.popularmovies.MovieAdapter.MovieAdapterOnClickHandler;
+import com.hpr.hus.popularmovies.settings_general.SettingsActivity;
 
 
 public class MainActivity extends AppCompatActivity implements MovieAdapterOnClickHandler {
@@ -135,6 +136,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
                 Log.v("kkkkkk","pref_sort_vote_avg_desc_key");
                 updateMenu();
                 return true;
+            case R.id.settings:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
             default:
         }
 

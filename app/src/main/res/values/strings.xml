@@ -36,12 +36,30 @@
     <!-- Title naming the activity Movie Details -->
     <string name="title_activity_movie_details">Movie Details</string>
     <!-- Themoviedb sort strings for url -->
-    <string name="key_themoviedb">9d26959734af937d3c5cc0893debc5e277</string>
+    <string name="key_themoviedb">9d26959734af937d3c5cc0893debc5e2</string>
     <!-- tmdb sort 'popular' -->
     <string name="tmdb_sort_pop_desc">popular</string>
     <!-- tmdb sort 'top_rated' -->
     <string name="tmdb_sort_vote_avg_desc">top_rated</string>
     <string name="description_movie_poster">Contains poster of movie</string>
 
+    <!-- Stage 2 -->
 
+
+    <string name="action_settings">action_settings</string>
+    <string name="preference_sorting_key" translatable="false">sorting</string>
+    <string name="loading_fail_error_text">It have been not possible load the movies</string>
+    <string name="favorite_empty_error_text">You have no movies marked as favorite</string>
+    <string name="filter_by_popular">Filter by popular</string>
+    <string name="filter_popular_value">popular</string>
+    <string name="filter_top_rated">Filter by top rated</string>
+    <string name="filter_top_rated_value">top_rated</string>
+    <string name="filter_favorites">Favorite movies</string>
+    <string name="rating_text">"Rating: "</string>
+    <string name="settings_title">Settings</string>
+    <string name="category_general_settings">General Settings</string>
+    <string name="category_general_settings_key">general</string>
+    <string name="videos_title_text">Videos</string>
+    <string name="reviews_title_text">Reviews</string>
+    <string name="overview_title_text">Movie overview</string>
 </resources>
