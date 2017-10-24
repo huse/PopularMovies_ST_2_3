@@ -139,6 +139,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
             case R.id.settings:
                 Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
+                return true;
+
             default:
         }
 
