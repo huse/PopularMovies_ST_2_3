@@ -32,6 +32,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".settings_general.SettingsActivity" />
          </activity>
+        <activity android:name=".settings_2.SettingsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".settings_2.SettingsActivity" />
+        </activity>
     </application>
 
 </manifest>

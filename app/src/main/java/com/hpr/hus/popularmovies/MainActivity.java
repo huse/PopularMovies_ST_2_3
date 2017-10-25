@@ -27,7 +27,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 import com.hpr.hus.popularmovies.MovieAdapter.MovieAdapterOnClickHandler;
-import com.hpr.hus.popularmovies.settings_general.SettingsActivity;
+import com.hpr.hus.popularmovies.settings_2.SettingsActivity;
 
 
 public class MainActivity extends AppCompatActivity implements MovieAdapterOnClickHandler {
@@ -137,8 +137,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
                 updateMenu();
                 return true;
             case R.id.settings:
+                Log.v("nnnn","MainActivity - R.id.settings 1");
                 Intent intent = new Intent(this, SettingsActivity.class);
+                Log.v("nnnn","MainActivity - R.id.settings 2");
                 startActivity(intent);
+
+                Log.v("nnnn","MainActivity - R.id.settings 3");
                 return true;
 
             default:
