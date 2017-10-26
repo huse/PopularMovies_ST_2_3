@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+
+        android:defaultValue="@string/filter_popular_value"
+        android:entries="@array/filter_order_entries"
+        android:entryValues="@array/filter_order_entries_values"
+        android:key="@string/preference_sorting_key"
+        android:title="Movie filter"/>
+
+
+
+</PreferenceScreen>

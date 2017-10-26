@@ -27,12 +27,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".DetailActivity" />
         </activity>
-        <activity android:name=".settings_general.SettingsActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".settings_general.SettingsActivity" />
-         </activity>
-        <activity android:name=".settings_2.SettingsActivity">
+
+        <activity android:name=".settings_2.SettingsActivity"
+            android:label="@string/action_settings"
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".settings_2.SettingsActivity" />

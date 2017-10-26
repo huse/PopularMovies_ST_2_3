@@ -3,4 +3,4 @@
     android:id="@+id/activity_settings"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:name="com.hpr.hus.popularmovies.settings_general.SettingsFragment" />
+    android:name="com.hpr.hus.popularmovies.settings_2.SettingsFragment" />

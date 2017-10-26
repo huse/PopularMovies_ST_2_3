@@ -30,7 +30,7 @@ import com.hpr.hus.popularmovies.MovieAdapter.MovieAdapterOnClickHandler;
 import com.hpr.hus.popularmovies.settings_2.SettingsActivity;
 
 
-public class MainActivity extends AppCompatActivity implements MovieAdapterOnClickHandler {
+public class MainActivity extends AppCompatActivity implements MovieAdapterOnClickHandler,SharedPreferences.OnSharedPreferenceChangeListener  {
 
     private RecyclerView rvList;
     MovieAdapter movieAdapter;
@@ -216,9 +216,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
 
     private void updateMenu() {
         String sortMethod = getSortMethod();
-
+        Log.v("BBBBBBBBBBBBB","MainActivity - updateMenu   " + sortMethod);
         if (sortMethod.equals(getString(R.string.tmdb_sort_pop_desc))) {
             Log.v("hhhh2","tmdb_sort_pop_desc");
+
+
 
             mMenu.findItem(R.id.sort_popularity).setVisible(false);
             mMenu.findItem(R.id.sort_top_rate).setVisible(true);
@@ -236,8 +238,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         String result = prefs.getString(getString(R.string.pref_sort_method_key),
-                getString(R.string.tmdb_sort_pop_desc));
 
+                getString(R.string.tmdb_sort_pop_desc));
+        Log.v("BBBBBBBBBBBBB","MainActivity - getSortMethod   " + result);
 
         Log.v("getSortMethod", result);
         return result;
@@ -268,5 +271,20 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         int nColumns = width / widthDivider;
         if (nColumns < 2) return 2;
         return nColumns;
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        Log.v("BBBBBBBBBBBBB","MainActivity - onSharedPreferenceChanged   " + key);
+        updateMenu();
+    /*    if (key.equals(getString(R.string.pref_show_bass_key))) {
+          //  mVisualizerView.setShowBass(sharedPreferences.getBoolean(key, getResources().getBoolean(R.bool.pref_show_bass_default)));
+        } else if (key.equals(getString(R.string.pref_show_mid_range_key))) {
+            mVisualizerView.setShowMid(sharedPreferences.getBoolean(key, getResources().getBoolean(R.bool.pref_show_mid_range_default)));
+        } else if (key.equals(getString(R.string.pref_show_treble_key))) {
+            mVisualizerView.setShowTreble(sharedPreferences.getBoolean(key, getResources().getBoolean(R.bool.pref_show_treble_default)));
+        } else if (key.equals(getString(R.string.pref_color_key))) {
+            loadColorFromPreferences(sharedPreferences);
+        }*/
     }
 }

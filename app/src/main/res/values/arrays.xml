@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Label ordering must match values -->
+    <array name="pref_color_option_labels">
+        <item>@string/filter_top_rated</item>
+        <item>@string/filter_favorites</item>
+        <item>@string/filter_by_popular</item>
+    </array>
+
+    <array name="pref_color_option_values">
+        <item>@string/filter_top_rated_value</item>
+        <item>@string/filter_favorites</item>
+        <item>@string/filter_popular_value</item>
+    </array>
+</resources>
