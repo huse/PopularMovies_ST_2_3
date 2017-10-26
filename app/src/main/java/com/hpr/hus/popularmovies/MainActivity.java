@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         MovieSelected[] movies = new MovieSelected[0];
         clickHandler = this;
         rvList.setAdapter(new MovieAdapter(movies,getApplicationContext(),this));
+       // setupSharedPreferences();
     }
 
     private void reserveInitialingViews(@Nullable Bundle savedInstanceState){
@@ -286,5 +287,14 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         } else if (key.equals(getString(R.string.pref_color_key))) {
             loadColorFromPreferences(sharedPreferences);
         }*/
+    }
+    private void setupSharedPreferences() {
+        // Get all of the values from shared preferences to set it up
+        SharedPreferences sharedPreferences = android.support.v7.preference.PreferenceManager.getDefaultSharedPreferences(this);
+        updateMenu();
+        //loadColorFromPreferences(sharedPreferences);
+        // Register the listener
+        Log.v("BBBBBBBBBBBBB","MainActivity - setupSharedPreferences   " + sharedPreferences);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
 }
