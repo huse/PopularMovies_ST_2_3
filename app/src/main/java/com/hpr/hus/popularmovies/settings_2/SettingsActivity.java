@@ -1,6 +1,6 @@
 package com.hpr.hus.popularmovies.settings_2;
 
-
+// checking vcs
 
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
