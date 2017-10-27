@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         MovieSelected[] movies = new MovieSelected[0];
         clickHandler = this;
         rvList.setAdapter(new MovieAdapter(movies,getApplicationContext(),this));
-       // setupSharedPreferences();
+        setupSharedPreferences();
     }
 
     private void reserveInitialingViews(@Nullable Bundle savedInstanceState){
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         switch (item.getItemId()) {
 
             case R.id.sort_popularity:
-                updateSharedPrefs(getString(R.string.tmdb_sort_pop_desc));
+               // updateSharedPrefs(getString(R.string.tmdb_sort_pop_desc));
 
                 getMoviesFromTMDb(getSortMethod());
                 Log.v("kkkkkk","pref_sort_pop_desc_key");
@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
                 updateMenu();
                 return true;
             case R.id.sort_top_rate:
-                updateSharedPrefs(getString(R.string.tmdb_sort_vote_avg_desc));
+              //  updateSharedPrefs(getString(R.string.tmdb_sort_vote_avg_desc));
 
                 getMoviesFromTMDb(getSortMethod());
                 mMenu.findItem(R.id.sort_popularity).setVisible(true);
@@ -241,20 +241,20 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         String result = prefs.getString(getString(R.string.pref_sort_method_key),
 
                 getString(R.string.tmdb_sort_pop_desc));
-        Log.v("BBBBBBBBBBBBB","MainActivity - getSortMethod   " + result);
+        Log.v("BBBBBBBBBBBBB666666666","MainActivity - getSortMethod   " + result);
 
         Log.v("getSortMethod", result);
         return result;
     }
 
 
-    private void updateSharedPrefs(String sortMethod) {
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(getString(R.string.pref_sort_method_key), sortMethod);
-        editor.apply();
-    }
-    @Override
+   /*private void updateSharedPrefs(String sortMethod) {*/
+   /*     SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);*/
+   /*     SharedPreferences.Editor editor = sharedPref.edit();*/
+   /*     editor.putString(getString(R.string.pref_sort_method_key), sortMethod);*/
+   /*     editor.apply();*/
+   /* }*/
+   /* @Override*/
     public void onClick(MovieSelected movie) {
 
         Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
@@ -276,25 +276,31 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        Log.v("BBBBBBBBBBBBB","MainActivity - onSharedPreferenceChanged   " + key);
-        updateMenu();
-    /*    if (key.equals(getString(R.string.pref_show_bass_key))) {
-          //  mVisualizerView.setShowBass(sharedPreferences.getBoolean(key, getResources().getBoolean(R.bool.pref_show_bass_default)));
-        } else if (key.equals(getString(R.string.pref_show_mid_range_key))) {
-            mVisualizerView.setShowMid(sharedPreferences.getBoolean(key, getResources().getBoolean(R.bool.pref_show_mid_range_default)));
-        } else if (key.equals(getString(R.string.pref_show_treble_key))) {
-            mVisualizerView.setShowTreble(sharedPreferences.getBoolean(key, getResources().getBoolean(R.bool.pref_show_treble_default)));
-        } else if (key.equals(getString(R.string.pref_color_key))) {
-            loadColorFromPreferences(sharedPreferences);
-        }*/
+        Log.v("FFFFFFFFFFFF","MainActivity - onSharedPreferenceChanged   " + key);
+        loadSortFromPreferences(sharedPreferences);
+
+
     }
     private void setupSharedPreferences() {
         // Get all of the values from shared preferences to set it up
         SharedPreferences sharedPreferences = android.support.v7.preference.PreferenceManager.getDefaultSharedPreferences(this);
-        updateMenu();
+//        updateMenu();
+        loadSortFromPreferences(sharedPreferences);
         //loadColorFromPreferences(sharedPreferences);
         // Register the listener
-        Log.v("BBBBBBBBBBBBB","MainActivity - setupSharedPreferences   " + sharedPreferences);
+        Log.v("FFFFFFFFFFFF","MainActivity - setupSharedPreferences   " + sharedPreferences.toString());
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
-}
+    private void loadSortFromPreferences(SharedPreferences sharedPreferences) {
+
+         Log.v("FFFFFFFFFFFF0","MainActivity - loadSortFromPreferences   " + sharedPreferences.toString());
+         Log.v("FFFFFFFFFFFF1","MainActivity - loadSortFromPreferences   " + getString(R.string.pref_sort_method_key));
+         Log.v("FFFFFFFFFFFF2","MainActivity - loadSortFromPreferences   " + getSortMethod());
+        Log.v("FFFFFFFFFFFF3","MainActivity - loadSortFromPreferences   " + getString(R.string.tmdb_sort_pop_desc));
+        Log.v("FFFFFFFFFFFF4","MainActivity - loadSortFromPreferences   " + sharedPreferences.getString((getString(R.string.pref_sort_method_key)),getString(R.string.tmdb_sort_pop_desc) ));
+         SharedPreferences.Editor editor = sharedPreferences.edit();
+         editor.putString(getString(R.string.pref_sort_method_key),
+                 sharedPreferences.getString((getString(R.string.pref_sort_method_key)),getString(R.string.tmdb_sort_pop_desc) ));
+         editor.apply();
+    }
+}        //updateSharedPrefs(getString(R.string.tmdb_sort_vote_avg_desc));
