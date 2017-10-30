@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
                         Log.v("hhhh2", movieName);
                     }else {
 
-                        Toast.makeText(MainActivity.this, "No favorities", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "No Movie to show", Toast.LENGTH_SHORT).show();
 
                     }
                 }

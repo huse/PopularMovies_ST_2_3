@@ -114,6 +114,12 @@ class AsyncTaskFetchPopularMovies extends AsyncTask<String, Void, MovieSelected[
         final String TAG_OVERVIEW = "overview";
         final String TAG_VOTE_AVERAGE = "vote_average";
         final String TAG_RELEASE_DATE = "release_date";
+        // stage 2
+        final String TAG_ID = "id";
+        final String TAG_TITLE = "title";
+        final String TAG_VOTE_COUNT = "vote_count";
+        final String TAG_FAVORITE_MOVIE = "favorite_movie";
+        final String TAG_BACK_DROP = "backdrop_path";
 
 
         JSONObject moviesJson = new JSONObject(moviesJsonStr);
@@ -128,12 +134,23 @@ class AsyncTaskFetchPopularMovies extends AsyncTask<String, Void, MovieSelected[
 
             JSONObject movieInfo = resultsArray.getJSONObject(i);
 
+            Log.v("SSSSSSSSS", "movieInfo " + movieInfo);
 
             movies[i].setOriginalTitle(movieInfo.getString(TAG_ORIGINAL_TITLE));
             movies[i].setPosterPath(movieInfo.getString(TAG_POSTER_PATH));
             movies[i].setOverview(movieInfo.getString(TAG_OVERVIEW));
             movies[i].setVoteAverage(movieInfo.getDouble(TAG_VOTE_AVERAGE));
             movies[i].setReleaseDate(movieInfo.getString(TAG_RELEASE_DATE));
+            /// stage 2
+            movies[i].setId(movieInfo.getLong(TAG_ID));
+            movies[i].setTitle(movieInfo.getString(TAG_TITLE));
+            Log.v("SSSSSSSSS", "TAG_TITLE " + movieInfo.getString(TAG_TITLE));
+            movies[i].setVoteCount(movieInfo.getLong(TAG_VOTE_COUNT));
+            //movies[i].setFavMovie(false);
+            movies[i].setBackdrop(movieInfo.getString(TAG_BACK_DROP));
+
+            Log.v("SSSSSSSSSddd", " movies[i] "+i + "   "+ movies[i].getFavMovie());
+
         }
 
         return movies;

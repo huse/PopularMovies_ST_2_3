@@ -16,13 +16,38 @@ public class MovieSelected implements Parcelable {
     private String mOverview;
     private Double mVoteAverage;
     private String mReleaseDate;
+    ///stage 2
+    private long mId;
+    private String mTitle;
+    private long mVoteCount;
+    private boolean mIsFavMovie;
+    private String mBackdrop;
 
     public MovieSelected() {
-
-
-
         Log.v("hhhh5", "MovieSelected");
     }
+    public long getId() { return mId;    }
+    public String getTitle() {
+        return mTitle;
+    }
+    public long getVoteCount() {
+        return mVoteCount;
+    }
+    public boolean getFavMovie() {
+        return mIsFavMovie;
+    }
+    public String getBackdrop() {
+        return mBackdrop;
+    }
+
+    public void setId(Long id) {  mId = id;    }
+    public void setTitle(String title) { mTitle = title;}
+    public void setVoteCount(long voteCount) {mVoteCount = voteCount; }
+    public void setFavMovie(boolean favMovie) { mIsFavMovie = favMovie; }
+    public void setBackdrop(String backdrop) { mBackdrop= backdrop; }
+
+
+
 
     public void setOriginalTitle(String originalTitle) {
         mOriginalTitle = originalTitle;
@@ -62,8 +87,7 @@ public class MovieSelected implements Parcelable {
         return mOverview;
     }
 
-    private Double getVoteAverage() {
-        return mVoteAverage;
+    public Double getVoteAverage() { return mVoteAverage;
     }
 
     public String getReleaseDate() {
@@ -85,19 +109,33 @@ public class MovieSelected implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(mId);
+        dest.writeString(mTitle);
         dest.writeString(mOriginalTitle);
-        dest.writeString(mPosterPath);
         dest.writeString(mOverview);
+        dest.writeString(mPosterPath);
         dest.writeValue(mVoteAverage);
+        dest.writeValue( mVoteCount);
         dest.writeString(mReleaseDate);
+        dest.writeString(mBackdrop);
+        dest.writeValue ((byte) (mIsFavMovie ? 1 : 0));//(mIsFavMovie);
+        Log.v("kkkkkkkkkk3", "mIsFavMovie " + mIsFavMovie);
+
     }
 
     private MovieSelected(Parcel in) {
+        mId = in.readLong();
+        mTitle = in.readString();
         mOriginalTitle = in.readString();
-        mPosterPath = in.readString();
         mOverview = in.readString();
+        mPosterPath = in.readString();
         mVoteAverage = (Double) in.readValue(Double.class.getClassLoader());
+        mVoteCount = (long) in.readValue(long.class.getClassLoader());
         mReleaseDate = in.readString();
+        mBackdrop = in.readString();
+        mIsFavMovie = in.readByte() != 0;
+        Log.v("kkkkkkkkkk", "mIsFavMovie " + mIsFavMovie);
+
     }
 
     public static final Parcelable.Creator<MovieSelected> CREATOR = new Parcelable.Creator<MovieSelected>() {
@@ -109,4 +147,8 @@ public class MovieSelected implements Parcelable {
             return new MovieSelected[size];
         }
     };
+
+    public boolean checkFavMovie() {
+        return mIsFavMovie;
+    }
 }
