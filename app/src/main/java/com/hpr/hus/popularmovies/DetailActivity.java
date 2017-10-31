@@ -62,7 +62,9 @@ public class DetailActivity extends AppCompatActivity {
                 //Checking to see if the movie is null:
                 Log.v("hhhh6", "movie   " + movie.toString());
             currentMovie=movie;
-               originalTitleTV.setText(movie.getOriginalTitle());
+            String result=currentMovie.getFavMovie()+"";
+            favoriteButton.setText(result);
+            originalTitleTV.setText(movie.getOriginalTitle());
 
                 Picasso.with(this)
                         .load(movie.getPosterPath())
@@ -90,12 +92,16 @@ public class DetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(currentMovie.getFavMovie()==false) {
                     currentMovie.setFavMovie(true);
-                    Toast.makeText(DetailActivity.this, "setFavMovie(true)", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(DetailActivity.this, "setFavMovie(true)", Toast.LENGTH_SHORT).show();
 
                 }else {
                     currentMovie.setFavMovie(false);
-                    Toast.makeText(DetailActivity.this, "setFavMovie(false)", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(DetailActivity.this, "setFavMovie(false)", Toast.LENGTH_SHORT).show();
                 }
+                String result=currentMovie.getFavMovie()+"";
+                favoriteButton.setText(result);
+
+                Toast.makeText(DetailActivity.this, currentMovie.getFavMovie()+"", Toast.LENGTH_SHORT).show();
             }
         });
         favoriteToggleButton.setOnClickListener(new View.OnClickListener(){

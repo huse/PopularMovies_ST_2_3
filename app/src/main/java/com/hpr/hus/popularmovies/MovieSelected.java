@@ -34,6 +34,8 @@ public class MovieSelected implements Parcelable {
         return mVoteCount;
     }
     public boolean getFavMovie() {
+        Log.v("FFFFFFFFFFFF"," getFavMovie   " + mIsFavMovie);
+
         return mIsFavMovie;
     }
     public String getBackdrop() {
@@ -43,7 +45,10 @@ public class MovieSelected implements Parcelable {
     public void setId(Long id) {  mId = id;    }
     public void setTitle(String title) { mTitle = title;}
     public void setVoteCount(long voteCount) {mVoteCount = voteCount; }
-    public void setFavMovie(boolean favMovie) { mIsFavMovie = favMovie; }
+    public void setFavMovie(boolean favMovie) {
+
+        mIsFavMovie = favMovie;
+        Log.v("FFFFFFFFFFFF"," setFavMovie   " + mIsFavMovie);}
     public void setBackdrop(String backdrop) { mBackdrop= backdrop; }
 
 
