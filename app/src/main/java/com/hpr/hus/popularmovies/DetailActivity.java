@@ -25,7 +25,7 @@ import java.text.ParseException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+import io.reactivex.Completable;
 public class DetailActivity extends AppCompatActivity {
 
 
@@ -113,9 +113,10 @@ public class DetailActivity extends AppCompatActivity {
         });
 
 
+
     }
 
-    private long addNewFavorit(String name, int partySize) {
+    private long addNewFavorite(String name, int partySize) {
         ContentValues cv = new ContentValues();
         cv.put(MovieListContract.MoviesEntry.MOVIE_NAME, name);
         cv.put(MovieListContract.MoviesEntry.MOVIE_TABLE_NAME, partySize);
@@ -133,7 +134,7 @@ public class DetailActivity extends AppCompatActivity {
 
         return myDb.insert(MovieListContract.MoviesEntry.MOVIE_TABLE_NAME, null, cv);
     }
-    private boolean removeAFavorit(long id) {
+    private boolean removeAFavorite(long id) {
         // COMPLETED (2) Inside, call mDb.delete to pass in the TABLE_NAME and the condition that WaitlistEntry._ID equals id
         return myDb.delete(MovieListContract.MoviesEntry.MOVIE_TABLE_NAME, MovieListContract.MoviesEntry.MOVIE_ID + "=" + id, null) > 0;
     }
@@ -149,5 +150,24 @@ public class DetailActivity extends AppCompatActivity {
         values.put(MovieListContract.MoviesEntry.MOVIE_POSTER_PATH, movie.getPosterPath());
         values.put(MovieListContract.MoviesEntry.MOVIE_BACKDROP_PATH, movie.getBackdrop());
         return values;
+    }
+    public void onFavoredMovie() {
+        if (currentMovie == null) return;
+
+        boolean favored = !currentMovie.getFavMovie();
+        markMovieAsFavorite(currentMovie, favored);
+    }
+
+    public void setFavoredMovie(Long movieId, Boolean favored) {
+        if (currentMovie.getId() != movieId) return;
+        currentMovie.setFavMovie(favored);
+        favoriteButton.setSelected(favored);
+    }
+    public void markMovieAsFavorite(MovieSelected movie, Boolean favored) {
+        setMovieFavored(movie, favored).subscribe();
+    }
+    public Completable setMovieFavored(MovieSelected movie, boolean favored) {
+        movie.setFavMovie(favored);
+        return favored ? repository.saveMovie(movie) : repository.deleteMovie(movie);
     }
 }
