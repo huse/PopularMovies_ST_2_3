@@ -7,8 +7,9 @@ import android.net.Uri;
  */
 
 public class MovieListContract {
-
-
+     public static final String AUTHORITY = "com.hpr.hus.popularmovies";
+    public static final Uri BASEURI = Uri.parse("content://" + AUTHORITY);
+    public static final String PATH_MOVIE = "movies";
     public static class MoviesEntry{
 
         public static final String MOVIE_NAME = "movie";
@@ -22,7 +23,7 @@ public class MovieListContract {
         public static final String MOVIE_FAVORED = "movie_favored";
         public static final String MOVIE_POSTER_PATH = "movie_poster_path";
         public static final String MOVIE_BACKDROP_PATH = "movie_backdrop_path";
-        public static final Uri MOVIE_CONTENT_URI = (Uri.parse("content://" + "com.hpr.hus.popularmovies").buildUpon()).appendPath("movies").build();
+        public static final Uri MOVIE_CONTENT_URI = BASEURI.buildUpon().appendPath(PATH_MOVIE).build();
 
         static Uri buildUri(String movieId) {
             return MOVIE_CONTENT_URI.buildUpon().appendPath(movieId).build();
