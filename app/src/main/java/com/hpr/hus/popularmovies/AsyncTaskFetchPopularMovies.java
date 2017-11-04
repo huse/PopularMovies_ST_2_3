@@ -146,7 +146,7 @@ class AsyncTaskFetchPopularMovies extends AsyncTask<String, Void, MovieSelected[
             movies[i].setTitle(movieInfo.getString(TAG_TITLE));
             Log.v("SSSSSSSSS", "TAG_TITLE " + movieInfo.getString(TAG_TITLE));
             movies[i].setVoteCount(movieInfo.getLong(TAG_VOTE_COUNT));
-            //movies[i].setFavMovie(false);
+            //movies[i].setFavMovie(movies.getFavMovie());
             movies[i].setBackdrop(movieInfo.getString(TAG_BACK_DROP));
 
             Log.v("SSSSSSSSSddd", " movies[i] "+i + "   "+ movies[i].getFavMovie());

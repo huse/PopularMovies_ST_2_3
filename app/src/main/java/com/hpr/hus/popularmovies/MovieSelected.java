@@ -123,7 +123,7 @@ public class MovieSelected implements Parcelable {
         dest.writeValue( mVoteCount);
         dest.writeString(mReleaseDate);
         dest.writeString(mBackdrop);
-        dest.writeValue ((byte) (mIsFavMovie ? 1 : 0));//(mIsFavMovie);
+        dest.writeValue (mIsFavMovie);
         Log.v("kkkkkkkkkk3", "mIsFavMovie " + mIsFavMovie);
 
     }
@@ -138,7 +138,9 @@ public class MovieSelected implements Parcelable {
         mVoteCount = (long) in.readValue(long.class.getClassLoader());
         mReleaseDate = in.readString();
         mBackdrop = in.readString();
-        mIsFavMovie = in.readByte() != 0;
+        //mIsFavMovie = in.readByte() != 0;
+        mIsFavMovie = getFavMovie();
+
         Log.v("kkkkkkkkkk", "mIsFavMovie " + mIsFavMovie);
 
     }

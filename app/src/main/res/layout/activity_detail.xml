@@ -78,18 +78,17 @@
                                 android:paddingRight="2dp"
                                 android:paddingEnd="2dp"
                                 android:textSize="20dp" />
-                            <Button
+                            <ImageButton
                                 android:id="@+id/fav_button"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:scaleType="centerInside"
+                                android:padding="8dp"
                                 android:text="FAV"
-
+                                android:src="@xml/fav_button_selection"
+                                android:background="@android:color/transparent"
                                 />
-                            <ToggleButton
-                                android:id="@+id/fav_button_toggle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="FAVORITE"/>
+
 
                         </LinearLayout>
                         <LinearLayout

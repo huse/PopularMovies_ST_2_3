@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,7 +26,7 @@ import java.text.ParseException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Completable;
+
 public class DetailActivity extends AppCompatActivity {
 
 
@@ -37,14 +38,15 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.textview_rate_average) TextView rateAverageTV;
     @BindView(R.id.textview_release_time) TextView releaseTimeTV;
     @BindView(R.id.imageview_image_poster) ImageView imagePosterIV;
-    @BindView(R.id.fav_button) Button favoriteButton;
-    @BindView(R.id.fav_button_toggle) Button favoriteToggleButton;
+    @BindView(R.id.fav_button) ImageButton favoriteButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         Log.v("hhhh6", "DetailActivity-onCreate");
+
 
         MovieListDBhelper dBhelper = new MovieListDBhelper(this);
         Intent intentThatStartedThisActivity = getIntent();
@@ -60,10 +62,11 @@ public class DetailActivity extends AppCompatActivity {
                 movie = intentThatStartedThisActivity.getExtras().getParcelable("PARCEL_MOVIE");
                 Log.v("hhhh6", "movie   check point");
                 //Checking to see if the movie is null:
-                Log.v("hhhh6", "movie   " + movie.toString());
+                Log.v("hhhh6entering", "movie   " + movie.toString());
             currentMovie=movie;
             String result=currentMovie.getFavMovie()+"";
-            favoriteButton.setText(result);
+           // favoriteButton.setText(result);\
+            favoriteButton.setSelected(currentMovie.getFavMovie());
             originalTitleTV.setText(movie.getOriginalTitle());
 
                 Picasso.with(this)
@@ -92,25 +95,20 @@ public class DetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(currentMovie.getFavMovie()==false) {
                     currentMovie.setFavMovie(true);
+                    favoriteButton.setSelected(true);
                     //Toast.makeText(DetailActivity.this, "setFavMovie(true)", Toast.LENGTH_SHORT).show();
 
                 }else {
                     currentMovie.setFavMovie(false);
-                   // Toast.makeText(DetailActivity.this, "setFavMovie(false)", Toast.LENGTH_SHORT).show();
+                    favoriteButton.setSelected(false);
+                    // Toast.makeText(DetailActivity.this, "setFavMovie(false)", Toast.LENGTH_SHORT).show();
                 }
                 String result=currentMovie.getFavMovie()+"";
-                favoriteButton.setText(result);
 
                 Toast.makeText(DetailActivity.this, currentMovie.getFavMovie()+"", Toast.LENGTH_SHORT).show();
             }
         });
-        favoriteToggleButton.setOnClickListener(new View.OnClickListener(){
 
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
 
 
 
@@ -151,7 +149,7 @@ public class DetailActivity extends AppCompatActivity {
         values.put(MovieListContract.MoviesEntry.MOVIE_BACKDROP_PATH, movie.getBackdrop());
         return values;
     }
-    public void onFavoredMovie() {
+   /* public void onFavoredMovie() {
         if (currentMovie == null) return;
 
         boolean favored = !currentMovie.getFavMovie();
@@ -169,5 +167,5 @@ public class DetailActivity extends AppCompatActivity {
     public Completable setMovieFavored(MovieSelected movie, boolean favored) {
         movie.setFavMovie(favored);
         return favored ? repository.saveMovie(movie) : repository.deleteMovie(movie);
-    }
+    }*/
 }
