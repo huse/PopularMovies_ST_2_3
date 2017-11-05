@@ -1,6 +1,7 @@
 package com.hpr.hus.popularmovies.db;
 
 import android.net.Uri;
+import android.provider.BaseColumns;
 
 /**
  * Created by hk640d on 10/29/2017.
@@ -10,6 +11,7 @@ public class MovieListContract {
      public static final String AUTHORITY = "com.hpr.hus.popularmovies";
     public static final Uri BASEURI = Uri.parse("content://" + AUTHORITY);
     public static final String PATH_MOVIE = "movies";
+
     public static class MoviesEntry{
 
         public static final String MOVIE_NAME = "movie";
@@ -28,5 +30,12 @@ public class MovieListContract {
         static Uri buildUri(String movieId) {
             return MOVIE_CONTENT_URI.buildUpon().appendPath(movieId).build();
         }
+    }
+
+    public static final class MoivieEntry implements BaseColumns {
+
+        public static final String TABLE_NAME = "movies";
+
+    }
     }
 }
