@@ -8,11 +8,13 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -148,6 +150,42 @@ public class DetailActivity extends AppCompatActivity {
         values.put(MovieListContract.MoviesEntry.MOVIE_POSTER_PATH, movie.getPosterPath());
         values.put(MovieListContract.MoviesEntry.MOVIE_BACKDROP_PATH, movie.getBackdrop());
         return values;
+    }
+
+    public  void onClickFavorite(){
+        if (currentMovie == null) return;
+
+        boolean favored = !currentMovie.getFavMovie();
+
+
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(MovieListContract.MoivieEntry.COLUMN_MOVIE_ID, currentMovie.getId());
+        contentValues.put(MovieListContract.MoivieEntry.COLUMN_FAVORITE , favored);
+
+        Uri uri = getContentResolver().insert(MovieListContract.MoivieEntry.CONTENT_URI, contentValues);
+
+        if(uri != null) {
+            Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
+        }
+
+
+        finish();
+
+    }
+
+
+
+    public void favoredMovieTrue(MovieSelected movie, Boolean favored) {
+        setMovieTrueFavored(movie.getId(), favored);
+    }
+    public void setMovieTrueFavored(Long movieId, Boolean favored) {
+        if (currentMovie.getId() != movieId){
+
+            return;
+        }
+        currentMovie.setFavMovie(favored);
+        favoriteButton.setSelected(favored);
     }
    /* public void onFavoredMovie() {
         if (currentMovie == null) return;

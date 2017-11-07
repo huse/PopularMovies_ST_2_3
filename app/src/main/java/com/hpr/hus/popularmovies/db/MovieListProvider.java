@@ -1,6 +1,7 @@
 package com.hpr.hus.popularmovies.db;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
@@ -21,7 +22,7 @@ public class MovieListProvider extends ContentProvider {
 
     private static final String MOVIE_ID_PATH = "movies/*";
     private MovieListDBhelper mMovieListDBhelper;
-    private static final UriMatcher sUriMacher = buildUriMatcher();
+    private static final UriMatcher sUriMatcher = buildUriMatcher();
     public static UriMatcher buildUriMatcher() {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
        uriMatcher.addURI(MovieListContract.AUTHORITY,MovieListContract.PATH_MOVIE,MOVIE);
@@ -39,8 +40,35 @@ public class MovieListProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Cursor query(@NonNull Uri uri, @Nullable String[] strings, @Nullable String s, @Nullable String[] strings1, @Nullable String s1) {
-        return null;
+    public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
+
+        final SQLiteDatabase db = mMovieListDBhelper.getReadableDatabase();
+
+        // Write URI match code and set a variable to return a Cursor
+        int match = sUriMatcher.match(uri);
+        Cursor retCursor;
+
+        // Query for the tasks directory and write a default case
+        switch (match) {
+            // Query for the tasks directory
+            case MOVIE:
+                retCursor = db.query(TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            // Default exception
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+
+        }
+
+        retCursor.setNotificationUri(getContext().getContentResolver(), uri);
+
+        return retCursor;
     }
 
     @Nullable
@@ -53,16 +81,26 @@ public class MovieListProvider extends ContentProvider {
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
         final SQLiteDatabase db = mMovieListDBhelper.getWritableDatabase();
-        int match = sUriMacher.match(uri);
+        int match = sUriMatcher.match(uri);
         Uri returnUri;
         switch (match){
             case MOVIE:
                 long id = db.insert(TABLE_NAME,null, contentValues);
+                if (id>0){
+                    returnUri = ContentUris.withAppendedId(MovieListContract.MoivieEntry.CONTENT_URI, id);
+
+                } else {
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+
+                }
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
-        return null;
+        getContext().getContentResolver().notifyChange(uri, null);
+
+        // Return constructed uri (this points to the newly inserted row of data)
+        return returnUri;
     }
 
     @Override

@@ -87,6 +87,7 @@
                                 android:text="FAV"
                                 android:src="@xml/fav_button_selection"
                                 android:background="@android:color/transparent"
+                                android:onClick="onClickFavorite"
                                 />
 
 
