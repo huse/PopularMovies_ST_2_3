@@ -4,6 +4,7 @@ package com.hpr.hus.popularmovies;
  * Created by hk640d on 8/1/2017.
  */
 
+import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
@@ -61,6 +62,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         clickHandler = this;
         rvList.setAdapter(new MovieAdapter(movies,getApplicationContext(),this));
         setupSharedPreferences();
+
+
+
+
     }
 
     private void reserveInitialingViews(@Nullable Bundle savedInstanceState){
