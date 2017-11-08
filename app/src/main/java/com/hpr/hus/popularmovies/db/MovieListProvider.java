@@ -59,6 +59,18 @@ public class MovieListProvider extends ContentProvider {
                         null,
                         null,
                         sortOrder);
+
+            case MOVIE_ID:
+                String id = uri.getPathSegments().get(1);
+                String mSelection = "_id=?";
+                String[] mSelectionArgs = new String[]{id};
+                retCursor = db.query(TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
                 break;
             // Default exception
             default:
@@ -111,5 +123,43 @@ public class MovieListProvider extends ContentProvider {
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String s, @Nullable String[] strings) {
         return 0;
+    }
+
+    @Override
+    public int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] values) {
+        final SQLiteDatabase db = mMovieListDBhelper.getWritableDatabase();
+
+        switch (sUriMatcher.match(uri)) {
+
+            case MOVIE:
+                db.beginTransaction();
+                int rowsInserted = 0;
+                try {
+                    for (ContentValues value : values) {
+                        long movieId =
+                                value.getAsLong(MovieListContract.MoivieEntry.COLUMN_MOVIE_ID);
+                        if (movieId==0) {
+                            throw new IllegalArgumentException("movie id is not available");
+                        }
+
+                        long _id = db.insert(MovieListContract.MoivieEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            rowsInserted++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+
+                if (rowsInserted > 0) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+
+                return rowsInserted;
+
+            default:
+                return super.bulkInsert(uri, values);
+        }
     }
 }

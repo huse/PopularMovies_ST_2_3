@@ -6,9 +6,13 @@ package com.hpr.hus.popularmovies;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,12 +33,12 @@ import java.text.ParseException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
 
     private SQLiteDatabase myDb;
     private MovieSelected currentMovie;
-
+    private static final int ID_DETAIL_LOADER = 596;
     @BindView(R.id.textview_original_title) TextView originalTitleTV;
     @BindView(R.id.textview_overview) TextView overViewTV;
     @BindView(R.id.textview_rate_average) TextView rateAverageTV;
@@ -186,6 +190,36 @@ public class DetailActivity extends AppCompatActivity {
         }
         currentMovie.setFavMovie(favored);
         favoriteButton.setSelected(favored);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
+        switch (id) {
+
+//          COMPLETED (23) If the loader requested is our detail loader, return the appropriate CursorLoader
+            case ID_DETAIL_LOADER:
+
+                return new CursorLoader(this,
+                        MovieListContract.MoivieEntry.CONTENT_URI,
+                        null,
+                        null,
+                        null,
+                        MovieListContract.MoivieEntry.COLUMN_FAVORITE);
+
+            default:
+                throw new RuntimeException("Loader Not Implemented: " + id);
+        }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
    /* public void onFavoredMovie() {
         if (currentMovie == null) return;

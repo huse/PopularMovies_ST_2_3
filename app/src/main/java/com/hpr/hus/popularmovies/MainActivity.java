@@ -5,11 +5,15 @@ package com.hpr.hus.popularmovies;
  */
 
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Context;
@@ -27,20 +31,19 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 import com.hpr.hus.popularmovies.MovieAdapter.MovieAdapterOnClickHandler;
+import com.hpr.hus.popularmovies.db.MovieListContract;
 import com.hpr.hus.popularmovies.settings_2.SettingsActivity;
 
 import java.util.Map;
 
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
-
-public class MainActivity extends AppCompatActivity implements MovieAdapterOnClickHandler,SharedPreferences.OnSharedPreferenceChangeListener  {
+public class MainActivity extends AppCompatActivity implements MovieAdapterOnClickHandler,SharedPreferences.OnSharedPreferenceChangeListener ,   LoaderManager.LoaderCallbacks<Cursor>  {
 
     private RecyclerView rvList;
     MovieAdapter movieAdapter;
 
     MovieAdapterOnClickHandler clickHandler;
-
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     private Menu mMenu;
 
@@ -319,6 +322,63 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
 
         updateSharedPrefs(sharedPreferences.getString((getString(R.string.preference_sorting_key)),getString(R.string.tmdb_sort_pop_desc) ));
 
+
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
+        return new AsyncTaskLoader<Cursor>(this) {
+
+
+            Cursor mMovieDataCursor = null;
+
+
+            @Override
+            protected void onStartLoading() {
+                if (mMovieDataCursor != null) {
+
+                    deliverResult(mMovieDataCursor);
+                } else {
+
+                    forceLoad();
+                }
+            }
+
+
+            @Override
+            public Cursor loadInBackground() {
+
+                try {
+                    return getContentResolver().query(MovieListContract.MoivieEntry.CONTENT_URI,
+                            null,
+                            null,
+                            null,
+                            MovieListContract.MoivieEntry.COLUMN_FAVORITE);
+
+                } catch (Exception e) {
+                    Log.e(TAG, "Failed to asynchronously load data.");
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+
+            public void deliverResult(Cursor data) {
+                mMovieDataCursor = data;
+                super.deliverResult(data);
+            }
+        };
+
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
 
     }
 /*    public void setSort(String sorting){
