@@ -5,6 +5,7 @@ package com.hpr.hus.popularmovies;
  */
 
 import android.content.Context;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
     private  Context context;
     private final MovieSelected[] movies;
     private  MovieAdapterOnClickHandler movieClickHandler;
+    private Cursor mCursor;
 
     public MovieAdapter(MovieSelected[] movies, Context context,MovieAdapterOnClickHandler clickHandler) {
         this.context = context;
@@ -73,6 +75,12 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
      Log.v("hhhh4_Picasso",":  " + holder.movieImageView.toString());
      Log.v("hhhh4_Picasso",":  " + context.toString());
      Picasso.with(context).load(movies[position].getPosterPath()).resize(context.getResources().getInteger(R.integer.tmdb_poster_w185_width),context.getResources().getInteger(R.integer.tmdb_poster_w185_height)).into(holder.movieImageView);
+
+
+
+     mCursor.moveToPosition(position);
+
+
  }
 
 

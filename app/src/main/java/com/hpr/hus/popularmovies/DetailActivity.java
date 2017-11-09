@@ -70,15 +70,18 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 movie = intentThatStartedThisActivity.getExtras().getParcelable("PARCEL_MOVIE");
                 Log.v("hhhh6", "movie   check point");
                 //Checking to see if the movie is null:
-                Log.v("hhhh6entering", "movie   " + movie.toString());
+                Log.v("hhhh6entering", "movie   " + movie.getTitle());
             currentMovie=movie;
             String result=currentMovie.getFavMovie()+"";
            // favoriteButton.setText(result);\
             ////at this line the fav button ger the status:
           /*  mUri = getIntent().getData();
             if (mUri == null) throw new NullPointerException("URI for DetailActivity cannot be null");*/
-
-            final ContentValues values = new ContentValues();
+            getMovieValues(currentMovie);
+            boolean favoredBool = Boolean.valueOf(MovieListContract.MoviesEntry.MOVIE_FAVORED);
+            favoriteButton.setSelected(favoredBool);
+            Log.v("mmmmmmmmm", "movie   " + movie.getId());
+           // final ContentValues values = new ContentValues();
           //  boolean favoredBool = (boolean) values.get(MovieListContract.MoviesEntry.MOVIE_FAVORED);
            // favoriteButton.setSelected(favoredBool);
            // favoriteButton.setSelected(currentMovie.getFavMovie());
@@ -117,7 +120,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 }else {
                     currentMovie.setFavMovie(false);
                     favoriteButton.setSelected(false);
-                    removeAFavorite(needs work);
+                   // removeAFavorite(needs work);
                     // Toast.makeText(DetailActivity.this, "setFavMovie(false)", Toast.LENGTH_SHORT).show();
                 }
 
