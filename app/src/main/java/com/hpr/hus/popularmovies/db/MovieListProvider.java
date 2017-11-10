@@ -117,6 +117,7 @@ public class MovieListProvider extends ContentProvider {
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
+
         return 0;
     }
 
