@@ -4,11 +4,12 @@ package com.hpr.hus.popularmovies;
  * Created by hk640d on 8/1/2017.
  */
 
-import android.content.ContentValues;
+import android.content.ContentResolver;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -355,11 +356,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
             public Cursor loadInBackground() {
 
                 try {
-                    return getContentResolver().query(MovieListContract.MoivieEntry.CONTENT_URI,
+                    return getContentResolver().query(MovieListContract.MoviesEntry.MOVIE_CONTENT_URI,
                             null,
                             null,
                             null,
-                            MovieListContract.MoivieEntry.COLUMN_FAVORITE);
+                            MovieListContract.MoviesEntry.MOVIE_FAVORED);
 
                 } catch (Exception e) {
                     Log.e(TAG, "Failed to asynchronously load data.");
@@ -403,4 +404,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
 
         }
     }*/
+
+
 }

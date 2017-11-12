@@ -10,7 +10,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import static com.hpr.hus.popularmovies.db.MovieListContract.MoivieEntry.TABLE_NAME;
+import android.util.Log;
+
+import static com.hpr.hus.popularmovies.db.MovieListContract.MoviesEntry.MOVIE_TABLE_NAME;
 /**
  * Created by wall on 11/4/17.
  */
@@ -32,54 +34,68 @@ public class MovieListProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         Context context = getContext();
-
-
+        mMovieListDBhelper = new MovieListDBhelper(context);
+        Log.v("hhhhhhhhhhhonCreate", mMovieListDBhelper + "");
 
         return true;
     }
 
-    @Nullable
+
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
-
+        Log.v("hhhhhhhhhhhquery", mMovieListDBhelper + "");
         final SQLiteDatabase db = mMovieListDBhelper.getReadableDatabase();
-
+        Log.v("hhhhhhhhhhhquery2", db + "");
         // Write URI match code and set a variable to return a Cursor
         int match = sUriMatcher.match(uri);
+        Log.v("hhhhhhhhhhhquery3", match + "");
         Cursor retCursor;
+        Log.v("hhhhhhhhhhhquery4", "retCursor");
 
         // Query for the tasks directory and write a default case
         switch (match) {
             // Query for the tasks directory
             case MOVIE:
-                retCursor = db.query(TABLE_NAME,
+                Log.v("hhhhhhhhhhhquery6f", MOVIE + "");
+                Log.v("hhhhhhhhhhhquery6T", MOVIE_TABLE_NAME + "");
+                Log.v("hhhhhhhhhhhquery6p", projection + "");
+                Log.v("hhhhhhhhhhhquery6s", selection + "");
+                Log.v("hhhhhhhhhhhquery6sa", selectionArgs + "");
+                Log.v("hhhhhhhhhhhquery6so", sortOrder + "");
+                retCursor = db.query(MOVIE_TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
                         null,
                         null,
                         sortOrder);
+
+                Log.v("hhhhhhhhhhhquery5", retCursor + "");
 
             case MOVIE_ID:
                 String id = uri.getPathSegments().get(1);
                 String mSelection = "_id=?";
                 String[] mSelectionArgs = new String[]{id};
-                retCursor = db.query(TABLE_NAME,
+                retCursor = db.query(MOVIE_TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
                         null,
                         null,
                         sortOrder);
+
+                Log.v("hhhhhhhhhhhquery6", retCursor + "");
                 break;
             // Default exception
             default:
+
+                Log.v("hhhhhhhhhhhquery7", "default" + "");
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
 
         }
-
+        Log.v("hhhhhhhhhhhquery8", retCursor + "");
         retCursor.setNotificationUri(getContext().getContentResolver(), uri);
-
+        Log.v("hhhhhhhhhhhquery9", retCursor + "");
         return retCursor;
     }
 
@@ -97,9 +113,9 @@ public class MovieListProvider extends ContentProvider {
         Uri returnUri;
         switch (match){
             case MOVIE:
-                long id = db.insert(TABLE_NAME,null, contentValues);
+                long id = db.insert(MOVIE_TABLE_NAME,null, contentValues);
                 if (id>0){
-                    returnUri = ContentUris.withAppendedId(MovieListContract.MoivieEntry.CONTENT_URI, id);
+                    returnUri = ContentUris.withAppendedId(MovieListContract.MoviesEntry.MOVIE_CONTENT_URI, id);
 
                 } else {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
@@ -138,12 +154,12 @@ public class MovieListProvider extends ContentProvider {
                 try {
                     for (ContentValues value : values) {
                         long movieId =
-                                value.getAsLong(MovieListContract.MoivieEntry.COLUMN_MOVIE_ID);
+                                value.getAsLong(MovieListContract.MoviesEntry.MOVIE_ID);
                         if (movieId==0) {
                             throw new IllegalArgumentException("movie id is not available");
                         }
 
-                        long _id = db.insert(MovieListContract.MoivieEntry.TABLE_NAME, null, value);
+                        long _id = db.insert(MovieListContract.MoviesEntry.MOVIE_TABLE_NAME, null, value);
                         if (_id != -1) {
                             rowsInserted++;
                         }

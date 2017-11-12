@@ -4,12 +4,14 @@ package com.hpr.hus.popularmovies;
  * Created by hk640d on 8/1/2017.
  */
 
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.CursorLoader;
@@ -27,6 +29,7 @@ import android.widget.Toast;
 
 import com.hpr.hus.popularmovies.db.MovieListContract;
 import com.hpr.hus.popularmovies.db.MovieListDBhelper;
+import com.hpr.hus.popularmovies.db.MovieListProvider;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
@@ -47,7 +50,9 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     @BindView(R.id.textview_release_time) TextView releaseTimeTV;
     @BindView(R.id.imageview_image_poster) ImageView imagePosterIV;
     @BindView(R.id.fav_button) ImageButton favoriteButton;
-
+    private Cursor mData;
+    private int mIdCol, mFavCol;
+    private MovieAdapter movieAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,14 +60,17 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         setContentView(R.layout.activity_detail);
         Log.v("hhhh6", "DetailActivity-onCreate");
 
-
+        MovieListProvider movieListProvider = new MovieListProvider();
         MovieListDBhelper dBhelper = new MovieListDBhelper(this);
         Intent intentThatStartedThisActivity = getIntent();
         Log.v("hhhh6", "intentThatStartedThisActivity    "+intentThatStartedThisActivity.toString());
         ButterKnife.bind(this);
+        Log.v("hhhh6", "889");
         myDb = dBhelper.getWritableDatabase();
+        Log.v("hhhh6", "890");
 
         MovieSelected movie;
+        Log.v("hhhh6", "891");
         //currentMovie = bundle.getParcelable(MOVIE_EXTRA);
 
         if (intentThatStartedThisActivity != null   && !getIntent().getBooleanExtra("isNewItem", false)) {
@@ -72,19 +80,29 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 //Checking to see if the movie is null:
                 Log.v("hhhh6entering", "movie   " + movie.getTitle());
             currentMovie=movie;
+            Log.v("hhhh6", "DetailActivity 67");
             String result=currentMovie.getFavMovie()+"";
+            Log.v("hhhh6", "DetailActivity 68");
            // favoriteButton.setText(result);\
             ////at this line the fav button ger the status:
-          /*  mUri = getIntent().getData();
-            if (mUri == null) throw new NullPointerException("URI for DetailActivity cannot be null");*/
+            mUri = getIntent().getData();
+            Log.v("hhhh6", "DetailActivity 69");
+          //  if (mUri == null) throw new NullPointerException("URI for DetailActivity cannot be null")
+
+           // movieListProvider.query(mUri,null,null,null,null);
+            Log.v("hhhh6", "DetailActivity 70");
+
             getMovieValues(currentMovie);
             boolean favoredBool = Boolean.valueOf(MovieListContract.MoviesEntry.MOVIE_FAVORED);
             favoriteButton.setSelected(favoredBool);
-            Log.v("mmmmmmmmm", "movie   " + movie.getId());
+            Log.v("hhhh6_id", "movie   " + movie.getId());
            // final ContentValues values = new ContentValues();
           //  boolean favoredBool = (boolean) values.get(MovieListContract.MoviesEntry.MOVIE_FAVORED);
            // favoriteButton.setSelected(favoredBool);
            // favoriteButton.setSelected(currentMovie.getFavMovie());
+
+
+            new FavFetchTask().execute();
             originalTitleTV.setText(movie.getOriginalTitle());
 
                 Picasso.with(this)
@@ -178,10 +196,10 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put(MovieListContract.MoivieEntry.COLUMN_MOVIE_ID, currentMovie.getId());
-        contentValues.put(MovieListContract.MoivieEntry.COLUMN_FAVORITE , favored);
+        contentValues.put(MovieListContract.MoviesEntry.MOVIE_ID, currentMovie.getId());
+        contentValues.put(MovieListContract.MoviesEntry.MOVIE_FAVORED , favored);
 
-        Uri uri = getContentResolver().insert(MovieListContract.MoivieEntry.CONTENT_URI, contentValues);
+        Uri uri = getContentResolver().insert(MovieListContract.MoviesEntry.MOVIE_CONTENT_URI, contentValues);
 
         if(uri != null) {
             Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
@@ -249,11 +267,12 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 public Cursor loadInBackground() {
 
                     try {
-                        return getContentResolver().query(MovieListContract.MoivieEntry.CONTENT_URI,
+                        return getContentResolver().query(MovieListContract.MoviesEntry.MOVIE_CONTENT_URI,
                                 null,
                                 null,
                                 null,
-                                MovieListContract.MoivieEntry.COLUMN_FAVORITE);
+
+                                MovieListContract.MoviesEntry.MOVIE_FAVORED);
 
                     } catch (Exception e) {
                         Log.e(TAG, "Failed to asynchronously load data.");
@@ -285,6 +304,62 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     public void onLoaderReset(Loader<Cursor> loader) {
 
     }
+
+    public void nextWord() {
+
+        if (mData != null) {
+            if (!mData.moveToNext()) {
+                mData.moveToFirst();
+            }
+
+            favoriteButton.setSelected(Boolean.valueOf(mData.getString(mFavCol)));
+
+
+        }
+    }
+    public class FavFetchTask extends AsyncTask<Void, Void, Cursor> {
+
+        // Invoked on a background thread
+        @Override
+        protected Cursor doInBackground(Void... params) {
+            // Make the query to get the data
+            Log.v("hhhh6", "DetailActivity doInBackground 696");
+
+            // Get the content resolver
+            ContentResolver resolver = getContentResolver();
+            Log.v("hhhh6", "DetailActivity doInBackground 6962");
+            // Call the query method on the resolver with the correct Uri from the contract class
+            Cursor cursor = resolver.query(MovieListContract.MoviesEntry.MOVIE_CONTENT_URI,
+                    null, null, null, MovieListContract.MoviesEntry.MOVIE_FAVORED);
+            Log.v("hhhh6", "DetailActivity doInBackground 6964");
+            return cursor;
+        }
+
+
+        // Invoked on UI thread
+        @Override
+        protected void onPostExecute(Cursor cursor) {
+            super.onPostExecute(cursor);
+            // COMPLETED (2) Initialize anything that you need the cursor for, such as setting up
+            // the screen with the first word and setting any other instance variables
+
+            //Set up a bunch of instance variables based off of the data
+
+            // Set the data for MainActivity
+            mData = cursor;
+            // Get the column index, in the Cursor, of each piece of data
+            mIdCol = mData.getColumnIndex(MovieListContract.MoviesEntry.MOVIE_ID);
+            mFavCol = mData.getColumnIndex(MovieListContract.MoviesEntry.MOVIE_FAVORED);
+
+            // Set the initial state
+            nextWord();
+        }
+    }
+
+
+
+
+
    /* public void onFavoredMovie() {
         if (currentMovie == null) return;
 

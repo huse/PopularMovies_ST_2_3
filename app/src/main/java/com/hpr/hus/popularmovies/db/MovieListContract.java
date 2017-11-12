@@ -32,7 +32,7 @@ public class MovieListContract {
         }
     }
 
-    public static final class MoivieEntry implements BaseColumns {
+  /*  public static final class MoivieEntry implements BaseColumns {
 
         public static final String TABLE_NAME = "movies";
         public static final Uri CONTENT_URI =
@@ -40,6 +40,6 @@ public class MovieListContract {
         public static final String COLUMN_MOVIE_ID = "id";
         public static final String COLUMN_FAVORITE = "favorite";
 
-    }
+    }*/
 
 }

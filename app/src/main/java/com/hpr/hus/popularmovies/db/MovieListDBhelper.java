@@ -14,7 +14,7 @@ public class MovieListDBhelper extends SQLiteOpenHelper{
     private static final String DATABASE_NAME = "movielist.db";
 
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
 
     public MovieListDBhelper(Context context) {
@@ -23,7 +23,7 @@ public class MovieListDBhelper extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("CREATE TABLE " + MovieListContract.MoviesEntry.MOVIE_TABLE_NAME + "("
+        final String CREATE_TABLE = "CREATE TABLE " + MovieListContract.MoviesEntry.MOVIE_TABLE_NAME + " ("
                 + BaseColumns._ID + " INTEGER NOT NULL PRIMARY KEY,"
                 + MovieListContract.MoviesEntry.MOVIE_ID + " TEXT NOT NULL,"
                 + MovieListContract.MoviesEntry.MOVIE_TITLE + " TEXT NOT NULL,"
@@ -33,8 +33,8 @@ public class MovieListDBhelper extends SQLiteOpenHelper{
                 + MovieListContract.MoviesEntry.MOVIE_BACKDROP_PATH + " TEXT,"
                 + MovieListContract.MoviesEntry.MOVIE_POSTER_PATH + " TEXT,"
                 + MovieListContract.MoviesEntry.MOVIE_RELEASE_DATE + " TEXT,"
-                + MovieListContract.MoviesEntry.MOVIE_FAVORED + " INTEGER NOT NULL DEFAULT 0,"
-                + "UNIQUE (" + MovieListContract.MoviesEntry.MOVIE_ID + ") ON CONFLICT REPLACE)");
+                + MovieListContract.MoviesEntry.MOVIE_FAVORED + " BOOLEAN NOT NULL DEFAULT FALSE);";
+        sqLiteDatabase.execSQL(CREATE_TABLE);
     }
 
     @Override

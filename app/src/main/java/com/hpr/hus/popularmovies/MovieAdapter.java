@@ -6,15 +6,19 @@ package com.hpr.hus.popularmovies;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hpr.hus.popularmovies.db.MovieListContract;
 import com.squareup.picasso.Picasso;
 
 
@@ -78,7 +82,26 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
 
 
 
-     mCursor.moveToPosition(position);
+    /// replacemant
+     Log.v("hhhh4111","mCursor:  " + mCursor);
+     if (mCursor != null) {
+         //     int idIndex = mCursor.getColumnIndex(MovieListContract.MoivieEntry._ID);
+
+         int movieIdIndex = mCursor.getColumnIndex(MovieListContract.MoviesEntry.MOVIE_ID);
+         int favoriteIndex = mCursor.getColumnIndex(MovieListContract.MoviesEntry.MOVIE_FAVORED);
+
+         mCursor.moveToPosition(position);
+
+
+         // final int id = mCursor.getInt(idIndex);
+         String movieId = mCursor.getString(movieIdIndex);
+         String favored = mCursor.getString(favoriteIndex);
+         Boolean favoredBool = Boolean.valueOf(favored);
+
+         //  holder.itemView.setTag(id);
+         holder.imageButton.setSelected(favoredBool);
+         Log.v("ooooooooo", favored);
+     }
 
 
  }
@@ -93,12 +116,13 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
     public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView mMovieTextView = new TextView(context);
         ImageView movieImageView = new ImageView(context);
-
+        ImageButton imageButton;
         public MovieAdapterViewHolder(View view) {
             super(view);
             Log.v("hhhh411","MovieAdapterViewHolder class");
             mMovieTextView = view.findViewById(R.id.tv_movie_data);
             movieImageView = view.findViewById(R.id.imageview_image_poster_main );
+            imageButton =  itemView.findViewById(R.id.fav_button);
             Log.v("hhhh4111",":  " + movieImageView.toString());
             view.setOnClickListener(this);
         }
@@ -115,5 +139,12 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
     public int getItemCount() {
         if (null == movies) return 2;
         return movies.length;
+
+       /* if (mCursor == null) {
+            return 0;
+        }
+        return mCursor.getCount();*/
     }
+
+
 }
