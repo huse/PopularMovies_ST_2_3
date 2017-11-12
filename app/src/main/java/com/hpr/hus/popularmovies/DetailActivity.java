@@ -93,7 +93,9 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             Log.v("hhhh6", "DetailActivity 70");
 
             getMovieValues(currentMovie);
-            boolean favoredBool = Boolean.valueOf(MovieListContract.MoviesEntry.MOVIE_FAVORED);
+            //boolean favoredBool = Boolean.valueOf(MovieListContract.MoviesEntry.MOVIE_FAVORED);
+
+            boolean favoredBool = Boolean.valueOf(getMovieValues(currentMovie).get(MovieListContract.MoviesEntry.MOVIE_FAVORED).toString());
             favoriteButton.setSelected(favoredBool);
             Log.v("hhhh6_id", "movie   " + movie.getId());
            // final ContentValues values = new ContentValues();
@@ -129,10 +131,14 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
             @Override
             public void onClick(View view) {
-                if(currentMovie.getFavMovie()==false) {
+
+                boolean favoredMovie = !currentMovie.getFavMovie();
+                addNewFavorite(currentMovie, favoredMovie);
+                favoriteButton.setSelected(favoredMovie);
+                /*if(currentMovie.getFavMovie()==false) {
                     currentMovie.setFavMovie(true);
                     favoriteButton.setSelected(true);
-                    addNewFavorite(currentMovie);
+                    addNewFavorite(currentMovie, true);
                     //Toast.makeText(DetailActivity.this, "setFavMovie(true)", Toast.LENGTH_SHORT).show();
 
                 }else {
@@ -140,11 +146,29 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                     favoriteButton.setSelected(false);
                    // removeAFavorite(needs work);
                     // Toast.makeText(DetailActivity.this, "setFavMovie(false)", Toast.LENGTH_SHORT).show();
-                }
+                }*/
 
-                String result=currentMovie.getFavMovie()+"";
 
-                Toast.makeText(DetailActivity.this, currentMovie.getFavMovie()+"", Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(DetailActivity.this, favoredMovie+"", Toast.LENGTH_SHORT).show();
+
+
+
+             /*   if (currentMovie == null){ Log.v("rrrrrrrrrrrr", "currentMovie == null"); return;}
+
+                boolean favored = !currentMovie.getFavMovie();
+
+
+                ContentValues contentValues = new ContentValues();
+
+                contentValues.put(MovieListContract.MoviesEntry.MOVIE_ID, currentMovie.getId());
+                contentValues.put(MovieListContract.MoviesEntry.MOVIE_FAVORED , favored);
+
+                Uri uri = getContentResolver().insert(MovieListContract.MoviesEntry.MOVIE_CONTENT_URI, contentValues);
+
+                if(uri != null) {
+                    Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
+                }*/
             }
         });
 
@@ -153,20 +177,24 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     }
 
-    private long addNewFavorite(MovieSelected movieSelected) {
+    private long addNewFavorite(MovieSelected movieSelected,boolean favBoolean) {
         ContentValues cv = new ContentValues();
-        cv.put(MovieListContract.MoviesEntry.MOVIE_NAME, movieSelected.getOriginalTitle());
+       // cv.put(MovieListContract.MoviesEntry.MOVIE_NAME, movieSelected.getOriginalTitle());
        // cv.put(MovieListContract.MoviesEntry.MOVIE_TABLE_NAME,  movieSelected.getTableName);
         cv.put(MovieListContract.MoviesEntry.MOVIE_ID,  movieSelected.getId());
         cv.put(MovieListContract.MoviesEntry.MOVIE_TITLE,  movieSelected.getTitle());
         cv.put(MovieListContract.MoviesEntry.MOVIE_OVERVIEW,  movieSelected.getOverview());
-        cv.put(MovieListContract.MoviesEntry.MOVIE_VOTE_COUNT,  movieSelected.getVoteCount());
         cv.put(MovieListContract.MoviesEntry.MOVIE_VOTE_AVERAGE, movieSelected.getVoteAverage());
-        cv.put(MovieListContract.MoviesEntry.MOVIE_RELEASE_DATE, movieSelected.getReleaseDate());
-        cv.put(MovieListContract.MoviesEntry.MOVIE_FAVORED, movieSelected.getFavMovie());
-        cv.put(MovieListContract.MoviesEntry.MOVIE_POSTER_PATH, movieSelected.getPosterPath());
+        cv.put(MovieListContract.MoviesEntry.MOVIE_VOTE_COUNT,  movieSelected.getVoteCount());
         cv.put(MovieListContract.MoviesEntry.MOVIE_BACKDROP_PATH, movieSelected.getBackdrop());
+        cv.put(MovieListContract.MoviesEntry.MOVIE_POSTER_PATH, movieSelected.getPosterPath());
+        cv.put(MovieListContract.MoviesEntry.MOVIE_RELEASE_DATE, movieSelected.getReleaseDate());
+        cv.put(MovieListContract.MoviesEntry.MOVIE_FAVORED,favBoolean);      //  cv.put(MovieListContract.MoviesEntry.MOVIE_FAVORED, movieSelected.getFavMovie());
+
         //cv.put(MovieListContract.MoviesEntry.MOVIE_CONTENT_URI, partySize);
+
+
+
 
         return myDb.insert(MovieListContract.MoviesEntry.MOVIE_TABLE_NAME, null, cv);
     }
@@ -176,15 +204,16 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     }
     public static ContentValues getMovieValues(MovieSelected movie) {
         final ContentValues values = new ContentValues();
+     //   values.put(MovieListContract.MoviesEntry.MOVIE_NAME, movie.getOriginalTitle());
         values.put(MovieListContract.MoviesEntry.MOVIE_ID, movie.getId());
         values.put(MovieListContract.MoviesEntry.MOVIE_TITLE, movie.getTitle());
         values.put(MovieListContract.MoviesEntry.MOVIE_OVERVIEW, movie.getOverview());
-        values.put(MovieListContract.MoviesEntry.MOVIE_VOTE_COUNT, movie.getVoteCount());
         values.put(MovieListContract.MoviesEntry.MOVIE_VOTE_AVERAGE, movie.getVoteAverage());
-        values.put(MovieListContract.MoviesEntry.MOVIE_RELEASE_DATE, movie.getReleaseDate());
-        values.put(MovieListContract.MoviesEntry.MOVIE_FAVORED, movie.getFavMovie());
+        values.put(MovieListContract.MoviesEntry.MOVIE_VOTE_COUNT, movie.getVoteCount());
         values.put(MovieListContract.MoviesEntry.MOVIE_POSTER_PATH, movie.getPosterPath());
         values.put(MovieListContract.MoviesEntry.MOVIE_BACKDROP_PATH, movie.getBackdrop());
+        values.put(MovieListContract.MoviesEntry.MOVIE_RELEASE_DATE, movie.getReleaseDate());
+        values.put(MovieListContract.MoviesEntry.MOVIE_FAVORED, movie.getFavMovie());
         return values;
     }
 
@@ -204,6 +233,27 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         if(uri != null) {
             Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
         }
+
+       /* if(currentMovie.getFavMovie()==false) {
+            currentMovie.setFavMovie(true);
+            favoriteButton.setSelected(true);
+            addNewFavorite(currentMovie);
+            //Toast.makeText(DetailActivity.this, "setFavMovie(true)", Toast.LENGTH_SHORT).show();
+
+        }else {
+            currentMovie.setFavMovie(false);
+            favoriteButton.setSelected(false);
+            // removeAFavorite(needs work);
+            // Toast.makeText(DetailActivity.this, "setFavMovie(false)", Toast.LENGTH_SHORT).show();
+        }
+
+        String result=currentMovie.getFavMovie()+"";
+
+        Toast.makeText(DetailActivity.this, currentMovie.getFavMovie()+"", Toast.LENGTH_SHORT).show();*/
+
+
+
+
 
 
         finish();
@@ -307,15 +357,16 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     public void nextWord() {
 
-        if (mData != null) {
+        if (mData != null && mData.moveToFirst()) {
             if (!mData.moveToNext()) {
                 mData.moveToFirst();
             }
-
+            Log.v("yyy38", mData.getString(mFavCol));
             favoriteButton.setSelected(Boolean.valueOf(mData.getString(mFavCol)));
 
 
         }
+
     }
     public class FavFetchTask extends AsyncTask<Void, Void, Cursor> {
 
@@ -350,6 +401,11 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             // Get the column index, in the Cursor, of each piece of data
             mIdCol = mData.getColumnIndex(MovieListContract.MoviesEntry.MOVIE_ID);
             mFavCol = mData.getColumnIndex(MovieListContract.MoviesEntry.MOVIE_FAVORED);
+            Log.v("yyy45", mData + "");
+            Log.v("yyy46", mIdCol + "");
+            Log.v("yyy47", mFavCol + "");
+           // Log.v("yyy48", mData.getString(mFavCol));
+
 
             // Set the initial state
             nextWord();

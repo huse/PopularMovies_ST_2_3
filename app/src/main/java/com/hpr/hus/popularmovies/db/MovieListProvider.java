@@ -56,12 +56,12 @@ public class MovieListProvider extends ContentProvider {
         switch (match) {
             // Query for the tasks directory
             case MOVIE:
-                Log.v("hhhhhhhhhhhquery6f", MOVIE + "");
-                Log.v("hhhhhhhhhhhquery6T", MOVIE_TABLE_NAME + "");
-                Log.v("hhhhhhhhhhhquery6p", projection + "");
-                Log.v("hhhhhhhhhhhquery6s", selection + "");
-                Log.v("hhhhhhhhhhhquery6sa", selectionArgs + "");
-                Log.v("hhhhhhhhhhhquery6so", sortOrder + "");
+                Log.v("hhhhhhhhhhhquery4f", MOVIE + "");
+                Log.v("hhhhhhhhhhhquery4T", MOVIE_TABLE_NAME + "");
+                Log.v("hhhhhhhhhhhquery4p", projection + "");
+                Log.v("hhhhhhhhhhhquery4s", selection + "");
+                Log.v("hhhhhhhhhhhquery4sa", selectionArgs + "");
+                Log.v("hhhhhhhhhhhquery4so", sortOrder + "");
                 retCursor = db.query(MOVIE_TABLE_NAME,
                         projection,
                         selection,
@@ -71,8 +71,8 @@ public class MovieListProvider extends ContentProvider {
                         sortOrder);
 
                 Log.v("hhhhhhhhhhhquery5", retCursor + "");
-
-            case MOVIE_ID:
+                break;
+          /*  case MOVIE_ID:
                 String id = uri.getPathSegments().get(1);
                 String mSelection = "_id=?";
                 String[] mSelectionArgs = new String[]{id};
@@ -85,7 +85,7 @@ public class MovieListProvider extends ContentProvider {
                         sortOrder);
 
                 Log.v("hhhhhhhhhhhquery6", retCursor + "");
-                break;
+                break;*/
             // Default exception
             default:
 
