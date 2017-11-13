@@ -48,7 +48,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private Menu mMenu;
-
+    private Cursor mData;
+    private int mIdCol, mFavCol;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.v("hhhh", "MainActivity_onCreate");
@@ -206,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
                         rvList.setAdapter(movieAdapter);
                         Log.v("hhhh2", movieName);
                     }else {
-
+                        new FavFetchTask().execute();
                         Toast.makeText(MainActivity.this, "No Movie to show", Toast.LENGTH_SHORT).show();
 
                     }
@@ -405,5 +406,93 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         }
     }*/
 
+    public class FavFetchTask extends AsyncTask<Void, Void, Cursor> {
 
+        // Invoked on a background thread
+        @Override
+        protected Cursor doInBackground(Void... params) {
+            // Make the query to get the data
+            Log.v("hhhh6", "DetailActivity doInBackground 696");
+
+            // Get the content resolver
+            ContentResolver resolver = getContentResolver();
+            Log.v("hhhh6", "DetailActivity doInBackground 6962");
+            // Call the query method on the resolver with the correct Uri from the contract class
+            Cursor cursor = resolver.query(MovieListContract.MoviesEntry.MOVIE_CONTENT_URI,
+                    null, null, null, MovieListContract.MoviesEntry.MOVIE_ID);
+            Log.v("hhhh6", "DetailActivity doInBackground 6964");
+            return cursor;
+        }
+
+
+        // Invoked on UI thread
+        @Override
+        protected void onPostExecute(Cursor cursor) {
+            super.onPostExecute(cursor);
+
+            mData = cursor;
+
+            mIdCol = mData.getColumnIndex(MovieListContract.MoviesEntry.MOVIE_ID);
+            mFavCol = mData.getColumnIndex(MovieListContract.MoviesEntry.MOVIE_FAVORED);
+
+            Log.v("yyy45", mData + "");
+            Log.v("yyy46", mIdCol + "");
+            Log.v("yyy47", mFavCol + "");
+
+
+            nextMovie();
+        }
+
+        public void nextMovie() {
+            if (mData != null) {
+
+                try {
+                    int counter=0;
+                    boolean bool=true;
+
+                    while (mData.moveToNext()&& bool) {
+
+                        counter++;
+
+                        /*if (Integer.parseInt(mData.getString(mIdCol)) == currentMovie.getId()) {
+                            favStatus= mData.getString(mFavCol).equals("1");
+                            favoriteButton.setSelected(favStatus);
+                            Log.v("yyy366", "Compare IDs : " + mData.getString(1)+"  vs  "+ currentMovie.getId());
+                            Log.v("yyy366", "mFavCol value is: " + mFavCol+"");
+                            Log.v("yyy366", "mFavCol string is: " + favStatus +"");
+
+
+                            movieExistsOnDB = true;
+                            bool =false;
+                        }*/
+                        Log.v("yyy38_counter", counter +"");
+                        Log.v("yyy38", mData.getString(0)+ " _ "+ mData.getString(1)+ " _ "+
+                                mData.getString(2)+ " _ "+
+                                mData.getString(3)+ " _ "+
+                                mData.getString(4)+ " _ "+
+                                mData.getString(5)+ " _ "+
+                                mData.getString(6)+ " _ "+
+                                mData.getString(7)+ " _ "+
+                                mData.getString(8)+ " _ "+
+                                mData.getString(9));
+                        Log.v("yyy39", mData.getString(mIdCol));
+                        Log.v("yyy391", mData.getString(mFavCol).equals("1") + "");
+
+
+                    }
+
+
+                } finally {
+                    mData.moveToFirst();
+                    // mData.close();
+                }
+            }else {
+                mData.moveToFirst();
+            }
+
+        }
+
+
+
+    }
 }

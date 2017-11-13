@@ -27,7 +27,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
         PreferenceScreen prefScreen = getPreferenceScreen();
         Log.v("tttttttttttt","SettingFragment 2 - onCreatePreferences 4");
         int count = prefScreen.getPreferenceCount();
-        Log.v("tttttttttttt","SettingFragment 2 - onCreatePreferences 5");
+        Log.v("ttttt_count", count+"");
 
         for (int i = 0; i < count; i++) {
             Log.v("tttttttttttt","SettingFragment 2 - onCreatePreferences 6");
@@ -35,6 +35,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
             if (!(p instanceof CheckBoxPreference)) {
                 Log.v("tttttttttttt","SettingFragment 2 - onCreatePreferences 8");
                 String value = sharedPreferences.getString(p.getKey(), "");
+                Log.v("ttttt_value",value);
                 setPreferenceSummary(p, value);
             }
         }
@@ -48,6 +49,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
         if (null != preference) {
             if (!(preference instanceof CheckBoxPreference)) {
                 String value = sharedPreferences.getString(preference.getKey(), "");
+                Log.v("ttttt_value2",value);
                 setPreferenceSummary(preference, value);
             }
         }
@@ -56,6 +58,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
 
     private void setPreferenceSummary(Preference preference, String value) {
         Log.v("tttttttttttt","setPreferenceSummary 2 - 1");
+        Log.v("ttttt_value3",value);
         if (preference instanceof ListPreference) {
             ListPreference listPreference = (ListPreference) preference;
             int prefIndex = listPreference.findIndexOfValue(value);
