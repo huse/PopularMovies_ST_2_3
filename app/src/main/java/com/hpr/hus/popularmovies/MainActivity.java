@@ -207,6 +207,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
                         rvList.setAdapter(movieAdapter);
                         Log.v("hhhh2", movieName);
                     }else {
+
                         new FavFetchTask().execute();
                         Toast.makeText(MainActivity.this, "No Movie to show", Toast.LENGTH_SHORT).show();
 
