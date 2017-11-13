@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.hpr.hus.popularmovies.db.MovieListContract;
+
 /**
  * Created by hk640d on 8/1/2017.
  */
@@ -123,7 +125,7 @@ public class MovieSelected implements Parcelable {
         dest.writeValue( mVoteCount);
         dest.writeString(mReleaseDate);
         dest.writeString(mBackdrop);
-        dest.writeValue (mIsFavMovie);
+       // dest.writeValue (mIsFavMovie);
         Log.v("kkkkkkkkkk3", "mIsFavMovie " + mIsFavMovie);
 
     }
@@ -139,7 +141,9 @@ public class MovieSelected implements Parcelable {
         mReleaseDate = in.readString();
         mBackdrop = in.readString();
         //mIsFavMovie = in.readByte() != 0;
-        mIsFavMovie = getFavMovie();
+       // mIsFavMovie = true;
+      // mIsFavMovie = getMovieValues(movieSelected).get(MovieListContract.MoviesEntry.MOVIE_FAVORED);
+        //getFavMovie();
 
         Log.v("kkkkkkkkkk", "mIsFavMovie " + mIsFavMovie);
 

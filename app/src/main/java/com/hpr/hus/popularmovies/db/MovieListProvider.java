@@ -12,6 +12,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.hpr.hus.popularmovies.MovieSelected;
+
 import static com.hpr.hus.popularmovies.db.MovieListContract.MoviesEntry.MOVIE_TABLE_NAME;
 /**
  * Created by wall on 11/4/17.
@@ -57,7 +59,7 @@ public class MovieListProvider extends ContentProvider {
             // Query for the tasks directory
             case MOVIE:
                 Log.v("hhhhhhhhhhhquery4f", MOVIE + "");
-                Log.v("hhhhhhhhhhhquery4T", MOVIE_TABLE_NAME + "");
+                Log.v("hhhhhhhhhhhquery4Table", MOVIE_TABLE_NAME + "");
                 Log.v("hhhhhhhhhhhquery4p", projection + "");
                 Log.v("hhhhhhhhhhhquery4s", selection + "");
                 Log.v("hhhhhhhhhhhquery4sa", selectionArgs + "");
@@ -72,7 +74,7 @@ public class MovieListProvider extends ContentProvider {
 
                 Log.v("hhhhhhhhhhhquery5", retCursor + "");
                 break;
-          /*  case MOVIE_ID:
+            case MOVIE_ID:
                 String id = uri.getPathSegments().get(1);
                 String mSelection = "_id=?";
                 String[] mSelectionArgs = new String[]{id};
@@ -85,7 +87,7 @@ public class MovieListProvider extends ContentProvider {
                         sortOrder);
 
                 Log.v("hhhhhhhhhhhquery6", retCursor + "");
-                break;*/
+                break;
             // Default exception
             default:
 
@@ -139,44 +141,29 @@ public class MovieListProvider extends ContentProvider {
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String s, @Nullable String[] strings) {
-        return 0;
-    }
-
-    @Override
-    public int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] values) {
         final SQLiteDatabase db = mMovieListDBhelper.getWritableDatabase();
-
-        switch (sUriMatcher.match(uri)) {
-
-            case MOVIE:
-                db.beginTransaction();
-                int rowsInserted = 0;
-                try {
-                    for (ContentValues value : values) {
-                        long movieId =
-                                value.getAsLong(MovieListContract.MoviesEntry.MOVIE_ID);
-                        if (movieId==0) {
-                            throw new IllegalArgumentException("movie id is not available");
-                        }
-
-                        long _id = db.insert(MovieListContract.MoviesEntry.MOVIE_TABLE_NAME, null, value);
-                        if (_id != -1) {
-                            rowsInserted++;
-                        }
-                    }
-                    db.setTransactionSuccessful();
-                } finally {
-                    db.endTransaction();
-                }
-
-                if (rowsInserted > 0) {
-                    getContext().getContentResolver().notifyChange(uri, null);
-                }
-
-                return rowsInserted;
-
-            default:
-                return super.bulkInsert(uri, values);
+        final int match = sUriMatcher.match(uri);
+        int retrieveValue;
+        switch (match) {
+            case MOVIE: {
+                retrieveValue = db.update(MovieListContract.MoviesEntry.MOVIE_TABLE_NAME,
+                        contentValues,
+                        s,
+                        strings);
+                break;
+            }
+            default: {
+                throw new UnsupportedOperationException("Unknown insert uri: " + uri);
+            }
         }
+        notifyContentResolver(uri);
+        return retrieveValue;
     }
+    private void notifyContentResolver(Uri uri) {
+        getContext().getContentResolver().notifyChange(uri, null);
+    }
+
+
+
+
 }
