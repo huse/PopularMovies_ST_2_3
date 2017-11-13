@@ -60,6 +60,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     private int mIdCol, mFavCol;
     private MovieAdapter movieAdapter;
     private boolean favStatus =false;
+    private boolean movieExistsOnDB = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,12 +102,10 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             //boolean favoredBool = Boolean.valueOf(MovieListContract.MoviesEntry.MOVIE_FAVORED);
             ////at this line the fav button ger the status:
 
-            boolean favoredBool = !Boolean.valueOf(getMovieValues(currentMovie).get(MovieListContract.MoviesEntry.MOVIE_FAVORED).toString());
-            movie.setFavMovie(favoredBool);
-            Log.v("hhhh6_id", "movie   " + currentMovie.getId());
-            Log.v("hhhh6_fav", "movie   " + getMovieValues(currentMovie).get(MovieListContract.MoviesEntry.MOVIE_FAVORED));
+
+            /*Log.v("hhhh6_fav", "movie   " + getMovieValues(currentMovie).get(MovieListContract.MoviesEntry.MOVIE_FAVORED));
             Log.v("hhhh6_title", "movie   " + getMovieValues(currentMovie).get(MovieListContract.MoviesEntry.MOVIE_TITLE));
-            Log.v("hhhh6_id-current", "movie   " + getMovieValues(currentMovie).get(MovieListContract.MoviesEntry.MOVIE_ID));
+            Log.v("hhhh6_id-current", "movie   " + getMovieValues(currentMovie).get(MovieListContract.MoviesEntry.MOVIE_ID));*/
 
 
             //favoriteButton.setSelected(favoredBool);
@@ -117,6 +116,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
 
             new FavFetchTask().execute();
+
+            Log.v("hhhh6_id", "movie   " + currentMovie.getId());
             originalTitleTV.setText(movie.getOriginalTitle());
 
             Picasso.with(this)
@@ -145,21 +146,24 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             @Override
             public void onClick(View view) {
 
-                Log.v("hhhh7_id", "movie   " + currentMovie.getId());
+               /* Log.v("hhhh7_id", "movie   " + currentMovie.getId());
                 Log.v("hhhh7_fav", "movie   " + currentMovie.getFavMovie());
                 Log.v("hhhh7_fav_db", "movie   " + getMovieValues(currentMovie).get(MovieListContract.MoviesEntry.MOVIE_FAVORED));
                 Log.v("hhhh7_title", "movie   " + getMovieValues(currentMovie).get(MovieListContract.MoviesEntry.MOVIE_TITLE));
-                Log.v("hhhh7_id-current", "movie   " + getMovieValues(currentMovie).get(MovieListContract.MoviesEntry.MOVIE_ID));
-
-                boolean favoredMovie = !Boolean.valueOf(getMovieValues(currentMovie).get(MovieListContract.MoviesEntry.MOVIE_FAVORED).toString());
+                Log.v("hhhh7_id-current", "movie   " + getMovieValues(currentMovie).get(MovieListContract.MoviesEntry.MOVIE_ID));*/
+                new FavFetchTask().execute();
+                Log.v("hhhh6_h", "mData   " + mData);
+                Log.v("hhhh6_h", "mFavCol   " + mFavCol);
+              //  boolean favoredMovie = !mData.getString(mFavCol).equals("1");
+                boolean favoredMovie = !favStatus;
                 Log.v("hhhh7_fav_bool", "movie   " + favoredMovie);
-
-               // addNewFavorite(currentMovie, favoredMovie);
+                Log.v("hhhh7_onclick button_ID", mData.getString(mIdCol));
+                addNewFavorite(currentMovie, favoredMovie);
                 favStatus = favoredMovie;
                 //   getContentResolver().query(mUri,null,null,null,MovieListContract.MoviesEntry.MOVIE_FAVORED ).get(MovieListContract.MoviesEntry.MOVIE_ID);;
                 // Uri singleUri = ContentUris.withAppendedId(UserDictionary.Words.CONTENT_URI,4);
 
-                Log.v("hhhh7_fav_db", "movie   " + getMovieValues(currentMovie).get(MovieListContract.MoviesEntry.MOVIE_FAVORED));
+              //  Log.v("hhhh7_fav_db", "movie   " + getMovieValues(currentMovie).get(MovieListContract.MoviesEntry.MOVIE_FAVORED));
                 //  nextWord();
                 favoriteButton.setSelected(favoredMovie);
                 /*if(currentMovie.getFavMovie()==false) {
@@ -198,8 +202,28 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             }
         });
 
-
+       /* Log.v("hhhh6_h", "mData   " + mData);
+        Log.v("hhhh6_h", "mFavCol   " + mFavCol);
+        boolean favoredBool = Boolean.valueOf(mData.getString(mFavCol));
+        currentMovie.setFavMovie(favoredBool);*/
     }
+
+
+   private Cursor cursorCaller() { ContentResolver resolver = getContentResolver();
+            Log.v("hhhh6", "DetailActivity doInBackground 6962");
+    // Call the query method on the resolver with the correct Uri from the contract class
+       int idCol,favCol;
+    Cursor cursor = resolver.query(MovieListContract.MoviesEntry.MOVIE_CONTENT_URI,
+            null, null, null, MovieListContract.MoviesEntry.MOVIE_ID);
+
+       idCol = cursor.getColumnIndex(MovieListContract.MoviesEntry.MOVIE_ID);
+       favCol = cursor.getColumnIndex(MovieListContract.MoviesEntry.MOVIE_FAVORED);
+
+
+   return cursor;
+   }
+
+
 
     private long addNewFavorite(MovieSelected movieSelected, boolean favBoolean) {
         ContentValues cv = new ContentValues();
@@ -215,47 +239,44 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         cv.put(MovieListContract.MoviesEntry.MOVIE_BACKDROP_PATH, movieSelected.getBackdrop());
         cv.put(MovieListContract.MoviesEntry.MOVIE_POSTER_PATH, movieSelected.getPosterPath());
         cv.put(MovieListContract.MoviesEntry.MOVIE_RELEASE_DATE, movieSelected.getReleaseDate());
-        cv.put(MovieListContract.MoviesEntry.MOVIE_FAVORED, favBoolean);      //  cv.put(MovieListContract.MoviesEntry.MOVIE_FAVORED, movieSelected.getFavMovie());
-        Log.v("hhhh9_fav_db", "addNewFavorite   " + getMovieValues(movieSelected).get(MovieListContract.MoviesEntry.MOVIE_FAVORED));
+        cv.put(MovieListContract.MoviesEntry.MOVIE_FAVORED, favBoolean);
+        Log.v("hhhh7_fav_bool", "favBoolean in addNewFavorite method   " + favBoolean);
+        //  cv.put(MovieListContract.MoviesEntry.MOVIE_FAVORED, movieSelected.getFavMovie());
+       /* Log.v("hhhh9_fav_db", "addNewFavorite   " + getMovieValues(movieSelected).get(MovieListContract.MoviesEntry.MOVIE_FAVORED));
         Log.v("hhhh9_fav_db", "movie   " + getMovieValues(currentMovie).get(MovieListContract.MoviesEntry.MOVIE_FAVORED));
         Log.v("hhhh9_title", "movie   " + getMovieValues(currentMovie).get(MovieListContract.MoviesEntry.MOVIE_TITLE));
-        Log.v("hhhh9_id-current", "movie   " + getMovieValues(currentMovie).get(MovieListContract.MoviesEntry.MOVIE_ID));
+        Log.v("hhhh9_id-current", "movie   " + getMovieValues(currentMovie).get(MovieListContract.MoviesEntry.MOVIE_ID));*/
         //cv.put(MovieListContract.MoviesEntry.MOVIE_CONTENT_URI, partySize);
-        Uri uri = getContentResolver().insert(MovieListContract.MoviesEntry.MOVIE_CONTENT_URI, cv);
+     /*   Uri uri = getContentResolver().insert(MovieListContract.MoviesEntry.MOVIE_CONTENT_URI, cv);
         Log.v("hhhh9_fav_db2", "addNewFavorite   " + getMovieValues(movieSelected).get(MovieListContract.MoviesEntry.MOVIE_FAVORED));
         if (uri != null) {
             Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
-        }
-
+        }*/
+        //clearTable();
         // return getContentResolver().insert(MovieListContract.MoviesEntry.MOVIE_CONTENT_URI, cv);
 
-        myDb.update(MovieListContract.MoviesEntry.MOVIE_TABLE_NAME,cv, "where MOVIE_ID ="+ movieSelected.getId(), null);
-        return myDb.insert(MovieListContract.MoviesEntry.MOVIE_TABLE_NAME, null, cv);
+        Long result;
+        if (movieExistsOnDB) {
+            result=  Long.parseLong(String.valueOf(getContentResolver().update(MovieListContract.MoviesEntry.MOVIE_CONTENT_URI, cv, "MOVIE_ID = " + movieSelected.getId(), null)));
+
+           // result=  Long.parseLong(String.valueOf(myDb.update(MovieListContract.MoviesEntry.MOVIE_TABLE_NAME, cv, "where MOVIE_ID =" + movieSelected.getId(), null)));
+        }else {
+          //  result= myDb.insert(MovieListContract.MoviesEntry.MOVIE_TABLE_NAME, null, cv);
+            result= 0l;
+                    getContentResolver().insert(MovieListContract.MoviesEntry.MOVIE_CONTENT_URI, cv);
+        }
+        return result;
 
     }
-
+    public void clearTable()   {
+        myDb.delete(MovieListContract.MoviesEntry.MOVIE_TABLE_NAME, null,null);
+    }
     private boolean removeAFavorite(long id) {
 
         return myDb.delete(MovieListContract.MoviesEntry.MOVIE_TABLE_NAME, MovieListContract.MoviesEntry.MOVIE_ID + "=" + id, null) > 0;
     }
 
-    public static ContentValues getMovieValues(MovieSelected movie) {
-        final ContentValues values = new ContentValues();
-        //   values.put(MovieListContract.MoviesEntry.MOVIE_NAME, movie.getOriginalTitle());
-        values.put(MovieListContract.MoviesEntry.MOVIE_ID, movie.getId());
-        values.put(MovieListContract.MoviesEntry.MOVIE_TITLE, movie.getTitle());
-        values.put(MovieListContract.MoviesEntry.MOVIE_OVERVIEW, movie.getOverview());
-        values.put(MovieListContract.MoviesEntry.MOVIE_VOTE_AVERAGE, movie.getVoteAverage());
-        values.put(MovieListContract.MoviesEntry.MOVIE_VOTE_COUNT, movie.getVoteCount());
-        values.put(MovieListContract.MoviesEntry.MOVIE_POSTER_PATH, movie.getPosterPath());
-        values.put(MovieListContract.MoviesEntry.MOVIE_BACKDROP_PATH, movie.getBackdrop());
-        values.put(MovieListContract.MoviesEntry.MOVIE_RELEASE_DATE, movie.getReleaseDate());
-        values.put(MovieListContract.MoviesEntry.MOVIE_FAVORED, movie.getFavMovie());
-        // FavFetchTask favFetchTask = new FavFetchTask();
-        // getMovieValues(currentMovie).get(MovieListContract.MoviesEntry.MOVIE_ID);
 
-        return values;
-    }
 
     public void onClickFavorite() {
         if (currentMovie == null) {
@@ -284,25 +305,13 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
 
 
- /*   public void favoredMovieTrue(MovieSelected movie, Boolean favored) {
-        setMovieTrueFavored(movie.getId(), favored);
-    }*/
-/*    public void setMovieTrueFavored(Long movieId, Boolean favored) {
-        if (currentMovie.getId() != movieId){
-
-            return;
-        }
-        currentMovie.setFavMovie(favored);
-        favoriteButton.setSelected(favored);
-    }*/
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 /*
         switch (id) {
 
-//          COMPLETED (23) If the loader requested is our detail loader, return the appropriate CursorLoader
-            case ID_DETAIL_LOADER:
+//
 
                 return new CursorLoader(this,
                         MovieListContract.MoivieEntry.CONTENT_URI,
@@ -409,121 +418,61 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             Log.v("yyy45", mData + "");
             Log.v("yyy46", mIdCol + "");
             Log.v("yyy47", mFavCol + "");
-            //  Log.v("yyy48", mData.getString(mFavCol));
 
 
-            // Set the initial state
-            addUpdateNewFavorite(currentMovie, favStatus, hasMovieCheckDB(cursor));
-            nextWord();
+            nextMovie();
         }
 
-        public void nextWord() {
+        public void nextMovie() {
             if (mData != null) {
+
                 try {
                     int counter=0;
-                    while (mData.moveToNext()) {
+                    boolean bool=true;
+
+                    while (mData.moveToNext()&& bool) {
+
                          counter++;
 
-                        /*if (!mData.moveToNext()) {
-                            mData.moveToFirst();
-                            Log.v("yyy37", mData.getString(mFavCol));
-                        }*/
-
                         if (Integer.parseInt(mData.getString(mIdCol)) == currentMovie.getId()) {
-                            favoriteButton.setSelected((mFavCol != 0));
-                        } /*else {
-                            if (!mData.moveToNext()) {
+                            favStatus= mData.getString(mFavCol).equals("1");
+                            favoriteButton.setSelected(favStatus);
+                            Log.v("yyy366", "Compare IDs : " + mData.getString(1)+"  vs  "+ currentMovie.getId());
+                            Log.v("yyy366", "mFavCol value is: " + mFavCol+"");
+                            Log.v("yyy366", "mFavCol string is: " + favStatus +"");
 
-                                Log.v("yyy20", mData.getString(mIdCol));
-                                Log.v("yyy21", mData.getString(mFavCol));
-                                return;
-                            }*/
-                       // }
-                        Log.v("yyy38", counter+"");
-                        Log.v("yyy38", mData.getString(0));
-                        Log.v("yyy38", mData.getString(1));
-                        Log.v("yyy38", mData.getString(2));
-                        Log.v("yyy38", mData.getString(3));
-                        Log.v("yyy38", mData.getString(4));
-                        Log.v("yyy38", mData.getString(5));
-                        Log.v("yyy38", mData.getString(6));
-                        Log.v("yyy38", mData.getString(7));
-                        Log.v("yyy38", mData.getString(8));
-                        Log.v("yyy38", mData.getString(9));
 
+                            movieExistsOnDB = true;
+                            bool =false;
+                        }
+                        Log.v("yyy38_counter", counter +"");
+                        Log.v("yyy38", mData.getString(0)+ " _ "+ mData.getString(1)+ " _ "+
+                        mData.getString(2)+ " _ "+
+                        mData.getString(3)+ " _ "+
+                        mData.getString(4)+ " _ "+
+                        mData.getString(5)+ " _ "+
+                        mData.getString(6)+ " _ "+
+                        mData.getString(7)+ " _ "+
+                        mData.getString(8)+ " _ "+
+                        mData.getString(9));
                         Log.v("yyy39", mData.getString(mIdCol));
-                        Log.v("yyy391", Boolean.valueOf(mData.getString(mFavCol)) + "");
+                        Log.v("yyy391", mData.getString(mFavCol).equals("1") + "");
 
-                       // favoriteButton.setSelected((mFavCol != 0));
-                        // Toast.makeText(DetailActivity.this, Boolean.valueOf(mData.getString(mFavCol)) +"", Toast.LENGTH_SHORT).show();
 
                     }
 
 
                 } finally {
-                    mData.close();
+                   mData.moveToFirst();
+                   // mData.close();
                 }
-            }
-
-        }
-        private boolean hasMovieCheckDB(Cursor cursor){
-            String selectString = "SELECT * FROM " + MovieListContract.MoviesEntry.MOVIE_TABLE_NAME + " WHERE " + MovieListContract.MoviesEntry.MOVIE_ID + " =?";
-            boolean hasObject = false;
-            if(cursor.moveToFirst()){
-                hasObject = true;
-
-                int count = 0;
-                while(cursor.moveToNext()){
-                    count++;
-                }
-
-                Log.d(TAG, String.format("%d records found", count));
-
-
-
-            }
-
-            cursor.close();
-
-            return hasObject;
-        }
-
-        private long addUpdateNewFavorite(MovieSelected movieSelected, boolean favBoolean,boolean movieExist) {
-            ContentValues cv = new ContentValues();
-            Log.v("hhhh9", "addNewFavorite   " + favBoolean);
-            String changeFavoSQL= "";
-            // cv.put(MovieListContract.MoviesEntry.MOVIE_NAME, movieSelected.getOriginalTitle());
-            // cv.put(MovieListContract.MoviesEntry.MOVIE_TABLE_NAME,  movieSelected.getTableName);
-            cv.put(MovieListContract.MoviesEntry.MOVIE_ID, movieSelected.getId());
-            cv.put(MovieListContract.MoviesEntry.MOVIE_TITLE, movieSelected.getTitle());
-            cv.put(MovieListContract.MoviesEntry.MOVIE_OVERVIEW, movieSelected.getOverview());
-            cv.put(MovieListContract.MoviesEntry.MOVIE_VOTE_AVERAGE, movieSelected.getVoteAverage());
-            cv.put(MovieListContract.MoviesEntry.MOVIE_VOTE_COUNT, movieSelected.getVoteCount());
-            cv.put(MovieListContract.MoviesEntry.MOVIE_BACKDROP_PATH, movieSelected.getBackdrop());
-            cv.put(MovieListContract.MoviesEntry.MOVIE_POSTER_PATH, movieSelected.getPosterPath());
-            cv.put(MovieListContract.MoviesEntry.MOVIE_RELEASE_DATE, movieSelected.getReleaseDate());
-            cv.put(MovieListContract.MoviesEntry.MOVIE_FAVORED, favBoolean);      //  cv.put(MovieListContract.MoviesEntry.MOVIE_FAVORED, movieSelected.getFavMovie());
-            Log.v("hhhh9_fav_db", "addNewFavorite   " + getMovieValues(movieSelected).get(MovieListContract.MoviesEntry.MOVIE_FAVORED));
-            Log.v("hhhh9_fav_db", "movie   " + getMovieValues(currentMovie).get(MovieListContract.MoviesEntry.MOVIE_FAVORED));
-            Log.v("hhhh9_title", "movie   " + getMovieValues(currentMovie).get(MovieListContract.MoviesEntry.MOVIE_TITLE));
-            Log.v("hhhh9_id-current", "movie   " + getMovieValues(currentMovie).get(MovieListContract.MoviesEntry.MOVIE_ID));
-            //cv.put(MovieListContract.MoviesEntry.MOVIE_CONTENT_URI, partySize);
-            Uri uri = getContentResolver().insert(MovieListContract.MoviesEntry.MOVIE_CONTENT_URI, cv);
-            Log.v("hhhh9_fav_db2", "addNewFavorite   " + getMovieValues(movieSelected).get(MovieListContract.MoviesEntry.MOVIE_FAVORED));
-            if (uri != null) {
-                Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
-            }
-
-            // return getContentResolver().insert(MovieListContract.MoviesEntry.MOVIE_CONTENT_URI, cv);
-            Long result;
-            if (movieExist) {
-
-                result=  Long.parseLong(String.valueOf(myDb.update(MovieListContract.MoviesEntry.MOVIE_TABLE_NAME, cv, "where MOVIE_ID =" + movieSelected.getId(), null)));
             }else {
-                result= myDb.insert(MovieListContract.MoviesEntry.MOVIE_TABLE_NAME, null, cv);
+                mData.moveToFirst();
             }
-            return result;
 
         }
+
+
+
     }
 }
