@@ -224,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
                         Log.v("hhhh2", movieName);
                     }else {
 
-                        new FavFetchTask().execute();
+                       // new FavFetchTask().execute();
                         //MovieSelected[] movieSelecteds = new MovieSelected(mMovieArray );
 
                        // movieAdapter = new MovieAdapter(movieSelecteds, getApplicationContext(), clickHandler);
