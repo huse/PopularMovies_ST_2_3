@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Parcel;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -43,7 +44,20 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
 
     private RecyclerView rvList;
     MovieAdapter movieAdapter;
+    /// for fav functionality
 
+    private String mPosterPath;
+    private String mOverview;
+    private Double mVoteAverage;
+    private String mReleaseDate;
+
+    private long mId;
+    private String mTitle;
+    private long mVoteCount;
+    private boolean mIsFavMovie;
+    private String mBackdrop;
+    private Object[] mMovieArray;
+    ///
     MovieAdapterOnClickHandler clickHandler;
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -197,7 +211,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
                     String movieName="";
                     if (movies!=null && movies.length!=0) {
                         for (MovieSelected ms : movies) {
+
                             movieName = movieName + " _ " + ms.getOriginalTitle();
+                            Log.v("hhhh2_onFetchMoviesTask", movieName+"");
                         }
                         Log.v("hhhh2_this", this.getClass().toString());
                         Log.v("hhhh2_getApplic", getApplicationContext().getClass().toString());
@@ -209,6 +225,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
                     }else {
 
                         new FavFetchTask().execute();
+                        //MovieSelected[] movieSelecteds = new MovieSelected(mMovieArray );
+
+                       // movieAdapter = new MovieAdapter(movieSelecteds, getApplicationContext(), clickHandler);
+
+                      //  rvList.setAdapter(movieAdapter);
+
                         Toast.makeText(MainActivity.this, "No Movie to show", Toast.LENGTH_SHORT).show();
 
                     }
@@ -478,6 +500,21 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
                                 mData.getString(9));
                         Log.v("yyy39", mData.getString(mIdCol));
                         Log.v("yyy391", mData.getString(mFavCol).equals("1") + "");
+                        mPosterPath = mData.getString(7);
+                        mOverview = mData.getString(3);
+                        mVoteAverage = Double.parseDouble(mData.getString(4));
+                        mReleaseDate = mData.getString(8);
+
+                        mId = Long.parseLong(mData.getString(1));
+                        mTitle = mData.getString(2);
+                        mVoteCount = Long.parseLong(mData.getString(5));
+                        mIsFavMovie = mData.getString(9).equals("1");
+                        mBackdrop = mData.getString(6);
+                        Object[]  tempArray = {mId,  mTitle, mPosterPath,
+                                mVoteAverage,  mVoteCount, mReleaseDate,
+                                mBackdrop,  mIsFavMovie};
+                        mMovieArray[counter]=tempArray;
+                       // Parcel mParcel =
 
 
                     }

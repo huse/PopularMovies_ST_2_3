@@ -25,6 +25,24 @@ public class MovieSelected implements Parcelable {
     private boolean mIsFavMovie;
     private String mBackdrop;
 
+    public MovieSelected(Object[] mArrays){
+
+
+
+
+        this.mPosterPath = mArrays[7].toString();
+        this.mVoteAverage = Double.parseDouble(mArrays[4].toString());
+        this.mReleaseDate = mArrays[8].toString();
+        this.mId = Long.parseLong(mArrays[1].toString());
+        this.mTitle = mArrays[2].toString();
+        this.mVoteCount = Long.parseLong(mArrays[5].toString());
+        this.mIsFavMovie = mArrays[9].toString().equals("1");
+        this.mBackdrop = mArrays[6].toString();
+        this.mOverview = mArrays[3].toString();
+
+
+
+    }
     public MovieSelected() {
         Log.v("hhhh5", "MovieSelected");
     }
@@ -130,7 +148,7 @@ public class MovieSelected implements Parcelable {
 
     }
 
-    private MovieSelected(Parcel in) {
+    public MovieSelected(Parcel in) {
         mId = in.readLong();
         mTitle = in.readString();
         mOriginalTitle = in.readString();

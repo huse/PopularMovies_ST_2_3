@@ -151,13 +151,13 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 Log.v("hhhh7_fav_db", "movie   " + getMovieValues(currentMovie).get(MovieListContract.MoviesEntry.MOVIE_FAVORED));
                 Log.v("hhhh7_title", "movie   " + getMovieValues(currentMovie).get(MovieListContract.MoviesEntry.MOVIE_TITLE));
                 Log.v("hhhh7_id-current", "movie   " + getMovieValues(currentMovie).get(MovieListContract.MoviesEntry.MOVIE_ID));*/
-                new FavFetchTask().execute();
+               // new FavFetchTask().execute();
                 Log.v("hhhh6_h", "mData   " + mData);
                 Log.v("hhhh6_h", "mFavCol   " + mFavCol);
               //  boolean favoredMovie = !mData.getString(mFavCol).equals("1");
                 boolean favoredMovie = !favStatus;
-                Log.v("hhhh7_fav_bool", "movie   " + favoredMovie);
-                Log.v("hhhh7_onclick button_ID", mData.getString(mIdCol));
+                //Log.v("hhhh7_fav_bool", "movie   " + favoredMovie);
+               // Log.v("hhhh7_onclick button_ID", mData.getString(mIdCol));
                 addNewFavorite(currentMovie, favoredMovie);
                 favStatus = favoredMovie;
                 //   getContentResolver().query(mUri,null,null,null,MovieListContract.MoviesEntry.MOVIE_FAVORED ).get(MovieListContract.MoviesEntry.MOVIE_ID);;
