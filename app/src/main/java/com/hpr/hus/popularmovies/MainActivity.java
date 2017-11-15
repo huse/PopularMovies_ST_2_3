@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
 
 
 
-    private void getMoviesFromTMDb(String sortMethod) {
+    private void getMoviesFromTMDb(String sortValueFromSortMethod) {
         if (isNetworkAvailable()) {
             Log.v("hhhh2","NetworkAvailable");
             String apiKey = getString(R.string.key_themoviedb);
@@ -239,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
 
 
             AsyncTaskFetchPopularMovies movieTask = new AsyncTaskFetchPopularMovies(taskCompleted, apiKey);
-            movieTask.execute(sortMethod);
+            movieTask.execute(sortValueFromSortMethod);
         } else {
             Log.v("gggg","NO-----------NetworkAvailable");
             Toast.makeText(this, getString(R.string.error_need_internet), Toast.LENGTH_LONG).show();
