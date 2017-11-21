@@ -6,4 +6,5 @@ package com.hpr.hus.popularmovies;
 
 interface TaskInterfaceCompleted {
     void onFetchMoviesTaskCompleted(MovieSelected[] movies);
+    void onDbFavTaskCompeted();
 }

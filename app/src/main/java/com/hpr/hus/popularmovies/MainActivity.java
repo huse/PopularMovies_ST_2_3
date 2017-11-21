@@ -235,11 +235,17 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
 
                     }
                 }
+
+                @Override
+                public void onDbFavTaskCompeted() {
+
+                }
             };
 
 
             AsyncTaskFetchPopularMovies movieTask = new AsyncTaskFetchPopularMovies(taskCompleted, apiKey);
             movieTask.execute(sortValueFromSortMethod);
+            new FavFetchTask().execute();
         } else {
             Log.v("gggg","NO-----------NetworkAvailable");
             Toast.makeText(this, getString(R.string.error_need_internet), Toast.LENGTH_LONG).show();
