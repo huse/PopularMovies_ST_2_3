@@ -20,6 +20,16 @@ public class AsyncTaskFetchFavorite  extends AsyncTask<String, Void, MovieSelect
     private int   cursorLength;
     private int mIdCol,mTitleCol,mOverviewCol,mVoteAverageCol,mVoteCountCol,mBackDropPathCol,mPosterPathCol,mReleaseDateCol,mFavoredCol;
 
+    long mId;
+    String mTitle;
+    String mOverview;
+    double mVoteAverage;
+    long mVoteCount ;
+    String mBackdrop;
+    String mPosterPath;
+    String mReleaseDate;
+    Boolean mIsFavMovie;
+
     public AsyncTaskFetchFavorite(TaskInterfaceCompleted listener, Cursor cursor) {
         super();
         Log.v("hhhh3", "AsyncTaskFetchFavorite");
@@ -27,12 +37,6 @@ public class AsyncTaskFetchFavorite  extends AsyncTask<String, Void, MovieSelect
         this.cursor = cursor;
         cursorLength=this.cursor.getCount();
         Log.v("pppp41", "cursorLength  " +cursor.getCount());
-
-    }
-
-
-    private MovieSelected[] getMovieDataFromDB (Cursor mData){
-
         mIdCol = cursor.getColumnIndex(MovieListContract.MoviesEntry.MOVIE_ID);
         mTitleCol = cursor.getColumnIndex(MovieListContract.MoviesEntry.MOVIE_TITLE);
         mOverviewCol = cursor.getColumnIndex(MovieListContract.MoviesEntry.MOVIE_OVERVIEW);
@@ -42,11 +46,11 @@ public class AsyncTaskFetchFavorite  extends AsyncTask<String, Void, MovieSelect
         mPosterPathCol = cursor.getColumnIndex(MovieListContract.MoviesEntry.MOVIE_POSTER_PATH);
         mReleaseDateCol = cursor.getColumnIndex(MovieListContract.MoviesEntry.MOVIE_RELEASE_DATE);
         mFavoredCol = cursor.getColumnIndex(MovieListContract.MoviesEntry.MOVIE_FAVORED);
+    }
 
 
-
-
-        MovieSelected[] movies = new MovieSelected[cursorLength];
+    private MovieSelected[] getMovieDataFromDB (Cursor mData){
+            MovieSelected[] movies = new MovieSelected[cursorLength];
 
         for (int i = 0; i < cursorLength; i++) {
 
@@ -54,17 +58,17 @@ public class AsyncTaskFetchFavorite  extends AsyncTask<String, Void, MovieSelect
             iterateCursor(cursor);
             Log.v("pppp51", cursor + "");
             Log.v("pppp52", "cursorLength  " + cursor.getCount());
-            cursor.moveToNext();
-            Log.v("pppp53", "mIdCol  " + cursor.getString(1));
-            long mId = Long.parseLong(cursor.getString(mIdCol));
-            String mTitle = cursor.getString(mTitleCol);
-            String mOverview = cursor.getString(mOverviewCol);
-            double mVoteAverage = Double.parseDouble(cursor.getString(mVoteAverageCol));
-            long mVoteCount = Long.parseLong(cursor.getString(mVoteCountCol));
-            String mBackdrop = cursor.getString(mBackDropPathCol);
-            String mPosterPath = cursor.getString(mPosterPathCol);
-            String mReleaseDate = cursor.getString(mReleaseDateCol);
-            Boolean mIsFavMovie = cursor.getString(mFavoredCol).equals("1");
+           // cursor.moveToNext();
+        //   Log.v("pppp53", "mIdCol  " + cursor.getString(1));
+            /*mId = Long.parseLong(cursor.getString(mIdCol));
+            mTitle = cursor.getString(mTitleCol);
+            mOverview = cursor.getString(mOverviewCol);
+            mVoteAverage = Double.parseDouble(cursor.getString(mVoteAverageCol));
+            mVoteCount = Long.parseLong(cursor.getString(mVoteCountCol));
+            mBackdrop = cursor.getString(mBackDropPathCol);
+            mPosterPath = cursor.getString(mPosterPathCol);
+            mReleaseDate = cursor.getString(mReleaseDateCol);
+            mIsFavMovie = cursor.getString(mFavoredCol).equals("1");*/
 
 
 
@@ -81,40 +85,66 @@ public class AsyncTaskFetchFavorite  extends AsyncTask<String, Void, MovieSelect
             movies[i].setVoteCount(mVoteCount);
             movies[i].setFavMovie(mIsFavMovie);
             movies[i].setBackdrop(mBackdrop);
+            Log.v("pppp71", movies[i].toString());
+            Log.v("pppp72", " movies[i] "+i + "   "+ movies[i].getFavMovie());
+            Log.v("pppp73", " Movie list  values "+ i + "   "+ getMovieValues(movies[i]));
 
-            Log.v("SSSSSSSSSddd", " movies[i] "+i + "   "+ movies[i].getFavMovie());
+
 
         }
 
         return movies;
     }
 
-
+MovieSelected finalMovieSelected;
 
     @Override
     protected MovieSelected[] doInBackground(String... strings) {
         return getMovieDataFromDB(cursor);
     }
+    private String getMovieValues( MovieSelected movies){
+        String result=        movies.getPosterPath() +
+        movies.getOverview() +
+        movies.getVoteAverage()+
+        movies.getReleaseDate()+
+        /// stage 2
+        movies.getId()+
+        movies.getTitle()+
+
+        movies.getVoteCount()+
+        movies.getFavMovie()+
+        movies.getBackdrop();
+        return result;
+    }
     private void  iterateCursor(Cursor mData    ){
         int counter=0;
-        while (mData.moveToNext()) {
+      //  while (mData.moveToNext()) {
+       if( mData.moveToNext()) {
+           counter++;
 
-            counter++;
+           Log.v("ppp37_counter", counter + "");
+           Log.v("ppp38", mData.getString(0) + " _ " + mData.getString(1) + " _ " +
+                   mData.getString(2) + " _ " +
+                   mData.getString(3) + " _ " +
+                   mData.getString(4) + " _ " +
+                   mData.getString(5) + " _ " +
+                   mData.getString(6) + " _ " +
+                   mData.getString(7) + " _ " +
+                   mData.getString(8) + " _ " +
+                   mData.getString(9));
+           mId = Long.parseLong(cursor.getString(mIdCol));
+           mTitle = cursor.getString(mTitleCol);
+           mOverview = cursor.getString(mOverviewCol);
+           mVoteAverage = Double.parseDouble(cursor.getString(mVoteAverageCol));
+           mVoteCount = Long.parseLong(cursor.getString(mVoteCountCol));
+           mBackdrop = cursor.getString(mBackDropPathCol);
+           mPosterPath = cursor.getString(mPosterPathCol);
+           mReleaseDate = cursor.getString(mReleaseDateCol);
+           mIsFavMovie = cursor.getString(mFavoredCol).equals("1");
+           Log.v("ppp39", mData.getString(mIdCol));
+       } else{
+           mData.moveToFirst();
+       }
 
-            Log.v("ppp37_counter", counter +"");
-            Log.v("ppp38", mData.getString(0)+ " _ "+ mData.getString(1)+ " _ "+
-                    mData.getString(2)+ " _ "+
-                    mData.getString(3)+ " _ "+
-                    mData.getString(4)+ " _ "+
-                    mData.getString(5)+ " _ "+
-                    mData.getString(6)+ " _ "+
-                    mData.getString(7)+ " _ "+
-                    mData.getString(8)+ " _ "+
-                    mData.getString(9));
-            Log.v("ppp39", mData.getString(mIdCol));
-
-            mData.moveToFirst();
-
-        }
     }
 }
