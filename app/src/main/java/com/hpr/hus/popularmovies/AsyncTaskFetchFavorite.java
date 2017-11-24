@@ -2,12 +2,22 @@ package com.hpr.hus.popularmovies;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.hpr.hus.popularmovies.db.MovieListContract;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Created by hk640d on 11/21/2017.
@@ -30,10 +40,10 @@ public class AsyncTaskFetchFavorite  extends AsyncTask<String, Void, MovieSelect
     String mReleaseDate;
     Boolean mIsFavMovie;
     String mOriginalTitle;
-
-    public AsyncTaskFetchFavorite(TaskInterfaceCompleted listener, Cursor cursor) {
+    private final String apiKey;
+    public AsyncTaskFetchFavorite(TaskInterfaceCompleted listener, Cursor cursor, String apiKey) {
         super();
-        Log.v("hhhh3", "AsyncTaskFetchFavorite");
+        Log.v("hhhh3", "AsyncTaskFetchFavorite"); this.apiKey = apiKey;
         mListener = listener;
         this.cursor = cursor;
         cursorLength=this.cursor.getCount();
@@ -60,13 +70,10 @@ public class AsyncTaskFetchFavorite  extends AsyncTask<String, Void, MovieSelect
             iterateCursor(cursor);
             Log.v("pppp51", cursor + "");
             Log.v("pppp52", "cursorLength  " + cursor.getCount());
-
-           // movies[i].setOriginalTitle(movieInfo.getString(TAG_ORIGINAL_TITLE));
             movies[i].setPosterPath(mPosterPath);
             movies[i].setOverview(mOverview);
             movies[i].setVoteAverage(mVoteAverage);
             movies[i].setReleaseDate(mReleaseDate);
-            /// stage 2
             movies[i].setId(mId);
             movies[i].setTitle(mTitle);
             Log.v("SSSSSSSSS", "TITLE:  " + mTitle);
@@ -74,28 +81,21 @@ public class AsyncTaskFetchFavorite  extends AsyncTask<String, Void, MovieSelect
             movies[i].setFavMovie(mIsFavMovie);
             movies[i].setBackdrop(mBackdrop);
             movies[i].setOriginalTitle(mOriginalTitle);
-
             Log.v("pppp71", movies[i].toString());
             Log.v("pppp72", " movies[i] "+i + "   "+ movies[i].getFavMovie());
             Log.v("pppu73",  "getMovieValues:   "+ getMovieValues(movies[i]));
             Log.v("pppu74",  "getMovieValuesDB :"+ getMovieValuesFromDB());
-
-
-
         }
-
         return movies;
     }
 
 
     @Override
-    protected MovieSelected[] doInBackground(String... strings) {
+    protected MovieSelected[] doInBackground(String... params) {
+
         return getMovieDataFromDB(cursor);
     }
     private String getMovieValues( MovieSelected movies){
-
-
-
         String result=
                         movies.getId()+ " _ " +
                         movies.getTitle()+ " _ " +
@@ -110,10 +110,6 @@ public class AsyncTaskFetchFavorite  extends AsyncTask<String, Void, MovieSelect
         return result;
     }
     private String getMovieValuesFromDB(){
-
-
-
-
         String result=
                              mId+ " _ " +
                           mTitle+ " _ " +
@@ -163,5 +159,11 @@ public class AsyncTaskFetchFavorite  extends AsyncTask<String, Void, MovieSelect
            Log.v("ppp81", "***********   Moved to First");
        }
 
+    }
+    @Override
+    protected void onPostExecute(MovieSelected[] movies) {
+        super.onPostExecute(movies);
+
+        mListener.onFetchMoviesTaskCompleted(movies);
     }
 }

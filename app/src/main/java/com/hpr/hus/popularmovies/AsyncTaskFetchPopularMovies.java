@@ -40,6 +40,11 @@ class AsyncTaskFetchPopularMovies extends AsyncTask<String, Void, MovieSelected[
 
     @Override
     protected MovieSelected[] doInBackground(String... params) {
+        Log.v("ppp00", params.toString());
+        String res="";
+        for(String s: params){
+            res=res +s;
+        }        Log.v("ppp00", res);
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
         String result="";
@@ -106,8 +111,7 @@ class AsyncTaskFetchPopularMovies extends AsyncTask<String, Void, MovieSelected[
         return null;
     }
 
-    private MovieSelected[] getMoviesDataFromJson(String moviesJsonStr) throws JSONException {
-
+    public MovieSelected[] getMoviesDataFromJson(String moviesJsonStr) throws JSONException {
         final String TAG_RESULTS = "results";
         final String TAG_ORIGINAL_TITLE = "original_title";
         final String TAG_POSTER_PATH = "poster_path";
@@ -121,21 +125,14 @@ class AsyncTaskFetchPopularMovies extends AsyncTask<String, Void, MovieSelected[
         final String TAG_FAVORITE_MOVIE = "favorite_movie";
         final String TAG_BACK_DROP = "backdrop_path";
 
-
         JSONObject moviesJson = new JSONObject(moviesJsonStr);
         JSONArray resultsArray = moviesJson.getJSONArray(TAG_RESULTS);
 
         MovieSelected[] movies = new MovieSelected[resultsArray.length()];
-
         for (int i = 0; i < resultsArray.length(); i++) {
-
             movies[i] = new MovieSelected();
-
-
             JSONObject movieInfo = resultsArray.getJSONObject(i);
-
             Log.v("SSSSSSSSS", "movieInfo " + movieInfo);
-
             movies[i].setOriginalTitle(movieInfo.getString(TAG_ORIGINAL_TITLE));
             movies[i].setPosterPath(movieInfo.getString(TAG_POSTER_PATH));
             movies[i].setOverview(movieInfo.getString(TAG_OVERVIEW));
@@ -148,14 +145,29 @@ class AsyncTaskFetchPopularMovies extends AsyncTask<String, Void, MovieSelected[
             movies[i].setVoteCount(movieInfo.getLong(TAG_VOTE_COUNT));
             //movies[i].setFavMovie(movies.getFavMovie());
             movies[i].setBackdrop(movieInfo.getString(TAG_BACK_DROP));
-
             Log.v("SSSSSSSSSddd", " movies[i] "+i + "   "+ movies[i].getFavMovie());
+            Log.v("SSSSSSSSS587", " movies[i] "+i + "   "+ getMovieValues(movies[i]));
 
         }
-
         return movies;
     }
+    private String getMovieValues( MovieSelected movies){
 
+
+
+        String result=
+                movies.getId()+ " _ " +
+                        movies.getTitle()+ " _ " +
+                        movies.getOriginalTitle()+ " _ " +
+                        movies.getOverview() + " _ " +
+                        movies.getVoteAverage()+ " _ " +
+                        movies.getVoteCount()+ " _ " +
+                        movies.getBackdrop()+ " _ " +
+                        movies.getPosterPathForFav() + " _ " +
+                        movies.getReleaseDate()+ " _ " +
+                        movies.getFavMovie();
+        return result;
+    }
     private URL getApiUrl(String[] parameters) throws MalformedURLException {
         //http://api.themoviedb.org/3/movie/popular?api_key=[YOUR_API_KEY]
         final String TMDB_BASE_URL = "http://api.themoviedb.org/3/movie/"+ parameters[0]+"?";

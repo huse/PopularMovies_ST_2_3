@@ -255,8 +255,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
             movieTask.execute(sortValueFromSortMethod);
                 } else if(sortValueFromSortMethod.equals("favorite_movies")&& mData!=null){
 
-            AsyncTaskFetchFavorite movieFavTask = new AsyncTaskFetchFavorite(taskCompleted, mData);
+            AsyncTaskFetchFavorite movieFavTask = new AsyncTaskFetchFavorite(taskCompleted, mData, apiKey);
             movieFavTask.execute(sortValueFromSortMethod);
+                    Log.v("gggg55","movieFavTask ran");
+
                 }
            // new FavFetchTask().execute();
         } else {
