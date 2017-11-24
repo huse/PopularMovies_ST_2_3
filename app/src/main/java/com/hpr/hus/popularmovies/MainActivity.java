@@ -97,7 +97,14 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
 
         if (savedInstanceState == null) {
             Log.v("hhhh", "MainActivity_onCreate_savedInstanceState == null");
-
+          //  new FavFetchTask().execute();
+           // Log.v("yyy61", mData + "");
+            ContentResolver resolver = getContentResolver();
+            Log.v("hhhh6", "DetailActivity doInBackground 6962");
+            // Call the query method on the resolver with the correct Uri from the contract class
+            mData = resolver.query(MovieListContract.MoviesEntry.MOVIE_CONTENT_URI,
+                    null, null, null, MovieListContract.MoviesEntry.MOVIE_ID);
+            Log.v("yyy61", mData + "");
             getMoviesFromTMDb(getSortMethod());
         } else {
 
@@ -241,10 +248,16 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
 
                 }
             };
-
-
+          //  new FavFetchTask().execute();
+            Log.v("yyy51", mData + "");
+                if (sortValueFromSortMethod.equals("popular")|| sortValueFromSortMethod.equals("top_rated")){
             AsyncTaskFetchPopularMovies movieTask = new AsyncTaskFetchPopularMovies(taskCompleted, apiKey);
             movieTask.execute(sortValueFromSortMethod);
+                } else if(sortValueFromSortMethod.equals("favorite_movies")&& mData!=null){
+
+            AsyncTaskFetchFavorite movieFavTask = new AsyncTaskFetchFavorite(taskCompleted, mData);
+            movieFavTask.execute(sortValueFromSortMethod);
+                }
            // new FavFetchTask().execute();
         } else {
             Log.v("gggg","NO-----------NetworkAvailable");
@@ -438,6 +451,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
     public class FavFetchTask extends AsyncTask<Void, Void, Cursor> {
 
         // Invoked on a background thread
+
+
+
         @Override
         protected Cursor doInBackground(Void... params) {
             // Make the query to get the data
@@ -450,6 +466,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
             Cursor cursor = resolver.query(MovieListContract.MoviesEntry.MOVIE_CONTENT_URI,
                     null, null, null, MovieListContract.MoviesEntry.MOVIE_ID);
             Log.v("hhhh6", "DetailActivity doInBackground 6964");
+            Log.v("yyy31", mData + "");
+            mData = cursor;
+            Log.v("yyy32", mData + "");
             return cursor;
         }
 
@@ -469,7 +488,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
             Log.v("yyy47", mFavCol + "");
 
 
-            nextMovie();
+           // nextMovie();
         }
 
         public void nextMovie() {
