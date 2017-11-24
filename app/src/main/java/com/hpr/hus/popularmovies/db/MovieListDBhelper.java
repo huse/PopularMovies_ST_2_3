@@ -14,7 +14,7 @@ public class MovieListDBhelper extends SQLiteOpenHelper{
     private static final String DATABASE_NAME = "movielist.db";
 
 
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 8;
 
 
     public MovieListDBhelper(Context context) {
@@ -26,6 +26,7 @@ public class MovieListDBhelper extends SQLiteOpenHelper{
         final String CREATE_TABLE = "CREATE TABLE " + MovieListContract.MoviesEntry.MOVIE_TABLE_NAME + " ("
                 + BaseColumns._ID + " INTEGER NOT NULL PRIMARY KEY,"
                 + MovieListContract.MoviesEntry.MOVIE_ID + " TEXT NOT NULL,"
+                + MovieListContract.MoviesEntry.MOVIE_ORIGINAL_TITLE + " TEXT NOT NULL,"
                 + MovieListContract.MoviesEntry.MOVIE_TITLE + " TEXT NOT NULL,"
                 + MovieListContract.MoviesEntry.MOVIE_OVERVIEW + " TEXT,"
                 + MovieListContract.MoviesEntry.MOVIE_VOTE_AVERAGE + " REAL,"

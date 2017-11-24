@@ -18,7 +18,7 @@ public class AsyncTaskFetchFavorite  extends AsyncTask<String, Void, MovieSelect
     private Cursor cursor;
     private final TaskInterfaceCompleted mListener;
     private int   cursorLength;
-    private int mIdCol,mTitleCol,mOverviewCol,mVoteAverageCol,mVoteCountCol,mBackDropPathCol,mPosterPathCol,mReleaseDateCol,mFavoredCol;
+    private int mIdCol,mTitleCol,mOverviewCol,mVoteAverageCol,mVoteCountCol,mBackDropPathCol,mPosterPathCol,mReleaseDateCol,mFavoredCol,mOriginalTitleCol;
 
     long mId;
     String mTitle;
@@ -29,6 +29,7 @@ public class AsyncTaskFetchFavorite  extends AsyncTask<String, Void, MovieSelect
     String mPosterPath;
     String mReleaseDate;
     Boolean mIsFavMovie;
+    String mOriginalTitle;
 
     public AsyncTaskFetchFavorite(TaskInterfaceCompleted listener, Cursor cursor) {
         super();
@@ -46,6 +47,7 @@ public class AsyncTaskFetchFavorite  extends AsyncTask<String, Void, MovieSelect
         mPosterPathCol = cursor.getColumnIndex(MovieListContract.MoviesEntry.MOVIE_POSTER_PATH);
         mReleaseDateCol = cursor.getColumnIndex(MovieListContract.MoviesEntry.MOVIE_RELEASE_DATE);
         mFavoredCol = cursor.getColumnIndex(MovieListContract.MoviesEntry.MOVIE_FAVORED);
+        mOriginalTitleCol = cursor.getColumnIndex(MovieListContract.MoviesEntry.MOVIE_ORIGINAL_TITLE);
     }
 
 
@@ -71,9 +73,12 @@ public class AsyncTaskFetchFavorite  extends AsyncTask<String, Void, MovieSelect
             movies[i].setVoteCount(mVoteCount);
             movies[i].setFavMovie(mIsFavMovie);
             movies[i].setBackdrop(mBackdrop);
+            movies[i].setOriginalTitle(mOriginalTitle);
+
             Log.v("pppp71", movies[i].toString());
             Log.v("pppp72", " movies[i] "+i + "   "+ movies[i].getFavMovie());
             Log.v("pppu73",  "getMovieValues:   "+ getMovieValues(movies[i]));
+            Log.v("pppu74",  "getMovieValuesDB :"+ getMovieValuesFromDB());
 
 
 
@@ -94,13 +99,32 @@ public class AsyncTaskFetchFavorite  extends AsyncTask<String, Void, MovieSelect
         String result=
                         movies.getId()+ " _ " +
                         movies.getTitle()+ " _ " +
+                                movies.getOriginalTitle()+ " _ " +
                         movies.getOverview() + " _ " +
                         movies.getVoteAverage()+ " _ " +
                         movies.getVoteCount()+ " _ " +
                         movies.getBackdrop()+ " _ " +
-                        movies.getPosterPath() + " _ " +
+                        movies.getPosterPathForFav() + " _ " +
                         movies.getReleaseDate()+ " _ " +
                         movies.getFavMovie();
+        return result;
+    }
+    private String getMovieValuesFromDB(){
+
+
+
+
+        String result=
+                             mId+ " _ " +
+                          mTitle+ " _ " +
+                          mOriginalTitle+ " _ " +
+                          mOverview + " _ " +
+                          mVoteAverage  + " _ " +
+                          mVoteCount + " _ " +
+                          mBackdrop + " _ " +
+                          mPosterPath + " _ " +
+                          mReleaseDate+ " _ " +
+                          mIsFavMovie;
         return result;
     }
     private void  iterateCursor(Cursor mData    ){
@@ -119,17 +143,21 @@ public class AsyncTaskFetchFavorite  extends AsyncTask<String, Void, MovieSelect
                    mData.getString(6) + " _ " +
                    mData.getString(7) + " _ " +
                    mData.getString(8) + " _ " +
-                   mData.getString(9));
+                   mData.getString(9) + " _ " +
+                   mData.getString(10));
            mId = Long.parseLong(cursor.getString(mIdCol));
            mTitle = cursor.getString(mTitleCol);
            mOverview = cursor.getString(mOverviewCol);
            mVoteAverage = Double.parseDouble(cursor.getString(mVoteAverageCol));
            mVoteCount = Long.parseLong(cursor.getString(mVoteCountCol));
            mBackdrop = cursor.getString(mBackDropPathCol);
-           mPosterPath = cursor.getString(mPosterPathCol);
+
+           mPosterPath = mData.getString(mPosterPathCol);
+
            mReleaseDate = cursor.getString(mReleaseDateCol);
            mIsFavMovie = cursor.getString(mFavoredCol).equals("1");
            Log.v("ppp39", mData.getString(mIdCol));
+           mOriginalTitle = cursor.getString(mOriginalTitleCol);
        } else{
            mData.moveToFirst();
            Log.v("ppp81", "***********   Moved to First");

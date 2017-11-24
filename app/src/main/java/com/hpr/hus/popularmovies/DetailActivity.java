@@ -245,6 +245,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         cv.put(MovieListContract.MoviesEntry.MOVIE_POSTER_PATH, movieSelected.getPosterPath());
         cv.put(MovieListContract.MoviesEntry.MOVIE_RELEASE_DATE, movieSelected.getReleaseDate());
         cv.put(MovieListContract.MoviesEntry.MOVIE_FAVORED, favBoolean);
+        cv.put(MovieListContract.MoviesEntry.MOVIE_ORIGINAL_TITLE, movieSelected.getOriginalTitle());
         Log.v("hhhh7_fav_bool", "favBoolean in addNewFavorite method   " + favBoolean);
         //  cv.put(MovieListContract.MoviesEntry.MOVIE_FAVORED, movieSelected.getFavMovie());
        /* Log.v("hhhh9_fav_db", "addNewFavorite   " + getMovieValues(movieSelected).get(MovieListContract.MoviesEntry.MOVIE_FAVORED));

@@ -14,8 +14,9 @@ public class MovieListContract {
 
     public static class MoviesEntry{
 
-        public static final String MOVIE_NAME = "movie";
+
         public static final String MOVIE_TABLE_NAME = "movies";
+        public static final String MOVIE_ORIGINAL_TITLE = "movie_original";
         public static final String MOVIE_ID = "movie_id";
         public static final String MOVIE_TITLE = "movie_title";
         public static final String MOVIE_OVERVIEW = "movie_overview";
@@ -26,6 +27,7 @@ public class MovieListContract {
         public static final String MOVIE_POSTER_PATH = "movie_poster_path";
         public static final String MOVIE_BACKDROP_PATH = "movie_backdrop_path";
         public static final Uri MOVIE_CONTENT_URI = BASEURI.buildUpon().appendPath(PATH_MOVIE).build();
+
 
         static Uri buildUri(String movieId) {
             return MOVIE_CONTENT_URI.buildUpon().appendPath(movieId).build();
