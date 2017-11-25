@@ -14,15 +14,13 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,9 +29,15 @@ import android.widget.Toast;
 import com.hpr.hus.popularmovies.db.MovieListContract;
 import com.hpr.hus.popularmovies.db.MovieListDBhelper;
 import com.hpr.hus.popularmovies.db.MovieListProvider;
+import com.hpr.hus.popularmovies.review_holders.AdaptorReviews;
+import com.hpr.hus.popularmovies.review_holders.Reviews;
 import com.squareup.picasso.Picasso;
 
-import java.text.ParseException;
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,12 +61,15 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     ImageView imagePosterIV;
     @BindView(R.id.fav_button)
     ImageButton favoriteButton;
+    @BindView(R.id.recyclerview_review_list) RecyclerView reviewsRecycler;
     private Cursor mData;
     private int mIdCol, mFavCol;
     private MovieAdapter movieAdapter;
     private boolean favStatus =false;
     private boolean movieExistsOnDB = false;
     private RecyclerView rvYoutubeList, rvReviewList;
+    private AdaptorReviews reviewAdapter;
+    private ArrayList<Reviews> movieReviews;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -211,8 +218,37 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
         rvYoutubeList = (RecyclerView) findViewById(R.id.recyclerview_youtube_list);
         rvReviewList = (RecyclerView) findViewById(R.id.recyclerview_review_list);
-    }
 
+
+
+    }
+    private void inflateReviews() {
+        Log.v("review1", "inflateReviews");
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        reviewsRecycler.setLayoutManager(linearLayoutManager);
+       // reviewAdapter = new AdapterReviews(movieReviews);
+        URL url = AsyncTaskFetchPopularMovies.buildReviewUrl(currentMovie.getId());
+        Log.v("oooo8", " url "+url);
+        final ArrayList<Reviews> reviews;
+        Log.v("oooo8", " inflateReviews "+movieReviews);
+
+        try {
+            reviews = AsyncTaskFetchPopularMovies.fetchReviewsFromMovieJson(AsyncTaskFetchPopularMovies.responseFromHttp(url));
+            movieReviews= reviews;
+            Log.v("oooo8", " movieReviews "+movieReviews);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        reviewAdapter = new AdaptorReviews(movieReviews);
+        reviewsRecycler.setAdapter(reviewAdapter);
+        reviewsRecycler.setVisibility(View.VISIBLE);
+    }
 
    private Cursor cursorCaller() { ContentResolver resolver = getContentResolver();
             Log.v("hhhh6", "DetailActivity doInBackground 6962");
@@ -314,6 +350,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Log.v("review1", "onCreateLoader");
+
 /*
         switch (id) {
 
@@ -330,7 +368,12 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 throw new RuntimeException("Loader Not Implemented: " + id);
         }
         //*/
-
+        final Bundle bundle = args;
+        movieReviews = bundle.getParcelableArrayList("INTENT_REVIEW_DETAIL");
+        if (movieReviews != null) {
+            Log.v("review1", "calling inflateReviews");
+            inflateReviews();
+        }
 
         return new AsyncTaskLoader<Cursor>(this) {
 
@@ -340,6 +383,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
             @Override
             protected void onStartLoading() {
+
                 if (mMovieDataCursor != null) {
 
                     deliverResult(mMovieDataCursor);
@@ -399,7 +443,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         protected Cursor doInBackground(Void... params) {
             // Make the query to get the data
             Log.v("hhhh6", "DetailActivity doInBackground 696");
-
+            inflateReviews();
             // Get the content resolver
             ContentResolver resolver = getContentResolver();
             Log.v("hhhh6", "DetailActivity doInBackground 6962");

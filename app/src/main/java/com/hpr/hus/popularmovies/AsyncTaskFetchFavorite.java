@@ -88,11 +88,99 @@ public class AsyncTaskFetchFavorite  extends AsyncTask<String, Void, MovieSelect
         }
         return movies;
     }
+/*    private URL getApiUrl(String[] parameters) throws MalformedURLException {
+        //http://api.themoviedb.org/3/movie/popular?api_key=[YOUR_API_KEY]
+        final String TMDB_BASE_URL = "http://api.themoviedb.org/3/movie/"+ parameters[0]+"?";
+        final String API_KEY_PARAM = "api_key";
 
+        Uri builtUri = Uri.parse(TMDB_BASE_URL).buildUpon()
+
+                .appendQueryParameter(API_KEY_PARAM, apiKey)
+                .build();
+        Log.v("hhhh3", builtUri.toString());
+        return new URL(builtUri.toString());
+    }*/
 
     @Override
     protected MovieSelected[] doInBackground(String... params) {
+       /* Log.v("ppp00", params.toString());
+        String res="";
+        for(String s: params){
+            res=res +s;
+        }        Log.v("ppp00", res);
 
+        {params[0]="top_rated";
+            Log.v("ppp00", params.toString());
+            String ress="";
+            for(String s: params){
+                ress=ress +s;
+            }        Log.v("ppp00", ress);
+            HttpURLConnection urlConnection = null;
+            BufferedReader reader = null;
+            String result="";
+            for(String s: params){
+                result = result +" - "+ s;
+            }
+            Log.v("hhhh3", result);
+            String moviesJsonStr = null;
+
+            try {
+                URL url = getApiUrl(params);
+
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.connect();
+
+                InputStream inputStream = urlConnection.getInputStream();
+                StringBuilder builder = new StringBuilder();
+                Log.v("hhh3", "StringBuilder");
+                if (inputStream == null) {
+                    return null;
+                }
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+                Log.v("hhh3", "BufferedReader");
+                String line;
+                while ((line = reader.readLine()) != null) {
+
+                    builder.append(line).append("\n");
+                    Log.v("hhh3", "append");
+                }
+
+                if (builder.length() == 0) {
+                    Log.v("hhh3", "returning null 2");
+                    return null;
+                }
+
+                moviesJsonStr = builder.toString();
+            } catch (IOException e) {
+                Log.e("hhh3", "Error ", e);
+                return null;
+            } finally {
+
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                    Log.v("hhh3", "disconected");
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e("hhh3", "Error closing stream", e);
+                    }
+                }
+            }
+
+            try {
+                AsyncTaskFetchPopularMovies asyncTaskFetchPopularMovies= new AsyncTaskFetchPopularMovies(mListener,apiKey);
+                Log.e("hhh3", asyncTaskFetchPopularMovies.getMoviesDataFromJson(moviesJsonStr).toString());
+                return asyncTaskFetchPopularMovies.getMoviesDataFromJson(moviesJsonStr);
+            } catch (JSONException e) {
+                Log.e("hhh3", e.getMessage(), e);
+                e.printStackTrace();
+            }
+
+            return null;
+        }*/
         return getMovieDataFromDB(cursor);
     }
     private String getMovieValues( MovieSelected movies){

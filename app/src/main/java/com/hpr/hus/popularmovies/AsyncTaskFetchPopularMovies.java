@@ -9,6 +9,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.hpr.hus.popularmovies.review_holders.Reviews;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,6 +22,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import static android.content.ContentValues.TAG;
 
 
 class AsyncTaskFetchPopularMovies extends AsyncTask<String, Void, MovieSelected[]> {
@@ -27,7 +33,7 @@ class AsyncTaskFetchPopularMovies extends AsyncTask<String, Void, MovieSelected[
     private final String LOG_TAG = AsyncTaskFetchPopularMovies.class.getSimpleName();
 
     private final String apiKey;
-
+    static String apiKeyReview;
     private final TaskInterfaceCompleted mListener;
 
     public AsyncTaskFetchPopularMovies(TaskInterfaceCompleted listener, String apiKey) {
@@ -35,6 +41,7 @@ class AsyncTaskFetchPopularMovies extends AsyncTask<String, Void, MovieSelected[
         Log.v("hhhh3", "AsyncTaskFetchPopularMovies");
         mListener = listener;
         this.apiKey = apiKey;
+        this.apiKeyReview = apiKey;
 
     }
 
@@ -110,7 +117,16 @@ class AsyncTaskFetchPopularMovies extends AsyncTask<String, Void, MovieSelected[
 
         return null;
     }
+    public static ArrayList<Reviews> fetchReviewsFromMovieJson(String jsonStr) throws JSONException {
+        JSONObject json = new JSONObject(jsonStr);
+        JSONArray reviews = json.getJSONArray("results");
+        ArrayList<Reviews> result = new ArrayList<>();
 
+        for (int i = 0; i < reviews.length(); i++) {
+            result.add(Reviews.dataFromJson(reviews.getJSONObject(i)));
+        }
+        return result;
+    }
     public MovieSelected[] getMoviesDataFromJson(String moviesJsonStr) throws JSONException {
         final String TAG_RESULTS = "results";
         final String TAG_ORIGINAL_TITLE = "original_title";
@@ -181,6 +197,83 @@ class AsyncTaskFetchPopularMovies extends AsyncTask<String, Void, MovieSelected[
         return new URL(builtUri.toString());
     }
 
+    public static URL buildReviewUrl(long movieId) {
+        String path = String.format("%s/reviews", movieId);
+        final String BASE_URL = "http://api.themoviedb.org/3/movie/";
+        final String API_KEY_PARAM = "api_key";
+        Uri builtUri = Uri.parse(BASE_URL).buildUpon()
+                .appendEncodedPath(path)
+
+                .appendQueryParameter(API_KEY_PARAM, apiKeyReview)
+                .build();
+
+
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        Log.v(TAG, "Built URI " + url);
+        return url;
+    }
+
+    public static String responseFromHttp(URL url) throws IOException {
+        Log.v("oooo", "entering getResponseFromHttpUrl");
+
+       // url= new URL("http://api.themoviedb.org/3/movie/238/reviews?api_key=9d26959734af937d3c5cc0893debc5e2");
+        //"com.android.okhttp.internal.huc.HttpURLConnectionImpl:"
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        Log.v("oooo", " urlConnection "+urlConnection);
+
+        try {
+            Log.v("oooo", " InputStream before");
+            Log.v("oooo", " urlConnection2   "+urlConnection);
+            InputStream in = urlConnection.getInputStream();
+            Log.v("oooo", " InputStream "+in);
+
+            Scanner scanner = new Scanner(in);
+          //  Log.v("oooo", " scanner "+scanner);
+
+            scanner.useDelimiter("\\A");
+
+            boolean hasInput = scanner.hasNext();
+            if (hasInput) {
+                return scanner.next();
+            } else {
+                return null;
+            }
+        }catch (Exception e) {
+            Log.v("oooo", "Error ", e);
+            return null;
+        }
+        finally {
+            Log.v("oooo", " urlConnection disconnected");
+            urlConnection.disconnect();
+        }
+    }
+
+    public static URL buildVideoUrl(long movieId) {
+        final String BASE_URL = "http://api.themoviedb.org/3/movie/";
+        final String API_KEY_PARAM = "api_key";
+
+        String path = String.format("%s/videos", movieId);
+        Uri builtUri = Uri.parse(BASE_URL).buildUpon()
+                .appendEncodedPath(path)
+
+                .appendQueryParameter(API_KEY_PARAM, apiKeyReview)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        Log.v(TAG, "Built URI " + url);
+        return url;
+    }
     @Override
     protected void onPostExecute(MovieSelected[] movies) {
         super.onPostExecute(movies);
