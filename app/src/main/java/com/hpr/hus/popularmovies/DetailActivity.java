@@ -31,6 +31,8 @@ import com.hpr.hus.popularmovies.db.MovieListDBhelper;
 import com.hpr.hus.popularmovies.db.MovieListProvider;
 import com.hpr.hus.popularmovies.review_holders.AdaptorReviews;
 import com.hpr.hus.popularmovies.review_holders.Reviews;
+import com.hpr.hus.popularmovies.video_holders.AdaptorVideos;
+import com.hpr.hus.popularmovies.video_holders.Videos;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -42,7 +44,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class DetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, AdaptorVideos.VideoAdaptorListener {
 
     private Uri mUri;
     private SQLiteDatabase myDb;
@@ -62,14 +64,17 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     @BindView(R.id.fav_button)
     ImageButton favoriteButton;
     @BindView(R.id.recyclerview_review_list) RecyclerView reviewsRecycler;
+    @BindView(R.id.recyclerview_youtube_list) RecyclerView videosRecycler;
     private Cursor mData;
     private int mIdCol, mFavCol;
     private MovieAdapter movieAdapter;
     private boolean favStatus =false;
     private boolean movieExistsOnDB = false;
     private RecyclerView rvYoutubeList, rvReviewList;
-    private AdaptorReviews reviewAdapter;
-    private ArrayList<Reviews> movieReviews;
+    private AdaptorReviews reviewAdaptor;
+    private AdaptorVideos videoAdaptor;
+    private ArrayList<Reviews> movieReviewsArr;
+    private ArrayList<Videos> movieVideosArr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +93,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         final MovieSelected movie;
         Log.v("hhhh6", "891");
         //currentMovie = bundle.getParcelable(MOVIE_EXTRA);
-
+        Toast.makeText(this, "Test", Toast.LENGTH_LONG).show();
         if (intentThatStartedThisActivity != null && !getIntent().getBooleanExtra("isNewItem", false)) {
 
             movie = intentThatStartedThisActivity.getExtras().getParcelable("PARCEL_MOVIE");
@@ -227,29 +232,60 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         reviewsRecycler.setLayoutManager(linearLayoutManager);
-       // reviewAdapter = new AdapterReviews(movieReviews);
-        URL url = AsyncTaskFetchPopularMovies.buildReviewUrl(currentMovie.getId());
+        URL url = AsyncTaskFetchPopularMovies.buildReviewVideoUrl(currentMovie.getId(), "reviews");
         Log.v("oooo8", " url "+url);
         final ArrayList<Reviews> reviews;
-        Log.v("oooo8", " inflateReviews "+movieReviews);
+        Log.v("oooo8", " inflateReviews "+movieReviewsArr);
 
         try {
-            reviews = AsyncTaskFetchPopularMovies.fetchReviewsFromMovieJson(AsyncTaskFetchPopularMovies.responseFromHttp(url));
-            movieReviews= reviews;
-            Log.v("oooo8", " movieReviews "+movieReviews);
+            reviews = AsyncTaskFetchPopularMovies.fetchMovieReviewFromJson(AsyncTaskFetchPopularMovies.responseFromHttp(url));
+            movieReviewsArr= reviews;
+            Log.v("oooo8", " movieReviews "+movieReviewsArr);
+            reviewAdaptor = new AdaptorReviews(movieReviewsArr);
+            reviewsRecycler.setAdapter(reviewAdaptor);
+            reviewsRecycler.setVisibility(View.VISIBLE);
 
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }catch (Exception e) {
+            e.printStackTrace();
         }
 
 
-        reviewAdapter = new AdaptorReviews(movieReviews);
-        reviewsRecycler.setAdapter(reviewAdapter);
-        reviewsRecycler.setVisibility(View.VISIBLE);
-    }
 
+    }
+    private void inflatingVideo() {
+        Log.v("video1", "inflatingVideo");
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        videosRecycler.setLayoutManager(linearLayoutManager);
+        Log.v("video1", "videosRecycler");
+
+        final ArrayList<Videos> videos;
+        URL url = AsyncTaskFetchPopularMovies.buildReviewVideoUrl(currentMovie.getId(), "videos");
+        Log.v("video1", "url" + url);
+
+        try {
+            videos = AsyncTaskFetchPopularMovies.fetchMovieVideosFromJson(AsyncTaskFetchPopularMovies.responseFromHttp(url));
+            movieVideosArr= videos;
+            Log.v("oooo8", " movieVideosArr "+ movieReviewsArr);
+            videoAdaptor = new AdaptorVideos(movieVideosArr,this);
+            videosRecycler.setAdapter(videoAdaptor);
+            videosRecycler.setVisibility(View.VISIBLE);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.v("video1", "videoAdaptor  " +videoAdaptor);
+
+
+    }
    private Cursor cursorCaller() { ContentResolver resolver = getContentResolver();
             Log.v("hhhh6", "DetailActivity doInBackground 6962");
     // Call the query method on the resolver with the correct Uri from the contract class
@@ -369,8 +405,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         }
         //*/
         final Bundle bundle = args;
-        movieReviews = bundle.getParcelableArrayList("INTENT_REVIEW_DETAIL");
-        if (movieReviews != null) {
+        movieReviewsArr = bundle.getParcelableArrayList("INTENT_REVIEW_DETAIL");
+        if (movieReviewsArr != null) {
             Log.v("review1", "calling inflateReviews");
             inflateReviews();
         }
@@ -435,6 +471,15 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     }
 
+    @Override
+    public void onVideoClicked(int clickedItemIndex) {
+        Log.v("jjjj", "onVideoClick  clickedItemIndex:" +clickedItemIndex );
+
+        Videos video = videoAdaptor.getVideoFromPosition(clickedItemIndex);
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + video.getKey())));
+
+    }
+
 
     public class FavFetchTask extends AsyncTask<Void, Void, Cursor> {
 
@@ -444,6 +489,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             // Make the query to get the data
             Log.v("hhhh6", "DetailActivity doInBackground 696");
             inflateReviews();
+            inflatingVideo();
             // Get the content resolver
             ContentResolver resolver = getContentResolver();
             Log.v("hhhh6", "DetailActivity doInBackground 6962");

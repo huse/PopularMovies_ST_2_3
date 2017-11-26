@@ -18,6 +18,8 @@ public class Reviews  implements Parcelable {
         }
 
         public Reviews[] newArray(int size) {
+
+            Log.v("review1", "size newArray" + size);
             return new Reviews[size];
         }
     };

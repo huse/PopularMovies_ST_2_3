@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.hpr.hus.popularmovies.review_holders.Reviews;
+import com.hpr.hus.popularmovies.video_holders.Videos;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,6 +24,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import static android.content.ContentValues.TAG;
@@ -117,7 +119,7 @@ class AsyncTaskFetchPopularMovies extends AsyncTask<String, Void, MovieSelected[
 
         return null;
     }
-    public static ArrayList<Reviews> fetchReviewsFromMovieJson(String jsonStr) throws JSONException {
+    public static ArrayList<Reviews> fetchMovieReviewFromJson(String jsonStr) throws JSONException {
         JSONObject json = new JSONObject(jsonStr);
         JSONArray reviews = json.getJSONArray("results");
         ArrayList<Reviews> result = new ArrayList<>();
@@ -127,6 +129,17 @@ class AsyncTaskFetchPopularMovies extends AsyncTask<String, Void, MovieSelected[
         }
         return result;
     }
+    public static ArrayList<Videos> fetchMovieVideosFromJson(String jsonStr) throws JSONException {
+        JSONObject json = new JSONObject(jsonStr);
+        JSONArray videos = json.getJSONArray("results");
+        ArrayList<Videos> result = new ArrayList<>();
+
+        for (int i = 0; i < videos.length(); i++) {
+            result.add(Videos.fromJson(videos.getJSONObject(i)));
+        }
+        return result;
+    }
+
     public MovieSelected[] getMoviesDataFromJson(String moviesJsonStr) throws JSONException {
         final String TAG_RESULTS = "results";
         final String TAG_ORIGINAL_TITLE = "original_title";
@@ -197,8 +210,9 @@ class AsyncTaskFetchPopularMovies extends AsyncTask<String, Void, MovieSelected[
         return new URL(builtUri.toString());
     }
 
-    public static URL buildReviewUrl(long movieId) {
-        String path = String.format("%s/reviews", movieId);
+    public static URL buildReviewVideoUrl(long movieId, String s) {
+
+        String path = String.format("%s/"+s, movieId);
         final String BASE_URL = "http://api.themoviedb.org/3/movie/";
         final String API_KEY_PARAM = "api_key";
         Uri builtUri = Uri.parse(BASE_URL).buildUpon()
@@ -218,6 +232,8 @@ class AsyncTaskFetchPopularMovies extends AsyncTask<String, Void, MovieSelected[
         Log.v(TAG, "Built URI " + url);
         return url;
     }
+
+
 
     public static String responseFromHttp(URL url) throws IOException {
         Log.v("oooo", "entering getResponseFromHttpUrl");
