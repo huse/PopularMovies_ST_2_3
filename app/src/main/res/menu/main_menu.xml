@@ -9,15 +9,5 @@
         android:title="@string/settings_title"
         app:showAsAction="ifRoom"/>
 
-    <item
-        android:id="@+id/sort_popularity"
-        android:orderInCategory="10"
-        android:title="Sort by popularity"
-        app:showAsAction="ifRoom"/>
-    <item
-        android:id="@+id/sort_top_rate"
-        android:orderInCategory="100"
-        android:title="Sort by top rated"
-        app:showAsAction="ifRoom"/>
     <!-- android:icon="@drawable/ic_action_settings"-->
 </menu>

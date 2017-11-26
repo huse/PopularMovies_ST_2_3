@@ -101,9 +101,11 @@ public class MovieSelected implements Parcelable {
     public String getOriginalTitle() {
         return mOriginalTitle;
     }
-
+    final String TMDB_POSTER_BASE_URL = "https://image.tmdb.org/t/p/w185";
     public String getPosterPath() {
-        final String TMDB_POSTER_BASE_URL = "https://image.tmdb.org/t/p/w185";
+
+       // final String TMDB_POSTER_BASE_URL = "";
+
         mPosterPath = TMDB_POSTER_BASE_URL + mPosterPath;
         return mPosterPath;
     }

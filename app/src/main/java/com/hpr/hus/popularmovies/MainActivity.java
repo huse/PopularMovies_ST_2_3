@@ -132,16 +132,16 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         mMenu = menu;
 
 
-        mMenu.add(Menu.NONE,
+      /*  mMenu.add(Menu.NONE,
                 R.id.sort_popularity,
                 Menu.NONE,
                 null)
                 .setVisible(true)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);*/
+/*
         mMenu.add(Menu.NONE, R.id.sort_top_rate, Menu.NONE, null)
                 .setVisible(false)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);*/
 
         //updateMenu();
 

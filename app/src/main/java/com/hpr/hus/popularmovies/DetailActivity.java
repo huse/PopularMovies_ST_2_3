@@ -133,9 +133,12 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
             Log.v("hhhh6_id", "movie   " + currentMovie.getId());
             originalTitleTV.setText(movie.getOriginalTitle());
+            //Log.v("qqqqq_poster", "movie   " + movie.getPosterPath());
+            Log.v("qqqqq_posterfav", "movie   " + movie.getPosterPathForFav());
+
 
             Picasso.with(this)
-                    .load(movie.getPosterPath())
+                    .load(movie.getPosterPathForFav())
                     .resize(getResources().getInteger(R.integer.tmdb_poster_w185_width),
                             getResources().getInteger(R.integer.tmdb_poster_w185_height))
                     .into(imagePosterIV);
@@ -230,14 +233,15 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     private void inflateReviews() {
         Log.v("review1", "inflateReviews");
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        reviewsRecycler.setLayoutManager(linearLayoutManager);
-        URL url = AsyncTaskFetchPopularMovies.buildReviewVideoUrl(currentMovie.getId(), "reviews");
-        Log.v("oooo8", " url "+url);
-        final ArrayList<Reviews> reviews;
-        Log.v("oooo8", " inflateReviews "+movieReviewsArr);
 
         try {
+
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+            reviewsRecycler.setLayoutManager(linearLayoutManager);
+            URL url = AsyncTaskFetchPopularMovies.buildReviewVideoUrl(currentMovie.getId(), "reviews");
+            Log.v("oooo8", " url "+url);
+            final ArrayList<Reviews> reviews;
+            Log.v("oooo8", " inflateReviews "+movieReviewsArr);
             reviews = AsyncTaskFetchPopularMovies.fetchMovieReviewFromJson(AsyncTaskFetchPopularMovies.responseFromHttp(url));
             movieReviewsArr= reviews;
             Log.v("oooo8", " movieReviews "+movieReviewsArr);
@@ -259,15 +263,16 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     private void inflatingVideo() {
         Log.v("video1", "inflatingVideo");
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        videosRecycler.setLayoutManager(linearLayoutManager);
-        Log.v("video1", "videosRecycler");
 
-        final ArrayList<Videos> videos;
-        URL url = AsyncTaskFetchPopularMovies.buildReviewVideoUrl(currentMovie.getId(), "videos");
-        Log.v("video1", "url" + url);
 
         try {
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+            videosRecycler.setLayoutManager(linearLayoutManager);
+            Log.v("video1", "videosRecycler");
+
+            final ArrayList<Videos> videos;
+            URL url = AsyncTaskFetchPopularMovies.buildReviewVideoUrl(currentMovie.getId(), "videos");
+            Log.v("video1", "url" + url);
             videos = AsyncTaskFetchPopularMovies.fetchMovieVideosFromJson(AsyncTaskFetchPopularMovies.responseFromHttp(url));
             movieVideosArr= videos;
             Log.v("oooo8", " movieVideosArr "+ movieReviewsArr);

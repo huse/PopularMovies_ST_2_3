@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.hpr.hus.popularmovies.R;
+import com.hpr.hus.popularmovies.video_holders.AdaptorVideos;
 
 /**
  * Created by hk640d on 11/24/2017.
@@ -34,8 +35,9 @@ public class HolderReviews extends RecyclerView.ViewHolder {
         reviewTextView.setText(text);
     }
 
-   /* void setOnClickListener(final MovieGridAdapter.MovieAdapterListener mOnMovieClickListener,
-                            final int position) {
-        view.setOnClickListener(v -> mOnMovieClickListener.onMovieClick(position));
+    /*void setOnClickListener(final AdaptorVideos.VideoAdaptorListener mOnMovieClickListener,
+                            final int clickedItemIndex) {
+        view.setOnClickListener(v -> mOnMovieClickListener.onMovieClicked(clickedItemIndex));
+        Log.v("jjjj", "HolderReviews  setOnClickListener clickedItemIndex:" +clickedItemIndex );
     }*/
 }

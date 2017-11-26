@@ -89,18 +89,7 @@
                                 android:background="@android:color/transparent"
                                 android:onClick="onClickFavorite"
                                 />
-                            <android.support.v7.widget.RecyclerView
-                                android:id="@+id/recyclerview_youtube_list"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
 
-                                />
-                            <android.support.v7.widget.RecyclerView
-                                android:id="@+id/recyclerview_review_list"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-
-                                />
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="fill_parent"
@@ -132,6 +121,53 @@
                                     android:text="@string/overview" />
 
                             </ScrollView>
+                            <LinearLayout
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="50dp"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:id="@+id/trailers_text"
+                                    android:layout_height="wrap_content"
+
+                                    android:layout_width="match_parent"
+                                    android:text="Trailers" />
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/recyclerview_youtube_list"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:minHeight="240dp"
+                                android:maxHeight="340dp"
+
+                                />
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:paddingTop="50dp"
+                                >
+                                <TextView
+                                    android:id="@+id/review_text"
+                                    android:layout_height="wrap_content"
+
+                                    android:layout_width="match_parent"
+                                    android:text="Reviews" />
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/recyclerview_review_list"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:minHeight="340dp"
+                                android:maxHeight="440dp"
+
+
+                                />
+                            </LinearLayout>
+                            <TextView
+                                android:id="@+id/end_text"
+                                android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
+                                android:text="End of screen" />
                         </LinearLayout>
                     </LinearLayout>
 

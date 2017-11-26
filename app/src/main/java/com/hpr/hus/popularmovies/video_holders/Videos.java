@@ -108,12 +108,13 @@ public class Videos  implements Parcelable {
     }
 
     @Override public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.site);
+        dest.writeInt(this.size);
         dest.writeString(this.id);
         dest.writeString(this.iso);
         dest.writeString(this.key);
         dest.writeString(this.name);
-        dest.writeString(this.site);
-        dest.writeInt(this.size);
+
         dest.writeString(this.type);
     }
 }
