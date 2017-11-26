@@ -13,11 +13,11 @@ import org.json.JSONObject;
 public class Videos  implements Parcelable {
 
 
-    public static final String YOUTUBE = "YouTube";
-    public static final String TRAILER = "Trailer";
+/*    public static final String YOUTUBEE = "YouTube";
+    public static final String TRAILERS = "Trailer";*/
     public static final Parcelable.Creator<Videos> CREATOR = new Parcelable.Creator<Videos>() {
         public Videos createFromParcel(Parcel source) {
-            return fromParcel(source);
+            return dataFromParcel(source);
         }
 
         public Videos[] newArray(int size) {
@@ -39,20 +39,20 @@ public class Videos  implements Parcelable {
     private int size;
     private String type;
 
-    public Videos (String id, String iso, String key, String name, String site, int size, String type) {
+    public Videos (String id, String iso, String key, String name, String site, int size, String typee) {
         this.id = id;
         this.iso = iso;
         this.key = key;
         this.name = name;
         this.site = site;
         this.size = size;
-        this.type = type;
+        this.type = typee;
     }
 
     /**
      * Build a {@link Videos} object from a given {@link JSONObject}.
      */
-    public static Videos fromJson(JSONObject jsonObject) throws JSONException {
+    public static Videos dataFromJson(JSONObject jsonObject) throws JSONException {
         return new BuilderVideos().setId(jsonObject.getString(ID))
                 .setIso(jsonObject.getString(ISO))
                 .setKey(jsonObject.getString(KEY))
@@ -63,7 +63,7 @@ public class Videos  implements Parcelable {
                 .createVideo();
     }
 
-    private static Videos fromParcel(Parcel in) {
+    private static Videos dataFromParcel(Parcel in) {
         return new BuilderVideos()
                 .setId(in.readString())
                 .setIso(in.readString())
@@ -78,7 +78,7 @@ public class Videos  implements Parcelable {
     public String getId() {
         return id;
     }
-    public int getSize() {
+/*    public int getSize() {
         return size;
     }
 
@@ -88,6 +88,9 @@ public class Videos  implements Parcelable {
     public String getIso() {
         return iso;
     }
+     public String getSite() {
+        return site;
+    }*/
 
     public String getKey() {
         return key;
@@ -97,9 +100,7 @@ public class Videos  implements Parcelable {
         return name;
     }
 
-    public String getSite() {
-        return site;
-    }
+
 
 
 

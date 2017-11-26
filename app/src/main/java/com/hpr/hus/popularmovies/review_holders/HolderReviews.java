@@ -35,9 +35,5 @@ public class HolderReviews extends RecyclerView.ViewHolder {
         reviewTextView.setText(text);
     }
 
-    /*void setOnClickListener(final AdaptorVideos.VideoAdaptorListener mOnMovieClickListener,
-                            final int clickedItemIndex) {
-        view.setOnClickListener(v -> mOnMovieClickListener.onMovieClicked(clickedItemIndex));
-        Log.v("jjjj", "HolderReviews  setOnClickListener clickedItemIndex:" +clickedItemIndex );
-    }*/
+
 }

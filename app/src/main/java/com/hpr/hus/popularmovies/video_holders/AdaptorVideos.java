@@ -14,31 +14,32 @@ import java.util.ArrayList;
  */
 
 public class AdaptorVideos extends RecyclerView.Adapter<HolderVideos> {
-    private final ArrayList<Videos> videoList;
-    private VideoAdaptorListener videoAdapterListener;
+    private final ArrayList<Videos> videoLists;
+    private VideoAdaptorListener videoAdaptorListener;
 
-    public AdaptorVideos(ArrayList<Videos> videoList, VideoAdaptorListener videoAdapterListener) {
-        this.videoList = videoList;
-        this.videoAdapterListener = videoAdapterListener;
+    public AdaptorVideos(ArrayList<Videos> videoList, VideoAdaptorListener videoAdaptorListener) {
+        this.videoAdaptorListener = videoAdaptorListener;
+
+        this.videoLists = videoList;
     }
 
-    @Override public HolderVideos onCreateViewHolder(ViewGroup parent, int viewType) {
+    @Override public HolderVideos onCreateViewHolder(ViewGroup parent, int vType) {
         View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.video_contents, null);
         return new HolderVideos(layoutView);
     }
 
-    @Override public void onBindViewHolder(HolderVideos holder, int position) {
-        final Videos video = videoList.get(position);
+    @Override public void onBindViewHolder(HolderVideos holder, int location) {
+        final Videos video = videoLists.get(location);
         holder.setTrailerText(video.getName());
-        holder.setOnClickListener(videoAdapterListener, position);
+        holder.setOnClickedListener(videoAdaptorListener, location);
     }
 
     @Override public int getItemCount() {
-        return videoList.size();
+        return videoLists.size();
     }
 
-    public Videos getVideoFromPosition(int position) {
-        return videoList.get(position);
+    public Videos getVideoFromLocation(int location) {
+        return videoLists.get(location);
     }
 
     public interface VideoAdaptorListener {

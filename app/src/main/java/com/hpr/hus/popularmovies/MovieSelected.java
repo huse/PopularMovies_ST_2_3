@@ -103,10 +103,12 @@ public class MovieSelected implements Parcelable {
     }
     final String TMDB_POSTER_BASE_URL = "https://image.tmdb.org/t/p/w185";
     public String getPosterPath() {
+     if(   !mPosterPath.toLowerCase().contains("https".toLowerCase())){
+         mPosterPath = TMDB_POSTER_BASE_URL + mPosterPath;
+     }
 
-       // final String TMDB_POSTER_BASE_URL = "";
 
-        mPosterPath = TMDB_POSTER_BASE_URL + mPosterPath;
+
         return mPosterPath;
     }
     public String getPosterPathForFav() {
@@ -128,9 +130,7 @@ public class MovieSelected implements Parcelable {
         return String.valueOf(getVoteAverage()) + "/10";
     }
 
-    public String getDateFormat() {
-        return DATE_FORMAT;
-    }
+   // public String getDateFormat() {        return DATE_FORMAT;    }
 
     @Override
     public int describeContents() {

@@ -319,7 +319,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         cv.put(MovieListContract.MoviesEntry.MOVIE_VOTE_AVERAGE, movieSelected.getVoteAverage());
         cv.put(MovieListContract.MoviesEntry.MOVIE_VOTE_COUNT, movieSelected.getVoteCount());
         cv.put(MovieListContract.MoviesEntry.MOVIE_BACKDROP_PATH, movieSelected.getBackdrop());
-        cv.put(MovieListContract.MoviesEntry.MOVIE_POSTER_PATH, movieSelected.getPosterPath());
+        cv.put(MovieListContract.MoviesEntry.MOVIE_POSTER_PATH, movieSelected.getPosterPathForFav());
         cv.put(MovieListContract.MoviesEntry.MOVIE_RELEASE_DATE, movieSelected.getReleaseDate());
         cv.put(MovieListContract.MoviesEntry.MOVIE_FAVORED, favBoolean);
         cv.put(MovieListContract.MoviesEntry.MOVIE_ORIGINAL_TITLE, movieSelected.getOriginalTitle());
@@ -335,7 +335,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         if (uri != null) {
             Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
         }*/
-        //clearTable();
+       // clearTable();
         // return getContentResolver().insert(MovieListContract.MoviesEntry.MOVIE_CONTENT_URI, cv);
 
         Long result;
@@ -480,7 +480,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     public void onVideoClicked(int clickedItemIndex) {
         Log.v("jjjj", "onVideoClick  clickedItemIndex:" +clickedItemIndex );
 
-        Videos video = videoAdaptor.getVideoFromPosition(clickedItemIndex);
+        Videos video = videoAdaptor.getVideoFromLocation(clickedItemIndex);
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + video.getKey())));
 
     }

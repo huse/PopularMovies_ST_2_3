@@ -27,7 +27,7 @@ public class HolderVideos  extends RecyclerView.ViewHolder {
     }
     private Toast mToast;
 
-    void setOnClickListener(AdaptorVideos.VideoAdaptorListener mVideoAdaptorListener, final int clickedItemIndex) {
+    void setOnClickedListener(AdaptorVideos.VideoAdaptorListener mVideoAdaptorListener, final int clickedItemIndex) {
         view.setOnClickListener(v -> mVideoAdaptorListener.onVideoClicked(clickedItemIndex));
         Log.v("jjjj", "setOnClickListener  clickedItemIndex:" +clickedItemIndex );
         /*String toastMessage = "Item #" + clickedItemIndex + " clicked.";

@@ -24,10 +24,10 @@ public class AdaptorReviews extends RecyclerView.Adapter<HolderReviews> {
 
 
     }
-    @Override public void onBindViewHolder(HolderReviews holder, int position) {
+    @Override public void onBindViewHolder(HolderReviews holder, int location) {
         Log.v("review1", "onBindViewHolder");
         // position = 0;
-        final Reviews review = reviewsArrayListList.get(position);
+        final Reviews review = reviewsArrayListList.get(location);
         holder.setAuthorsName(review.getAuthorsw());
         holder.setReviews(review.getContents());
     }
@@ -38,8 +38,9 @@ public class AdaptorReviews extends RecyclerView.Adapter<HolderReviews> {
   /*  public AdapterReviews(int reviews) {
         this.reviewsList = reviews;
     }*/
-    @Override public HolderReviews onCreateViewHolder(ViewGroup parent, int viewType) {
+    @Override public HolderReviews onCreateViewHolder(ViewGroup parent, int type) {
         Log.v("review1", "onCreateViewHolder");
+        Log.v("review1", "type" + type);
         View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.review_contents, null);
         return new HolderReviews(layoutView);
     }

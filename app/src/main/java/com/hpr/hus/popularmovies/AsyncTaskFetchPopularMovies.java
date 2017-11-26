@@ -24,7 +24,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 import static android.content.ContentValues.TAG;
@@ -135,7 +134,7 @@ class AsyncTaskFetchPopularMovies extends AsyncTask<String, Void, MovieSelected[
         ArrayList<Videos> result = new ArrayList<>();
 
         for (int i = 0; i < videos.length(); i++) {
-            result.add(Videos.fromJson(videos.getJSONObject(i)));
+            result.add(Videos.dataFromJson(videos.getJSONObject(i)));
         }
         return result;
     }

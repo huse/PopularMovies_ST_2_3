@@ -5,24 +5,24 @@ package com.hpr.hus.popularmovies.video_holders;
  */
 
 public class BuilderVideos {
-    private String key;
+    private String keys;
     private String name;
     private String site;
     private String id;
     private int size;
-    private String type;
+    private String typee;
     private String iso;
 
 
 
     @SuppressWarnings("javadocmethod")
     public BuilderVideos setKey(String key) {
-        this.key = key;
+        this.keys = key;
         return this;
     }
     @SuppressWarnings("javadocmethod")
     public BuilderVideos setType(String type) {
-        this.type = type;
+        this.typee = type;
         return this;
     }
     @SuppressWarnings("javadocmethod")
@@ -61,6 +61,6 @@ public class BuilderVideos {
 
     @SuppressWarnings("javadocmethod")
     public Videos createVideo() {
-        return new Videos(id, iso, key, name, site, size, type);
+        return new Videos(id, iso, keys, name, site, size, typee);
     }
 }
