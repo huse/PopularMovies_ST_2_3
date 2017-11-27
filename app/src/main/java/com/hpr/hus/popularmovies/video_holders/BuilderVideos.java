@@ -1,5 +1,7 @@
 package com.hpr.hus.popularmovies.video_holders;
 
+import android.util.Log;
+
 /**
  * Created by hk640d on 11/25/2017.
  */
@@ -61,6 +63,8 @@ public class BuilderVideos {
 
     @SuppressWarnings("javadocmethod")
     public Videos createVideo() {
+        Log.v("video1", "createVideo: " + id+ iso+ keys+ name+ site+ size +typee);
+
         return new Videos(id, iso, keys, name, site, size, typee);
     }
 }

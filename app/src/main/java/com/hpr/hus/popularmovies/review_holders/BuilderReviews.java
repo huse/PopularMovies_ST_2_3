@@ -13,18 +13,18 @@ public class BuilderReviews  {
     private String authors;
 
     @SuppressWarnings("javadocmethod")
-    public BuilderReviews setAuthor(String author) {
+    public BuilderReviews setAuthorsname(String author) {
         this.authors = author;
         return this;
     }
     @SuppressWarnings("javadocmethod")
-    public BuilderReviews setUrl(String url) {
+    public BuilderReviews setReviewUrl(String url) {
         this.url = url;
         return this;
     }
 
     @SuppressWarnings("javadocmethod")
-    public BuilderReviews setId(String id) {
+    public BuilderReviews setReviewId(String id) {
         Log.v("review1", "BuilderReviews");
 
         this.id = id;
@@ -34,7 +34,9 @@ public class BuilderReviews  {
 
 
     @SuppressWarnings("javadocmethod")
-    public BuilderReviews setContent(String content) {
+    public BuilderReviews setReviewContent(String content) {
+        Log.v("review1", "content" +content);
+
         this.contents = content;
         return this;
     }

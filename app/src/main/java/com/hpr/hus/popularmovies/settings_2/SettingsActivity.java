@@ -12,9 +12,9 @@ import com.hpr.hus.popularmovies.R;
 public class SettingsActivity extends AppCompatActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceStates) {
         Log.v("kkkkkkkkk","SettingsActivity2 - start  onCreate");
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceStates);
         Log.v("kkkkkkkkk","SettingsActivity2 - onCreate 2");
         setContentView(R.layout.activity_settings);
         Log.v("kkkkkkkkk","SettingsActivity2 - onCreate 3");

@@ -17,7 +17,10 @@ public class HolderVideos  extends RecyclerView.ViewHolder {
     private TextView videoTrailerText;
 
     HolderVideos(View itemView) {
+
         super(itemView);
+        Log.v("video1", "getVideoFromLocation" + itemView);
+
         view = itemView;
         videoTrailerText = view.findViewById(R.id.name_videos);
     }

@@ -2,6 +2,7 @@ package com.hpr.hus.popularmovies.video_holders;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,12 +48,16 @@ public class Videos  implements Parcelable {
         this.site = site;
         this.size = size;
         this.type = typee;
+        Log.v("video1", "Videos constructor:" + " _ "+ id+ " _ "+ iso+ " _ "+key+ " _ "+name+ " _ "+site+ " _ "+size+ " _ "+typee);
+
     }
 
     /**
      * Build a {@link Videos} object from a given {@link JSONObject}.
      */
     public static Videos dataFromJson(JSONObject jsonObject) throws JSONException {
+        Log.v("video1", "dataFromJson" + jsonObject);
+
         return new BuilderVideos().setId(jsonObject.getString(ID))
                 .setIso(jsonObject.getString(ISO))
                 .setKey(jsonObject.getString(KEY))
@@ -64,6 +69,8 @@ public class Videos  implements Parcelable {
     }
 
     private static Videos dataFromParcel(Parcel in) {
+        Log.v("video1", "dataFromParcel" + in);
+
         return new BuilderVideos()
                 .setId(in.readString())
                 .setIso(in.readString())
@@ -76,21 +83,10 @@ public class Videos  implements Parcelable {
     }
 
     public String getId() {
+        Log.v("video1", "getId" + id);
+
         return id;
     }
-/*    public int getSize() {
-        return size;
-    }
-
-    public String getType() {
-        return type;
-    }
-    public String getIso() {
-        return iso;
-    }
-     public String getSite() {
-        return site;
-    }*/
 
     public String getKey() {
         return key;
@@ -117,5 +113,7 @@ public class Videos  implements Parcelable {
         dest.writeString(this.name);
 
         dest.writeString(this.type);
+        Log.v("video1", "Videos constructor:" + " _ "+ id+ " _ "+ iso+ " _ "+key+ " _ "+name+ " _ "+site+ " _ "+size+ " _ "+type);
+
     }
 }

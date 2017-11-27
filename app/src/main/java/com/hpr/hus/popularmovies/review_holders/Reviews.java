@@ -39,6 +39,8 @@ public class Reviews  implements Parcelable {
         this.authors = author;
         this.contents = content;
         this.url = url;
+        Log.v("review1", "Reviews url" + url);
+
     }
 
     public String getId() {
@@ -46,33 +48,37 @@ public class Reviews  implements Parcelable {
     }
 
     public String getAuthorsw() {
+        Log.v("review1", "Reviews authors" + authors);
+
         return authors;
     }
 
     public String getContents() {
+        Log.v("review1", "Reviews contents" + contents);
+
         return contents;
     }
 
-    public String getUrl() {
-        return url;
-    }
+
 
 
     private static Reviews dataFromParcel(Parcel in) {
         Log.v("review1", "fromParcel");
         return new BuilderReviews()
-                .setId(in.readString())
-                .setAuthor(in.readString())
-                .setContent(in.readString())
-                .setUrl(in.readString())
+                .setReviewId(in.readString())
+                .setAuthorsname(in.readString())
+                .setReviewContent(in.readString())
+                .setReviewUrl(in.readString())
                 .createReview();
     }
     public static Reviews dataFromJson(JSONObject jsonObject) throws JSONException {
+        Log.v("review1", "Reviews dataFromJson" + jsonObject);
+
         return new BuilderReviews()
-                .setId(jsonObject.getString(ID))
-                .setAuthor(jsonObject.getString(AUTHOR))
-                .setContent(jsonObject.getString(CONTENT))
-                .setUrl(jsonObject.getString(URL))
+                .setReviewId(jsonObject.getString(ID))
+                .setAuthorsname(jsonObject.getString(AUTHOR))
+                .setReviewContent(jsonObject.getString(CONTENT))
+                .setReviewUrl(jsonObject.getString(URL))
                 .createReview();
     }
 
@@ -84,10 +90,12 @@ public class Reviews  implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        Log.v("review1", "Reviews writeToParcel flags" + flags);
+        dest.writeString(this.url);
         dest.writeString(this.id);
         dest.writeString(this.authors);
         dest.writeString(this.contents);
-        dest.writeString(this.url);
+
     }
 
 }

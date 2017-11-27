@@ -18,7 +18,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
         OnSharedPreferenceChangeListener {
 
     @Override
-    public void onCreatePreferences(Bundle bundle, String s) {
+    public void onCreatePreferences(Bundle bundle, String s1) {
         Log.v("tttttttttttt","SettingFragment 2 - onCreatePreferences 1");
         addPreferencesFromResource(R.xml.setting_pref);
         Log.v("tttttttttttt","SettingFragment 2 - onCreatePreferences 2");
@@ -42,10 +42,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
     }
 
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String keyes) {
         Log.v("tttttttttttt3333"," - onSharedPreferenceChanged 0    " + sharedPreferences);
 
-        Preference preference = findPreference(key);
+        Preference preference = findPreference(keyes);
         if (null != preference) {
             if (!(preference instanceof CheckBoxPreference)) {
                 String value = sharedPreferences.getString(preference.getKey(), "");
@@ -56,12 +56,12 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
     }
 
 
-    private void setPreferenceSummary(Preference preference, String value) {
+    private void setPreferenceSummary(Preference preference, String values) {
         Log.v("tttttttttttt","setPreferenceSummary 2 - 1");
-        Log.v("ttttt_value3",value);
+        Log.v("ttttt_value3",values);
         if (preference instanceof ListPreference) {
             ListPreference listPreference = (ListPreference) preference;
-            int prefIndex = listPreference.findIndexOfValue(value);
+            int prefIndex = listPreference.findIndexOfValue(values);
             if (prefIndex >= 0) {
                 listPreference.setSummary(listPreference.getEntries()[prefIndex]);
             }
@@ -70,11 +70,11 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceStates) {
         Log.v("tttttttttttt","onCreate 2 - oncreate 0");
-        Log.v("tttttttttttt"," - oncreate 0  sss  " + savedInstanceState);
-        super.onCreate(savedInstanceState);
-        Log.v("tttttttttttt"," - oncreate 0  eee  " + savedInstanceState);
+        Log.v("tttttttttttt"," - oncreate 0  sss  " + savedInstanceStates);
+        super.onCreate(savedInstanceStates);
+        Log.v("tttttttttttt"," - oncreate 0  eee  " + savedInstanceStates);
         Log.v("tttttttttttt","setPreferenceSummary 2 - oncreate 01");
 /*        addPreferencesFromResource(R.xml.pref_visualizer);
         Log.v("tttttttttttt","setPreferenceSummary 2 - oncreate 02");

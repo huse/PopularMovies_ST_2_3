@@ -27,12 +27,14 @@ public class HolderReviews extends RecyclerView.ViewHolder {
         reviewTextView = viewIt.findViewById(R.id.content_review);
     }
 
-    void setAuthorsName(String text) {
-        authorTextView.setText(text);
+    void setAuthorsName(String Authors) {
+        Log.v("review1", "setAuthorsName" + Authors);
+        authorTextView.setText(Authors);
     }
 
-    void setReviews(String text) {
-        reviewTextView.setText(text);
+    void setReviews(String review) {
+        Log.v("review1", "setAuthorsName" + review);
+        reviewTextView.setText(review);
     }
 
 
