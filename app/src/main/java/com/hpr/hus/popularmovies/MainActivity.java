@@ -154,24 +154,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 
-           /* case R.id.sort_popularity:
-               // updateSharedPrefs(getString(R.string.tmdb_sort_pop_desc));
 
-                getMoviesFromTMDb(getSortMethod());
-                Log.v("kkkkkk","pref_sort_pop_desc_key");
-                mMenu.findItem(R.id.sort_popularity).setVisible(false);
-                mMenu.findItem(R.id.sort_top_rate).setVisible(true);
-                updateMenu();
-                return true;
-            case R.id.sort_top_rate:
-              //  updateSharedPrefs(getString(R.string.tmdb_sort_vote_avg_desc));
-
-                getMoviesFromTMDb(getSortMethod());
-                mMenu.findItem(R.id.sort_popularity).setVisible(true);
-                mMenu.findItem(R.id.sort_top_rate).setVisible(false);
-                Log.v("kkkkkk","pref_sort_vote_avg_desc_key");
-                updateMenu();
-                return true;*/
             case R.id.settings:
                 Log.v("nnnn","MainActivity - R.id.settings 1");
                 Intent intent = new Intent(this, SettingsActivity.class);

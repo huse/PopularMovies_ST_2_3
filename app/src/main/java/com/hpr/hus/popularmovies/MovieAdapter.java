@@ -27,7 +27,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
     private final MovieSelected[] movies;
     private  MovieAdapterOnClickHandler movieClickHandler;
     private Cursor mCursor;
-
+    String movieId;
     public MovieAdapter(MovieSelected[] movies, Context context,MovieAdapterOnClickHandler clickHandler) {
         this.context = context;
         Log.v("hhhh4_context", context.getClass().toString());
@@ -68,6 +68,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
 
 
      imageView = new ImageView(context);
+     TextView textView= new TextView((context));
      imageView.setAdjustViewBounds(true);
      Log.v("hhhh4","view:  " + imageView.toString());
 
@@ -79,6 +80,11 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
      Log.v("hhhh4_Picasso",":  " + holder.movieImageView.toString());
      Log.v("hhhh4_Picasso",":  " + context.toString());
      Picasso.with(context).load(movies[position].getPosterPath()).resize(context.getResources().getInteger(R.integer.tmdb_poster_w185_width),context.getResources().getInteger(R.integer.tmdb_poster_w185_height)).into(holder.movieImageView);
+     //Picasso.with(context).load(movies[position].getTitle()).into(holder.mTitleTextViewUnderImage);
+     holder.mTitleTextViewUnderImage.setText(movies[position].getTitle());
+     Log.v("hhhh4_textview",":  " + movies[position].getTitle());
+
+   //  textView.setText(movies[position].getTitle());
 
 
 
@@ -94,7 +100,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
 
 
          // final int id = mCursor.getInt(idIndex);
-         String movieId = mCursor.getString(movieIdIndex);
+         movieId = mCursor.getString(movieIdIndex);
          String favored = mCursor.getString(favoriteIndex);
          Boolean favoredBool = Boolean.valueOf(favored);
 
@@ -115,6 +121,8 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
     }
     public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView mMovieTextView = new TextView(context);
+        TextView mTitleTextViewUnderImage = new TextView(context);
+
         ImageView movieImageView = new ImageView(context);
         ImageButton imageButton;
         public MovieAdapterViewHolder(View view) {
@@ -122,9 +130,11 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
             Log.v("hhhh411","MovieAdapterViewHolder class");
             mMovieTextView = view.findViewById(R.id.tv_movie_data);
             movieImageView = view.findViewById(R.id.imageview_image_poster_main );
+            mTitleTextViewUnderImage = view.findViewById(R.id.title_text_under_image );
             imageButton =  itemView.findViewById(R.id.fav_button);
             Log.v("hhhh4111",":  " + movieImageView.toString());
             view.setOnClickListener(this);
+            mTitleTextViewUnderImage.setText(movies[0].getTitle() +"s");
         }
 
         @Override

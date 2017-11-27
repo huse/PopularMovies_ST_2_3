@@ -18,7 +18,7 @@
         android:id="@+id/content_review"
         android:layout_below="@id/author_review"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_margin="15dp"
         android:layout_width="match_parent"
         android:text="content"
         />

@@ -19,7 +19,19 @@
         android:layout_width="180dp"
         android:layout_height="300dp"
         android:layout_weight="3"
-        android:padding="16dp"
+        android:padding="5dp"
+        android:gravity="center"
+
+        />
+    <TextView
+        android:id="@+id/title_text_under_image"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:gravity="left"
+        android:layout_marginLeft="6dp"
+
+
+
         />
 
 </RelativeLayout>
