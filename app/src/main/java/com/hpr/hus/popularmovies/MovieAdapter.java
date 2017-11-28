@@ -79,7 +79,8 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
      Log.v("hhhh4_Picasso",":  " + (context.getResources().getInteger(R.integer.tmdb_poster_w185_height)));
      Log.v("hhhh4_Picasso",":  " + holder.movieImageView.toString());
      Log.v("hhhh4_Picasso",":  " + context.toString());
-     Picasso.with(context).load(movies[position].getPosterPath()).resize(context.getResources().getInteger(R.integer.tmdb_poster_w185_width),context.getResources().getInteger(R.integer.tmdb_poster_w185_height)).into(holder.movieImageView);
+     Picasso.with(context).load(movies[position].getPosterPath()).placeholder(R.drawable.no_image_available)
+             .error(R.drawable.error_image).resize(context.getResources().getInteger(R.integer.tmdb_poster_w185_width),context.getResources().getInteger(R.integer.tmdb_poster_w185_height)).into(holder.movieImageView);
      //Picasso.with(context).load(movies[position].getTitle()).into(holder.mTitleTextViewUnderImage);
      holder.mTitleTextViewUnderImage.setText(movies[position].getTitle());
      Log.v("hhhh4_textview",":  " + movies[position].getTitle());

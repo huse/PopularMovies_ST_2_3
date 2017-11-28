@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="20dp"
         android:gravity="left"
-        android:layout_marginLeft="6dp"
+        android:layout_marginLeft="6sp"
 
 
 

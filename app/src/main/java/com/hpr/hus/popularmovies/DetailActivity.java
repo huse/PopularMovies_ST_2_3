@@ -93,7 +93,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         final MovieSelected movie;
         Log.v("hhhh6", "891");
         //currentMovie = bundle.getParcelable(MOVIE_EXTRA);
-        Toast.makeText(this, "Test", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Test", Toast.LENGTH_LONG).show();
         if (intentThatStartedThisActivity != null && !getIntent().getBooleanExtra("isNewItem", false)) {
 
             movie = intentThatStartedThisActivity.getExtras().getParcelable("PARCEL_MOVIE");
@@ -141,6 +141,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                     .load(movie.getPosterPathForFav())
                     .resize(getResources().getInteger(R.integer.tmdb_poster_w185_width),
                             getResources().getInteger(R.integer.tmdb_poster_w185_height))
+                    .placeholder(R.drawable.no_image_available)
+                    .error(R.drawable.error_image)
                     .into(imagePosterIV);
 
             String overView = movie.getOverview();
@@ -481,7 +483,9 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         Log.v("jjjj", "onVideoClick  clickedItemIndex:" +clickedItemIndex );
 
         Videos video = videoAdaptor.getVideoFromLocation(clickedItemIndex);
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + video.getKey())));
+        startActivity(new Intent(null, Uri.parse("http://www.youtube.com/watch?v=" + video.getKey())));
+
+       // startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + video.getKey())));
 
     }
 
